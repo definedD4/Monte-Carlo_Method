@@ -1,0 +1,86 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Monte_Carlo_Method_3D.Views"
+                    xmlns:vm="clr-namespace:Monte_Carlo_Method_3D.ViewModels">
+    <DataTemplate DataType="{x:Type vm:PropabilityMethodViewModel}">
+        <DataTemplate.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="Gauge.xaml"/>
+                </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary>
+        </DataTemplate.Resources>
+        <Grid Background="#FF94BADA">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <ToolBar Grid.Row="0">
+                <Button Content="Перезапуск" Command="{Binding RestartCommand}"/>
+                <Button Content="{Binding PlayPauseText}" Command="{Binding PlayPauseCommand}"/>
+                <Button Content="Следующий шаг" Command="{Binding StepCommand}"/>
+                <Button Content="Симулировать до: " Command="{Binding SimulateToCommand}"/>
+                <TextBox Text="{Binding SimulateToStep, UpdateSourceTrigger=PropertyChanged}"/>
+                <Separator/>
+                <Button Content="Настройки симуляции" Command="{Binding SimulationOptionsCommand}"/>
+            </ToolBar>
+            <Border Background="#FF00366C" Grid.Row="1" Margin="0" Padding="10" MinWidth="259" MinHeight="169">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Canvas>
+                        <TextBlock Text="Шкала вероятности" Foreground="White" RenderTransformOrigin="0.5,0.5" Canvas.Left="-62" Canvas.Top="68" FontSize="15">
+                            <TextBlock.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="90"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </TextBlock.RenderTransform>
+                        </TextBlock>
+                    </Canvas>
+                    <ContentControl Content="{Binding Gauge}" ContentTemplate="{StaticResource GaugeTemplate}" Margin="8" Grid.Column="1"/>
+                    <Grid Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.ColumnSpan="2">
+                            <Button Content="2D" Command="{Binding VisualTypeSelector}" CommandParameter="2D" Margin="1,0"/>
+                            <Button Content="3D" Command="{Binding VisualTypeSelector}" CommandParameter="3D" Margin="1,0"/>
+                            <Button Content="Таблица" Command="{Binding VisualTypeSelector}" CommandParameter="Table" Margin="1,0"/>
+                        </StackPanel>
+                        <ContentControl Content="{Binding VisualContext}" Grid.Row="1" Grid.Column="0"/>
+                        <StackPanel Margin="4" Grid.Row="1" Grid.Column="1" Background="#FF00366C">
+                            <WrapPanel Margin="2">
+                                <TextBlock Text="Шаг:" Foreground="White" Margin="1"/>
+                                <TextBlock Text="{Binding Step}" Foreground="White" Margin="1"/>
+                            </WrapPanel>
+                            <WrapPanel Margin="2">
+                                <TextBlock Text="Сумма в центре:" Foreground="White" Margin="1"/>
+                                <TextBlock Text="{Binding CenterSum}" Foreground="White" Margin="1"/>
+                            </WrapPanel>
+                            <WrapPanel Margin="2">
+                                <TextBlock Text="Сумма на границе:" Foreground="White" Margin="1"/>
+                                <TextBlock Text="{Binding EdgeSum}" Foreground="White" Margin="1"/>
+                            </WrapPanel>
+                            <WrapPanel Margin="2">
+                                <TextBlock Text="Полное время симуляции:" Foreground="White" Margin="1"/>
+                                <TextBlock Text="{Binding TotalSimTime}" Foreground="White" Margin="1"/>
+                                <TextBlock Text="мс" Foreground="White" Margin="1"/>
+                            </WrapPanel>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>

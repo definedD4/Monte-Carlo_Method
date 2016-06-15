@@ -1,0 +1,27 @@
+﻿<Window x:Class="Monte_Carlo_Method_3D.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Monte_Carlo_Method_3D.Views"
+        mc:Ignorable="d"
+        Title="Метод Монте-Карло" Height="640" Width="920">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="VisualContexts.xaml"/>
+                <ResourceDictionary Source="PropabilityMethodView.xaml"/>
+                <ResourceDictionary Source="Gauge.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Background="#FF94BADA">
+        <TabControl ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab}">
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Header}" Margin="2"/>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+        </TabControl>
+    </Grid>
+</Window>
