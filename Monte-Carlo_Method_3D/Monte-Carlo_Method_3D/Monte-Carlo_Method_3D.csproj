@@ -63,7 +63,10 @@
       <DependentUpon>SimulationOptionsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Gauge\GaugeContext.cs" />
+    <Compile Include="GraphRendering\GridVisualContext.cs" />
     <Compile Include="GraphRendering\TableVisualContext.cs" />
+    <Compile Include="Simulation\SimulationInfo.cs" />
+    <Compile Include="Util\CsvExporter.cs" />
     <Compile Include="Util\DelegateCommand.cs" />
     <Compile Include="Util\PointedValueBehavior.cs" />
     <Compile Include="Util\Rotation3DBehavior.cs" />
@@ -102,6 +105,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PropabilityMethodView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SimulationInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -14,7 +14,7 @@ namespace Monte_Carlo_Method_3D.Util
         {
             AssociatedObject.MouseMove += (s, e) =>
             {
-                VisualContext2D context = AssociatedObject.DataContext as VisualContext2D;
+                GridVisualContext context = AssociatedObject.DataContext as GridVisualContext;
                 if (context == null)
                     throw new InvalidOperationException("Cannot retrive data context.");
 

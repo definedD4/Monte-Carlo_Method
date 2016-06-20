@@ -8,8 +8,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Microsoft.Win32;
 
 namespace Monte_Carlo_Method_3D.ViewModels
 {
@@ -34,7 +36,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
             pallete.DrawBlackIfZero = true;
 
             //Init simulator
-            simulator = new PropabilityMethodSimulator(100, 100, new IntPoint(50, 50));
+            simulator = new PropabilityMethodSimulator(5, 5, new IntPoint(2, 2));
 
             //Init visualizer and visual output
             visualizer = new PropabilityMethodVisualizer(simulator.Width, simulator.Height, pallete) { DrawBorder = false, HeightCoefficient = 50 };
@@ -56,6 +58,8 @@ namespace Monte_Carlo_Method_3D.ViewModels
                     VisualContext.Update();
 
                     SimulationInProgress = false;
+
+                    OnPropertyChanged(nameof(SimulationInfo));
                 }
             };
 
@@ -69,6 +73,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
                 SimulationInProgress = false;
                 UpdateCommands();
+                OnPropertyChanged(nameof(SimulationInfo));
             }, x => !(SimulationInProgress || timer.IsEnabled));
 
 
@@ -93,11 +98,12 @@ namespace Monte_Carlo_Method_3D.ViewModels
             {
                 simulator.Reset();
                 VisualContext.Update();
+                OnPropertyChanged(nameof(SimulationInfo));
             }, x => !(SimulationInProgress || timer.IsEnabled));
 
             c_SimulationOptionsCommand = new DelegateCommand(x =>
             {
-                SimulationOptionsDialog dialog = new SimulationOptionsDialog(simulator.Width, simulator.Height, simulator.StartLocation);
+                SimulationOptionsDialog dialog = new SimulationOptionsDialog(simulator.Width, simulator.Height, simulator.StartLocation + new IntPoint(1, 1));
                 dialog.ShowDialog();
 
                 if (dialog.DialogResult.GetValueOrDefault(false))
@@ -107,12 +113,12 @@ namespace Monte_Carlo_Method_3D.ViewModels
                     IntPoint startLocation = new IntPoint(dialog.StartXSetting, dialog.StartYSetting);
 
                     simulator = new PropabilityMethodSimulator(width, height, startLocation);
-                    AddListenedObject(simulator);
 
                     visualizer = new PropabilityMethodVisualizer(simulator.Width, simulator.Height, pallete) { DrawBorder = false, HeightCoefficient = 25 };
                     VisualContext.Simulator = simulator;
                     VisualContext.Visualizer = visualizer;
                     VisualContext.Update();
+                    OnPropertyChanged(nameof(SimulationInfo));
                 }
             }, x => !(SimulationInProgress || timer.IsEnabled));
 
@@ -121,7 +127,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 SimulationInProgress = true;
                 UpdateCommands();
 
-                while (Step < SimulateToStep)
+                while (simulator.Step < SimulateToStep)
                 {
                     simulator.SimulateStep();
                 }
@@ -130,7 +136,17 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
                 SimulationInProgress = false;
                 UpdateCommands();
+                OnPropertyChanged(nameof(SimulationInfo));
             }, x => !(SimulationInProgress || timer.IsEnabled || SimulateToStep <= 0));
+
+            c_ExportToCsvCommand = new DelegateCommand(x =>
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                if (saveFileDialog.ShowDialog(Application.Current.MainWindow).GetValueOrDefault())
+                {
+                    new CsvExporter(';').ExportToFile(simulator.GetData(), saveFileDialog.FileName);
+                }
+            });
 
             VisualTypeSelector = new SelectorCommand("2D");
 
@@ -152,14 +168,6 @@ namespace Monte_Carlo_Method_3D.ViewModels
             };
 
             VisualTypeSelector.UpdateSelectors();
-
-            AddListenedObject(simulator);
-
-            RegisterPropertyDependency("Step", "Step");
-            RegisterPropertyDependency("TotalSimTime", "TotalSimTime");
-            RegisterPropertyDependency("EdgeSum", "EdgeSum");
-            RegisterPropertyDependency("CenterSum", "CenterSum");
-            RegisterPropertyDependency("TotalSum", "TotalSum");
         }
 
         private void UpdateCommands()
@@ -169,13 +177,10 @@ namespace Monte_Carlo_Method_3D.ViewModels
             c_RestartCommand.RaiseCanExecuteChanged();
             c_SimulationOptionsCommand.RaiseCanExecuteChanged();
             c_SimulateToCommand.RaiseCanExecuteChanged();
+            c_ExportToCsvCommand.RaiseCanExecuteChanged();
         }
 
-        public int Step => simulator.Step;
-        public double CenterSum => Math.Round(simulator.CenterSum, 9);
-        public double EdgeSum => Math.Round(simulator.EdgeSum, 9);
-        public double TotalSum => Math.Round(simulator.TotalSum, 9);
-        public int TotalSimTime => simulator.TotalSimTime;
+        public SimulationInfo SimulationInfo => simulator.SimulationInfo;
 
         private string p_PlayPauseText;
         public string PlayPauseText
@@ -204,6 +209,9 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         private DelegateCommand c_SimulateToCommand;
         public ICommand SimulateToCommand => c_SimulateToCommand;
+
+        private DelegateCommand c_ExportToCsvCommand;
+        public ICommand ExportToCsvCommand => c_ExportToCsvCommand;
 
         private int p_SimulateToStep;
         public int SimulateToStep

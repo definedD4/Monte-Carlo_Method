@@ -7,6 +7,7 @@
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>
                     <ResourceDictionary Source="Gauge.xaml"/>
+                    <ResourceDictionary Source="SimulationInfo.xaml"/>
                 </ResourceDictionary.MergedDictionaries>
             </ResourceDictionary>
         </DataTemplate.Resources>
@@ -23,6 +24,7 @@
                 <TextBox Text="{Binding SimulateToStep, UpdateSourceTrigger=PropertyChanged}"/>
                 <Separator/>
                 <Button Content="Настройки симуляции" Command="{Binding SimulationOptionsCommand}"/>
+                <Button Content="Экспортировать в файл CSV" Command="{Binding ExportToCsvCommand}"/>
             </ToolBar>
             <Border Background="#FF00366C" Grid.Row="1" Margin="0" Padding="10" MinWidth="259" MinHeight="169">
                 <Grid Margin="10">
@@ -59,29 +61,7 @@
                             <Button Content="Таблица" Command="{Binding VisualTypeSelector}" CommandParameter="Table" Margin="1,0"/>
                         </StackPanel>
                         <ContentControl Content="{Binding VisualContext}" Grid.Row="1" Grid.Column="0"/>
-                        <StackPanel Margin="4" Grid.Row="1" Grid.Column="1" Background="#FF00366C">
-                            <WrapPanel Margin="2">
-                                <TextBlock Text="Шаг:" Foreground="White" Margin="1"/>
-                                <TextBlock Text="{Binding Step}" Foreground="White" Margin="1"/>
-                            </WrapPanel>
-                            <WrapPanel Margin="2">
-                                <TextBlock Text="Сумма в центре:" Foreground="White" Margin="1"/>
-                                <TextBlock Text="{Binding CenterSum}" Foreground="White" Margin="1"/>
-                            </WrapPanel>
-                            <WrapPanel Margin="2">
-                                <TextBlock Text="Сумма на границе:" Foreground="White" Margin="1"/>
-                                <TextBlock Text="{Binding EdgeSum}" Foreground="White" Margin="1"/>
-                            </WrapPanel>
-                            <WrapPanel Margin="2">
-                                <TextBlock Text="Общяя сумма:" Foreground="White" Margin="1"/>
-                                <TextBlock Text="{Binding TotalSum}" Foreground="White" Margin="1"/>
-                            </WrapPanel>
-                            <WrapPanel Margin="2">
-                                <TextBlock Text="Полное время симуляции:" Foreground="White" Margin="1"/>
-                                <TextBlock Text="{Binding TotalSimTime}" Foreground="White" Margin="1"/>
-                                <TextBlock Text="мс" Foreground="White" Margin="1"/>
-                            </WrapPanel>
-                        </StackPanel>
+                        <ContentControl Grid.Column="1" Grid.Row="1" Content="{Binding SimulationInfo}"/>
                     </Grid>
                 </Grid>
             </Border>

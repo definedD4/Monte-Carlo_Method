@@ -10,5 +10,10 @@
 
         public int X { get; set; }
         public int Y { get; set; }
+
+        public static IntPoint operator +(IntPoint left, IntPoint right)
+        {
+            return new IntPoint(left.X + right.X, left.Y + right.Y);
+        }
     }
 }

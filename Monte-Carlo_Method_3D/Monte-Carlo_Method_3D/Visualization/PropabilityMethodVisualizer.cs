@@ -157,8 +157,8 @@ namespace Monte_Carlo_Method_3D.Visualization
                     for (int j = 0; j < simulator.Height; j++)
                     {
                         double val = simulator[i, j];
-                        drawingContext.DrawText(new FormattedText((val != 0) ? "1/" + Math.Round(1 / val, 1) : "0", 
-                            CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), 0.5, Brushes.White), new Point(i * cellSize, j * cellSize));
+                        drawingContext.DrawText(new FormattedText(Math.Round(val, 5).ToString(), 
+                            CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), 0.5, Brushes.White), new Point(i * cellSize + cellSize * 0.3f, j * cellSize + cellSize * 0.3f));
                     }
                 }
             }

@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace Monte_Carlo_Method_3D.Simulation
 {
-    public class PropabilityMethodSimulator : INotifyPropertyChanged
+    public class PropabilityMethodSimulator
     {
         private double[,] data;
 
@@ -14,6 +14,7 @@ namespace Monte_Carlo_Method_3D.Simulation
         public int Step { get; private set; }
         public IntPoint StartLocation { get; private set; }
         public int TotalSimTime { get; private set; }
+        public SimulationInfo SimulationInfo { get; private set; }
 
         public PropabilityMethodSimulator(int width, int height, IntPoint startLocation)
         {
@@ -24,12 +25,10 @@ namespace Monte_Carlo_Method_3D.Simulation
             data[startLocation.X, startLocation.Y] = 1;
             Step = 0;
             TotalSimTime = 0;
+            SimulationInfo = new SimulationInfo(Step, TotalSimTime, 1, 0, 1);
         }
 
-        public double this[int x, int y]
-        {
-            get { return data[x, y]; }
-        }
+        public double this[int x, int y] => data[x, y];
 
         public void SimulateStep()
         {
@@ -96,64 +95,15 @@ namespace Monte_Carlo_Method_3D.Simulation
             Step++;
             stopwatch.Stop();
             TotalSimTime += stopwatch.Elapsed.Milliseconds;
-            OnPropertyChanged("Step");
-            OnPropertyChanged("TotalSimTime");
 
-            CenterSum = GetCenterSum();
-            EdgeSum = GetEdgeSum();
-            TotalSum = GetTotalSum();
+            SimulationInfo = new SimulationInfo(Step, TotalSimTime, GetCenterSum(), GetEdgeSum(), GetTotalSum());
         }
 
         public void Reset()
         {
             data = new double[Width, Height];
-            CenterSum = 1;
-            EdgeSum = 0;
             TotalSimTime = 0;
             data[StartLocation.X, StartLocation.Y] = 1;
-        }
-
-        private double p_CenterSum = -1;
-        public double CenterSum
-        {
-            get
-            {
-                return p_CenterSum;
-            }
-            private set
-            {
-                p_CenterSum = value;
-                OnPropertyChanged(nameof(CenterSum));
-            }
-        }
-
-
-        private double p_EdgeSum = -1;
-        public double EdgeSum
-        {
-            get
-            {
-                return p_EdgeSum;
-            }
-            private set
-            {
-                p_EdgeSum = value;
-                OnPropertyChanged(nameof(EdgeSum));
-            }
-        }
-
-        private double p_TotalSum = -1;
-        public double TotalSum
-        {
-            get
-            {
-                return p_TotalSum;
-            }
-            private set
-            {
-                p_TotalSum = value;
-                OnPropertyChanged(nameof(TotalSum));
-            }
         }
 
         private double GetCenterSum()
@@ -161,7 +111,7 @@ namespace Monte_Carlo_Method_3D.Simulation
             double centerSum = 0;
             for(int x = 1; x < Width - 1; x++)
             {
-                for (int y = 0; y < Height - 1; y++)
+                for (int y = 1; y < Height - 1; y++)
                 {
                     centerSum += data[x, y];
                 }
@@ -177,7 +127,7 @@ namespace Monte_Carlo_Method_3D.Simulation
                 edgeSum += data[x, 0];
                 edgeSum += data[x, Height - 1];
             }
-            for (int y = 1; y < Width - 1; y++)
+            for (int y = 0; y < Width; y++)
             {
                 edgeSum += data[0, y];
                 edgeSum += data[Width - 1, y];
@@ -198,20 +148,6 @@ namespace Monte_Carlo_Method_3D.Simulation
             return sum;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            if (string.IsNullOrWhiteSpace(propertyName))
-            {
-                throw new ArgumentException("Invalid property name.");
-            }
-
-            PropertyChangedEventHandler temp = PropertyChanged;
-            if (temp != null)
-            {
-                temp(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
+        public double[,] GetData() => data;
     }
 }
