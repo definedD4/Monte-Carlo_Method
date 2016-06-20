@@ -73,6 +73,10 @@
                                 <TextBlock Text="{Binding EdgeSum}" Foreground="White" Margin="1"/>
                             </WrapPanel>
                             <WrapPanel Margin="2">
+                                <TextBlock Text="Общяя сумма:" Foreground="White" Margin="1"/>
+                                <TextBlock Text="{Binding TotalSum}" Foreground="White" Margin="1"/>
+                            </WrapPanel>
+                            <WrapPanel Margin="2">
                                 <TextBlock Text="Полное время симуляции:" Foreground="White" Margin="1"/>
                                 <TextBlock Text="{Binding TotalSimTime}" Foreground="White" Margin="1"/>
                                 <TextBlock Text="мс" Foreground="White" Margin="1"/>

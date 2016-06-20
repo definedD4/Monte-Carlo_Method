@@ -59,34 +59,39 @@ namespace Monte_Carlo_Method_3D.Simulation
                     newData[x, y] = s;
                 }
             }
-            for (int i = 1; i < Width - 1; i++)
+            for (int x = 1; x < Width - 1; x++)
             {
-                newData[i, 0] = data[i, 0] + data[i, 1] / 5;
-                if (i > 1)
-                    newData[i, 0] += data[i - 1, 1] / 20;
-                if (i < Width - 2)
-                    newData[i, 0] += data[i + 1, 1] / 20;
+                newData[x, 0] = data[x, 0] + data[x, 1] / 5;
+                if (x > 1)
+                    newData[x, 0] += data[x - 1, 1] / 20;
+                if (x < Width - 2)
+                    newData[x, 0] += data[x + 1, 1] / 20;
 
-                newData[i, Height - 1] = data[i, Height - 1] + data[i, Height - 2] / 5;
-                if (i > 1)
-                    newData[i, Height - 1] += data[i - 1, Height - 2] / 20;
-                if (i < Width - 2)
-                    newData[i, Height - 1] += data[i + 1, Height - 2] / 20;
+                newData[x, Height - 1] = data[x, Height - 1] + data[x, Height - 2] / 5;
+                if (x > 1)
+                    newData[x, Height - 1] += data[x - 1, Height - 2] / 20;
+                if (x < Width - 2)
+                    newData[x, Height - 1] += data[x + 1, Height - 2] / 20;
             }
-            for (int i = 1; i < Height - 1; i++)
+            for (int y = 1; y < Height - 1; y++)
             {
-                newData[0, i] = data[0, i] + data[1, i] / 5;
-                if (i > 1)
-                    newData[0, i] += data[1, i - 1] / 20;
-                if (i < Width - 2)
-                    newData[0, i] += data[1, i + 1] / 20;
+                newData[0, y] = data[0, y] + data[1, y] / 5; // right
+                if (y > 1)
+                    newData[0, y] += data[1, y - 1] / 20; // upper right
+                if (y < Width - 2)
+                    newData[0, y] += data[1, y + 1] / 20; // lower right
 
-                newData[Width - 1, i] = data[Width - 1, i] + data[Width - 2, i] / 5;
-                if (i > 1)
-                    newData[Width - 1, i] += data[Width - 2, i - 1] / 20;
-                if (i < Width - 2)
-                    newData[Width - 1, i] += data[Width - 2, i + 1] / 20;
+                newData[Width - 1, y] = data[Width - 1, y] + data[Width - 2, y] / 5; // left
+                if (y > 1)
+                    newData[Width - 1, y] += data[Width - 2, y - 1] / 20; // upper left
+                if (y < Width - 2)
+                    newData[Width - 1, y] += data[Width - 2, y + 1] / 20; // lower left
             }
+            newData[0, 0] = data[0, 0] + data[1, 1] / 20;
+            newData[0, Height - 1] = data[0, 0] + data[1, 1] / 20;
+            newData[Width - 1, 0] = data[0, 0] + data[1, 1] / 20;
+            newData[Width - 1, Height - 1] = data[0, 0] + data[1, 1] / 20;
+
             data = newData;
             Step++;
             stopwatch.Stop();
@@ -96,6 +101,7 @@ namespace Monte_Carlo_Method_3D.Simulation
 
             CenterSum = GetCenterSum();
             EdgeSum = GetEdgeSum();
+            TotalSum = GetTotalSum();
         }
 
         public void Reset()
@@ -136,6 +142,20 @@ namespace Monte_Carlo_Method_3D.Simulation
             }
         }
 
+        private double p_TotalSum = -1;
+        public double TotalSum
+        {
+            get
+            {
+                return p_TotalSum;
+            }
+            private set
+            {
+                p_TotalSum = value;
+                OnPropertyChanged(nameof(TotalSum));
+            }
+        }
+
         private double GetCenterSum()
         {
             double centerSum = 0;
@@ -163,6 +183,19 @@ namespace Monte_Carlo_Method_3D.Simulation
                 edgeSum += data[Width - 1, y];
             }
             return edgeSum;
+        }
+
+        private double GetTotalSum()
+        {
+            double sum = 0;
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    sum += data[x, y];
+                }
+            }
+            return sum;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

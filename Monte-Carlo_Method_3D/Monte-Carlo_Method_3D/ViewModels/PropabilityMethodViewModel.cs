@@ -159,6 +159,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
             RegisterPropertyDependency("TotalSimTime", "TotalSimTime");
             RegisterPropertyDependency("EdgeSum", "EdgeSum");
             RegisterPropertyDependency("CenterSum", "CenterSum");
+            RegisterPropertyDependency("TotalSum", "TotalSum");
         }
 
         private void UpdateCommands()
@@ -173,6 +174,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
         public int Step => simulator.Step;
         public double CenterSum => Math.Round(simulator.CenterSum, 9);
         public double EdgeSum => Math.Round(simulator.EdgeSum, 9);
+        public double TotalSum => Math.Round(simulator.TotalSum, 9);
         public int TotalSimTime => simulator.TotalSimTime;
 
         private string p_PlayPauseText;
