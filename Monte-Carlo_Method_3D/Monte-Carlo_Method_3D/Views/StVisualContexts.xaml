@@ -5,38 +5,13 @@
                     xmlns:proj="clr-namespace:Monte_Carlo_Method_3D"
                     xmlns:util="clr-namespace:Monte_Carlo_Method_3D.Util"
                     xmlns:g="clr-namespace:Monte_Carlo_Method_3D.GraphRendering">
-    <DataTemplate DataType="{x:Type g:VisualContext3D}">
-        <Viewport3D x:Name="viewport">
-            <Viewport3D.Camera>
-                <PerspectiveCamera
-                        FarPlaneDistance="1000"
-                        LookDirection="-10,-10,-9"
-                        UpDirection="0,1,0"
-                        NearPlaneDistance="1"
-                        Position="70,50,70"
-                        FieldOfView="70"/>
-            </Viewport3D.Camera>
-            <ModelVisual3D>
-                <ModelVisual3D.Content>
-                    <DirectionalLight
-                            Color="White"
-                            Direction="-2,-3,-1"/>
-                </ModelVisual3D.Content>
-            </ModelVisual3D>
-            <ModelUIElement3D Model="{Binding Model}">
-                <i:Interaction.Behaviors>
-                    <util:Rotation3DBehavior/>
-                </i:Interaction.Behaviors>
-            </ModelUIElement3D>
-        </Viewport3D>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type g:VisualContext2D}">
+    <DataTemplate DataType="{x:Type g:StVisualContext2D}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Image Source="{Binding Texture}">
+            <Image Source="{Binding Texture}" RenderOptions.BitmapScalingMode="NearestNeighbor">
             <i:Interaction.Behaviors>
                 <util:PointedValueBehavior/>
             </i:Interaction.Behaviors>
@@ -47,7 +22,7 @@
             </WrapPanel>
         </Grid>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type g:TableVisualContext}">
+    <!--<DataTemplate DataType="{x:Type g:StTableVisualContext}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -63,5 +38,5 @@
                 <TextBlock Text="{Binding PointedValue}" Foreground="White" FontSize="13" FontWeight="Bold"/>
             </WrapPanel>
         </Grid>
-    </DataTemplate>
+    </DataTemplate>-->
 </ResourceDictionary>

@@ -20,41 +20,45 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private static readonly string str_play = "Воспроизвести";
         private static readonly string str_pause = "Пауза";
 
-        private PropabilityMethodSimulator simulator;
-        private PropabilityMethodVisualizer visualizer;
-        private IPallete pallete;
-        private DispatcherTimer timer;
+        private PropabilityMethodSimulator m_Simulator;
+        private PropabilityMethodVisualizer m_Visualizer;
+        private IPallete m_Pallete;
+        private DispatcherTimer m_Timer;
 
-        public bool SimulationInProgress { get; private set; }
+        private bool p_SimulationInProgress = false;
+        public bool SimulationInProgress
+        {
+            get { return p_SimulationInProgress; }
+            set { p_SimulationInProgress = value; OnPropertyChanged(nameof(SimulationInProgress)); UpdateCommands(); }
+        }
 
         public PropabilityMethodViewModel(IPallete pallete) : base("Метод вероятностей")
         {
-            this.pallete = pallete;
+            m_Pallete = pallete;
 
-            pallete.DrawBlackIfZero = false;
+            m_Pallete.DrawBlackIfZero = false;
             Gauge = new GaugeContext(pallete);
-            pallete.DrawBlackIfZero = true;
+            m_Pallete.DrawBlackIfZero = true;
 
-            //Init simulator
-            simulator = new PropabilityMethodSimulator(5, 5, new IntPoint(2, 2));
+            //Init m_Simulator
+            m_Simulator = new PropabilityMethodSimulator(5, 5, new IntPoint(2, 2));
 
-            //Init visualizer and visual output
-            visualizer = new PropabilityMethodVisualizer(simulator.Width, simulator.Height, pallete) { DrawBorder = false, HeightCoefficient = 50 };
-            visualizer.UpdateModelAndTexture(simulator);
+            //Init m_Visualizer and visual output
+            m_Visualizer = new PropabilityMethodVisualizer(m_Simulator.Width, m_Simulator.Height, pallete) { DrawBorder = false, HeightCoefficient = 50 };
+            m_Visualizer.UpdateModelAndTexture(m_Simulator);
 
             //init visual context
-            VisualContext = new VisualContext2D(simulator, visualizer);
+            VisualContext = new PrVisualContext2D(m_Simulator, m_Visualizer);
 
-            //Init timer
-            timer = new DispatcherTimer(DispatcherPriority.ContextIdle);
-            timer.Interval = new TimeSpan(0, 0, 0, 0, 10);
-            timer.Tick += (s, e) =>
+            //Init m_Timer
+            m_Timer = new DispatcherTimer(DispatcherPriority.ContextIdle) {Interval = TimeSpan.FromMilliseconds(10)};
+            m_Timer.Tick += (s, e) =>
             {
                 if (!SimulationInProgress)
                 {
                     SimulationInProgress = true;
 
-                    simulator.SimulateStep();
+                    m_Simulator.SimulateStep();
                     VisualContext.Update();
 
                     SimulationInProgress = false;
@@ -66,15 +70,13 @@ namespace Monte_Carlo_Method_3D.ViewModels
             c_StepCommand = new DelegateCommand(x =>
             {
                 SimulationInProgress = true;
-                UpdateCommands();
 
-                simulator.SimulateStep();
+                m_Simulator.SimulateStep();
                 VisualContext.Update();
 
                 SimulationInProgress = false;
-                UpdateCommands();
                 OnPropertyChanged(nameof(SimulationInfo));
-            }, x => !(SimulationInProgress || timer.IsEnabled));
+            }, x => !(SimulationInProgress || m_Timer.IsEnabled));
 
 
             PlayPauseText = str_play;
@@ -83,27 +85,27 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 if (PlayPauseText == str_play)
                 {
                     PlayPauseText = str_pause;
-                    timer.Start();
+                    m_Timer.Start();
                     UpdateCommands();
                 }
                 else if (PlayPauseText == str_pause)
                 {
                     PlayPauseText = str_play;
-                    timer.Stop();
+                    m_Timer.Stop();
                     UpdateCommands();
                 }
-            }, x => !(SimulationInProgress && !timer.IsEnabled));
+            }, x => !(SimulationInProgress && !m_Timer.IsEnabled));
 
             c_RestartCommand = new DelegateCommand(x =>
             {
-                simulator.Reset();
+                m_Simulator.Reset();
                 VisualContext.Update();
                 OnPropertyChanged(nameof(SimulationInfo));
-            }, x => !(SimulationInProgress || timer.IsEnabled));
+            }, x => !(SimulationInProgress || m_Timer.IsEnabled));
 
             c_SimulationOptionsCommand = new DelegateCommand(x =>
             {
-                SimulationOptionsDialog dialog = new SimulationOptionsDialog(simulator.Width, simulator.Height, simulator.StartLocation + new IntPoint(1, 1));
+                SimulationOptionsDialog dialog = new SimulationOptionsDialog(m_Simulator.Width, m_Simulator.Height, m_Simulator.StartLocation + new IntPoint(1, 1));
                 dialog.ShowDialog();
 
                 if (dialog.DialogResult.GetValueOrDefault(false))
@@ -112,39 +114,37 @@ namespace Monte_Carlo_Method_3D.ViewModels
                     int height = dialog.HeightSetting;
                     IntPoint startLocation = new IntPoint(dialog.StartXSetting, dialog.StartYSetting);
 
-                    simulator = new PropabilityMethodSimulator(width, height, startLocation);
+                    m_Simulator = new PropabilityMethodSimulator(width, height, startLocation);
 
-                    visualizer = new PropabilityMethodVisualizer(simulator.Width, simulator.Height, pallete) { DrawBorder = false, HeightCoefficient = 25 };
-                    VisualContext.Simulator = simulator;
-                    VisualContext.Visualizer = visualizer;
+                    m_Visualizer = new PropabilityMethodVisualizer(m_Simulator.Width, m_Simulator.Height, pallete) { DrawBorder = false, HeightCoefficient = 25 };
+                    VisualContext.Simulator = m_Simulator;
+                    VisualContext.Visualizer = m_Visualizer;
                     VisualContext.Update();
                     OnPropertyChanged(nameof(SimulationInfo));
                 }
-            }, x => !(SimulationInProgress || timer.IsEnabled));
+            }, x => !(SimulationInProgress || m_Timer.IsEnabled));
 
             c_SimulateToCommand = new DelegateCommand(x =>
             {
                 SimulationInProgress = true;
-                UpdateCommands();
 
-                while (simulator.Step < SimulateToStep)
+                while (m_Simulator.Step < SimulateToStep)
                 {
-                    simulator.SimulateStep();
+                    m_Simulator.SimulateStep();
                 }
 
                 VisualContext.Update();
 
                 SimulationInProgress = false;
-                UpdateCommands();
                 OnPropertyChanged(nameof(SimulationInfo));
-            }, x => !(SimulationInProgress || timer.IsEnabled || SimulateToStep <= 0));
+            }, x => !(SimulationInProgress || m_Timer.IsEnabled || SimulateToStep <= 0));
 
             c_ExportToCsvCommand = new DelegateCommand(x =>
             {
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
                 if (saveFileDialog.ShowDialog(Application.Current.MainWindow).GetValueOrDefault())
                 {
-                    new CsvExporter(';').ExportToFile(simulator.GetData(), saveFileDialog.FileName);
+                    new CsvExporter(';').ExportToFile(m_Simulator.GetData(), saveFileDialog.FileName);
                 }
             });
 
@@ -152,17 +152,17 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
             VisualTypeSelector.SelectionChanged += (s, e) =>
             {
-                if(VisualTypeSelector.SelectedValue == "2D" && !(VisualContext is VisualContext2D))
+                if(VisualTypeSelector.SelectedValue == "2D" && !(VisualContext is PrVisualContext2D))
                 {
-                    VisualContext = new VisualContext2D(simulator, visualizer);
+                    VisualContext = new PrVisualContext2D(m_Simulator, m_Visualizer);
                 }
-                else if(VisualTypeSelector.SelectedValue == "3D" && !(VisualContext is VisualContext3D))
+                else if(VisualTypeSelector.SelectedValue == "3D" && !(VisualContext is PrVisualContext3D))
                 {
-                    VisualContext = new VisualContext3D(simulator, visualizer);
+                    VisualContext = new PrVisualContext3D(m_Simulator, m_Visualizer);
                 }
-                else if (VisualTypeSelector.SelectedValue == "Table" && !(VisualContext is TableVisualContext))
+                else if (VisualTypeSelector.SelectedValue == "Table" && !(VisualContext is PrTableVisualContext))
                 {
-                    VisualContext = new TableVisualContext(simulator, visualizer);
+                    VisualContext = new PrTableVisualContext(m_Simulator, m_Visualizer);
                 }
                 VisualContext.Update();
             };
@@ -180,7 +180,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
             c_ExportToCsvCommand.RaiseCanExecuteChanged();
         }
 
-        public SimulationInfo SimulationInfo => simulator.SimulationInfo;
+        public SimulationInfo SimulationInfo => m_Simulator.SimulationInfo;
 
         private string p_PlayPauseText;
         public string PlayPauseText
@@ -188,10 +188,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
             get { return p_PlayPauseText; }
             set
             {
-                if (p_PlayPauseText != value)
-                {
-                    p_PlayPauseText = value; OnPropertyChanged("PlayPauseText");
-                }
+                p_PlayPauseText = value; OnPropertyChanged("PlayPauseText");
             }
         }
 
@@ -230,8 +227,8 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         public SelectorCommand VisualTypeSelector { get; private set; }
 
-        private VisualContext p_VisualContext;
-        public VisualContext VisualContext
+        private PrVisualContext p_VisualContext;
+        public PrVisualContext VisualContext
         {
             get { return p_VisualContext; }
             set

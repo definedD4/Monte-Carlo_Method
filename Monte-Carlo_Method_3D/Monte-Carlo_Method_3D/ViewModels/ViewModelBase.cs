@@ -9,7 +9,6 @@ namespace Monte_Carlo_Method_3D.ViewModels
 {
     public abstract class ViewModelBase : INotifyPropertyChanged
     {
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string propertyName)

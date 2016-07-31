@@ -8,9 +8,9 @@ using Monte_Carlo_Method_3D.Visualization;
 
 namespace Monte_Carlo_Method_3D.GraphRendering
 {
-    public abstract class GridVisualContext : VisualContext
+    public abstract class StGridVisualContext : StVisualContext
     {
-        public GridVisualContext(PropabilityMethodSimulator simulator, PropabilityMethodVisualizer visualizer) : base(simulator, visualizer)
+        public StGridVisualContext(StatMethodSimulator simulator, StatMethodVisualizer visualizer) : base(simulator, visualizer)
         {
 
         }

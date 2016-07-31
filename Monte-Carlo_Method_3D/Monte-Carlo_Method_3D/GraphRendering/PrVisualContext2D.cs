@@ -8,9 +8,9 @@ using System.Windows.Media;
 
 namespace Monte_Carlo_Method_3D.GraphRendering
 {
-    public class VisualContext2D : GridVisualContext
+    public class PrVisualContext2D : PrGridVisualContext
     {
-        public VisualContext2D(PropabilityMethodSimulator simulator, PropabilityMethodVisualizer visualizer) : base(simulator, visualizer)
+        public PrVisualContext2D(PropabilityMethodSimulator simulator, PropabilityMethodVisualizer visualizer) : base(simulator, visualizer)
         {
 
         }

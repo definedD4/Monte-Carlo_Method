@@ -11,13 +11,13 @@ namespace Monte_Carlo_Method_3D.Visualization
 {
     public class PropabilityMethodVisualizer
     {
-        private IPallete pallete;
+        private IPallete m_Pallete;
 
         public PropabilityMethodVisualizer(int width, int height, IPallete pallete)
         {
             Width = width;
             Height = height;
-            this.pallete = pallete;
+            m_Pallete = pallete;
             mesh = GenerateMesh(Width, Height);
             Brush brush = new ImageBrush(Texture);
             Material material = new DiffuseMaterial(brush);
@@ -128,7 +128,7 @@ namespace Monte_Carlo_Method_3D.Visualization
                             }
                             else
                             {
-                                color = pallete.GetColor(simulator[x, y]);
+                                color = m_Pallete.GetColor(simulator[x, y]);
                             }
 
                             int index = (y * cellSize + _y) * stride + (x * cellSize + _x) * bytesPerPixel;

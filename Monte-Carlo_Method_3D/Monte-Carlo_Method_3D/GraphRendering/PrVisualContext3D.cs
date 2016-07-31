@@ -8,9 +8,9 @@ using System.Windows.Media.Media3D;
 
 namespace Monte_Carlo_Method_3D.GraphRendering
 {
-    public class VisualContext3D : VisualContext
+    public class PrVisualContext3D : PrVisualContext
     {
-        public VisualContext3D(PropabilityMethodSimulator simulator, PropabilityMethodVisualizer visualizer) : base(simulator, visualizer)
+        public PrVisualContext3D(PropabilityMethodSimulator simulator, PropabilityMethodVisualizer visualizer) : base(simulator, visualizer)
         {
 
         }

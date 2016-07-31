@@ -5,12 +5,12 @@ using System.ComponentModel;
 
 namespace Monte_Carlo_Method_3D.GraphRendering
 {
-    public abstract class VisualContext : INotifyPropertyChanged
+    public abstract class PrVisualContext : INotifyPropertyChanged
     {
         public PropabilityMethodSimulator Simulator { get; set; }
         public PropabilityMethodVisualizer Visualizer { get; set; }
         
-        public VisualContext(PropabilityMethodSimulator simulator, PropabilityMethodVisualizer visualizer)
+        public PrVisualContext(PropabilityMethodSimulator simulator, PropabilityMethodVisualizer visualizer)
         {
             Simulator = simulator;
             Visualizer = visualizer;

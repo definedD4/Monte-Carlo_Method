@@ -63,17 +63,22 @@
       <DependentUpon>SimulationOptionsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Gauge\GaugeContext.cs" />
-    <Compile Include="GraphRendering\GridVisualContext.cs" />
-    <Compile Include="GraphRendering\TableVisualContext.cs" />
+    <Compile Include="GraphRendering\PrGridVisualContext.cs" />
+    <Compile Include="GraphRendering\PrTableVisualContext.cs" />
+    <Compile Include="GraphRendering\StGridVisualContext.cs" />
+    <Compile Include="GraphRendering\StVisualContext.cs" />
+    <Compile Include="GraphRendering\StVisualContext2D.cs" />
     <Compile Include="Simulation\SimulationInfo.cs" />
+    <Compile Include="Simulation\StatMethodSimulator.cs" />
     <Compile Include="Util\CsvExporter.cs" />
     <Compile Include="Util\DelegateCommand.cs" />
+    <Compile Include="Util\EdgeData.cs" />
     <Compile Include="Util\PointedValueBehavior.cs" />
     <Compile Include="Util\Rotation3DBehavior.cs" />
     <Compile Include="ViewModels\ComparisonViewModel.cs" />
     <Compile Include="ViewModels\PropabilityMethodViewModel.cs" />
+    <Compile Include="ViewModels\StatMethodViewModel.cs" />
     <Compile Include="ViewModels\TabViewModel.cs" />
-    <Compile Include="ViewModels\TestsMethodViewModel.cs" />
     <Compile Include="Visualization\PropabilityMethodVisualizer.cs" />
     <Compile Include="Util\IntPoint.cs" />
     <Compile Include="Util\SelectorCommand.cs" />
@@ -82,16 +87,17 @@
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GraphRendering\VisualContext.cs" />
+    <Compile Include="GraphRendering\PrVisualContext.cs" />
     <Compile Include="Simulation\PropabilityMethodSimulator.cs" />
-    <Compile Include="GraphRendering\VisualContext2D.cs" />
-    <Compile Include="GraphRendering\VisualContext3D.cs" />
+    <Compile Include="GraphRendering\PrVisualContext2D.cs" />
+    <Compile Include="GraphRendering\PrVisualContext3D.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Visualization\HSVPallete.cs" />
     <Compile Include="Visualization\IPallete.cs" />
+    <Compile Include="Visualization\StatMethodVisualizer.cs" />
     <Page Include="Dialogs\SimulationOptionsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -104,6 +110,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\StVisualContexts.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\StatMethodView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\PropabilityMethodView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -112,7 +126,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\VisualContexts.xaml">
+    <Page Include="Views\PrVisualContexts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

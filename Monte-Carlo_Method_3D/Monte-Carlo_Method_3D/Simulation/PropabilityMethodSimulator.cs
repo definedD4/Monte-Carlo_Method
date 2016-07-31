@@ -9,10 +9,10 @@ namespace Monte_Carlo_Method_3D.Simulation
     {
         private double[,] data;
 
-        public int Width { get; private set; }
-        public int Height { get; private set; }
+        public int Width { get; }
+        public int Height { get; }
+        public IntPoint StartLocation { get; }
         public int Step { get; private set; }
-        public IntPoint StartLocation { get; private set; }
         public int TotalSimTime { get; private set; }
         public SimulationInfo SimulationInfo { get; private set; }
 

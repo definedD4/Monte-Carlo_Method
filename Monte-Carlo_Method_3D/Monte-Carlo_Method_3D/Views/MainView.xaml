@@ -9,8 +9,10 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="VisualContexts.xaml"/>
+                <ResourceDictionary Source="PrVisualContexts.xaml"/>
+                <ResourceDictionary Source="StVisualContexts.xaml"/>
                 <ResourceDictionary Source="PropabilityMethodView.xaml"/>
+                <ResourceDictionary Source="StatMethodView.xaml"/>
                 <ResourceDictionary Source="Gauge.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
