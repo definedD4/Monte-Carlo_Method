@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace Monte_Carlo_Method_3D.Simulation
 {
-    public class PropabilityMethodSimulator
+    public class PrSimulator
     {
         private double[,] data;
 
@@ -16,7 +16,7 @@ namespace Monte_Carlo_Method_3D.Simulation
         public int TotalSimTime { get; private set; }
         public SimulationInfo SimulationInfo { get; private set; }
 
-        public PropabilityMethodSimulator(int width, int height, IntPoint startLocation)
+        public PrSimulator(int width, int height, IntPoint startLocation)
         {
             Width = width;
             Height = height;

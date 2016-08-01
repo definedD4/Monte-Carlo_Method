@@ -21,7 +21,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
             pallete = new HSVPallete();
 
-            PropabilityMethodViewModel propabilityMethodViewModel = new PropabilityMethodViewModel(pallete);
+            PrMethodViewModel propabilityMethodViewModel = new PrMethodViewModel(pallete);
 
             propabilityMethodViewModel.PropertyChanged += (s, e) =>
             {

@@ -9,65 +9,47 @@ using System.Windows.Media.Media3D;
 
 namespace Monte_Carlo_Method_3D.Visualization
 {
-    public class PropabilityMethodVisualizer
+    public class PrVisualizer
     {
-        private IPallete m_Pallete;
+        private readonly IPallete m_Pallete;
+        private readonly PrSimulator m_Simulator;
+        private MeshGeometry3D m_Mesh;
 
-        public PropabilityMethodVisualizer(int width, int height, IPallete pallete)
+        public PrVisualizer(PrSimulator simulator, IPallete pallete)
         {
-            Width = width;
-            Height = height;
+            m_Simulator = simulator;
             m_Pallete = pallete;
-            mesh = GenerateMesh(Width, Height);
-            Brush brush = new ImageBrush(Texture);
-            Material material = new DiffuseMaterial(brush);
-            Model = new GeometryModel3D(mesh, material);
+
+            m_Mesh = GenerateMesh(Width, Height);     
         }
 
-        public int Width { get; private set; }
-        public int Height { get; private set; }
+        public int Width => m_Simulator.Width;
+        public int Height => m_Simulator.Height;
         public int PixelsPerCell { get; set; } = 3;
         public int ImageWidth => Width * PixelsPerCell;
         public int ImageHeight => Height * PixelsPerCell;
 
-        private MeshGeometry3D mesh;
-
-        public GeometryModel3D Model { get; private set; }
-        public ImageSource Texture { get; private set; }
-        public ImageSource TableTexture { get; private set; }
-
         public double HeightCoefficient { get; set; }
         public bool DrawBorder { get; set; }
 
-        public void UpdateModelAndTexture(PropabilityMethodSimulator simulator)
+        public GeometryModel3D GenerateModel()
         {
-            UpdateTexture(simulator);
-            Model.Material = new DiffuseMaterial(new ImageBrush(Texture));
+            GeometryModel3D model = new GeometryModel3D(m_Mesh, new DiffuseMaterial(new ImageBrush(GenerateColorTexture())));
 
-            Stopwatch s = Stopwatch.StartNew();
-            double offsetX = -(double)simulator.Width / 2;
-            double offsetY = -(double)simulator.Height / 2;
+            double offsetX = -(double)m_Simulator.Width / 2;
+            double offsetY = -(double)m_Simulator.Height / 2;
 
-            Point3DCollection points = mesh.Positions;
+            Point3DCollection points = m_Mesh.Positions;
             for(int i = 0; i < points.Count; i++)
             {
                 Point3D p = points[i];
                 int x = (int)(p.X - offsetX);
                 int y = (int)(p.Z - offsetY);
-                p.Y = Math.Sqrt(Math.Sqrt(simulator[x, y])) * HeightCoefficient;
+                p.Y = Math.Sqrt(Math.Sqrt(m_Simulator[x, y])) * HeightCoefficient;
                 points[i] = p;
             }
-            s.Stop();
-        }
 
-        public void UpdateTexture(PropabilityMethodSimulator simulator)
-        {
-            Texture = GenerateTexture(simulator);
-        }
-
-        public void UpdateTableTexture(PropabilityMethodSimulator simulator)
-        {
-            TableTexture = GenerateTableTexture(simulator);
+            return model;
         }
 
         private MeshGeometry3D GenerateMesh(int width, int height)
@@ -102,19 +84,19 @@ namespace Monte_Carlo_Method_3D.Visualization
             return mesh;
         }
 
-        private ImageSource GenerateTexture(PropabilityMethodSimulator simulator)
+        public ImageSource GenerateColorTexture()
         {
             int cellSize = PixelsPerCell;
             int bytesPerPixel = 3;
             int dpi = 96;
-            int width = simulator.Width * cellSize;
-            int height = simulator.Height * cellSize;
+            int width = m_Simulator.Width * cellSize;
+            int height = m_Simulator.Height * cellSize;
             int stride = width * bytesPerPixel;
             byte[] bytes = new byte[height * stride];
 
-            for (int x = 0; x < simulator.Width; x++)
+            for (int x = 0; x < m_Simulator.Width; x++)
             {
-                for (int y = 0; y < simulator.Height; y++)
+                for (int y = 0; y < m_Simulator.Height; y++)
                 {
                     for (int _x = 0; _x < cellSize; _x++)
                     {
@@ -128,7 +110,7 @@ namespace Monte_Carlo_Method_3D.Visualization
                             }
                             else
                             {
-                                color = m_Pallete.GetColor(simulator[x, y]);
+                                color = m_Pallete.GetColor(m_Simulator[x, y]);
                             }
 
                             int index = (y * cellSize + _y) * stride + (x * cellSize + _x) * bytesPerPixel;
@@ -143,22 +125,20 @@ namespace Monte_Carlo_Method_3D.Visualization
             return result;
         }
 
-        private ImageSource GenerateTableTexture(PropabilityMethodSimulator simulator)
+        public ImageSource GenerateTableTexture()
         {
-            int cellSize = PixelsPerCell;
-            int width = simulator.Width * cellSize;
-            int height = simulator.Height * cellSize;
             var visual = new DrawingVisual();
             using (DrawingContext drawingContext = visual.RenderOpen())
             {
-                drawingContext.DrawRectangle(Brushes.Black, null, new Rect(new Size(width, height)));
-                for (int i = 0; i < simulator.Width; i++)
+                drawingContext.DrawRectangle(Brushes.Black, null, new Rect(new Size(ImageWidth, ImageHeight)));
+                for (int i = 0; i < m_Simulator.Width; i++)
                 {
-                    for (int j = 0; j < simulator.Height; j++)
+                    for (int j = 0; j < m_Simulator.Height; j++)
                     {
-                        double val = simulator[i, j];
+                        double val = m_Simulator[i, j];
                         drawingContext.DrawText(new FormattedText(Math.Round(val, 5).ToString(), 
-                            CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), 0.5, Brushes.White), new Point(i * cellSize + cellSize * 0.3f, j * cellSize + cellSize * 0.3f));
+                            CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), 0.5, Brushes.White),
+                            new Point(i * PixelsPerCell + PixelsPerCell * 0.3f, j * PixelsPerCell + PixelsPerCell * 0.3f));
                     }
                 }
             }

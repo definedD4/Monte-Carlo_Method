@@ -15,39 +15,39 @@ using Microsoft.Win32;
 
 namespace Monte_Carlo_Method_3D.ViewModels
 {
-    public class PropabilityMethodViewModel : TabViewModel
+    public class PrMethodViewModel : TabViewModel
     {
-        private PropabilityMethodSimulator m_Simulator;
-        private PropabilityMethodVisualizer m_Visualizer;
+        private PrSimulator m_Simulator;
+        private PrVisualizer m_Visualizer;
         private IPallete m_Pallete;
         private DispatcherTimer m_Timer;
+        private PrVisualContext m_VisualContext;
 
-        private bool p_SimulationInProgress = false;
+        private bool m_SimulationInProgress = false;
+        private int m_SimulateToStep;
+
         public bool SimulationInProgress
         {
-            get { return p_SimulationInProgress; }
-            set { p_SimulationInProgress = value; OnPropertyChanged(nameof(SimulationInProgress)); UpdateCommands(); }
+            get { return m_SimulationInProgress; }
+            set { m_SimulationInProgress = value; OnPropertyChanged(nameof(SimulationInProgress)); UpdateCommands(); }
         }
 
-        public PropabilityMethodViewModel(IPallete pallete) : base("Метод вероятностей")
+        public PrMethodViewModel(IPallete pallete) : base("Метод вероятностей")
         {
             m_Pallete = pallete;
 
-            m_Pallete.DrawBlackIfZero = false;
             Gauge = new GaugeContext(pallete);
-            m_Pallete.DrawBlackIfZero = true;
 
             //Init m_Simulator
-            m_Simulator = new PropabilityMethodSimulator(5, 5, new IntPoint(2, 2));
+            m_Simulator = new PrSimulator(5, 5, new IntPoint(2, 2));
 
             //Init m_Visualizer and visual output
-            m_Visualizer = new PropabilityMethodVisualizer(m_Simulator.Width, m_Simulator.Height, pallete) { DrawBorder = false, HeightCoefficient = 50 };
-            m_Visualizer.UpdateModelAndTexture(m_Simulator);
+            m_Visualizer = new PrVisualizer(m_Simulator, pallete) { DrawBorder = false, HeightCoefficient = 50 };
 
             //init visual context
             VisualContext = new PrVisualContext2D(m_Simulator, m_Visualizer);
 
-            //Init m_Timer
+            //Init timer
             m_Timer = new DispatcherTimer(DispatcherPriority.ContextIdle) {Interval = TimeSpan.FromMilliseconds(10)};
             m_Timer.Tick += (s, e) =>
             {
@@ -106,11 +106,10 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 {
                     int width = dialog.WidthSetting;
                     int height = dialog.HeightSetting;
-                    IntPoint startLocation = new IntPoint(dialog.StartXSetting, dialog.StartYSetting);
+                    IntPoint startLocation = new IntPoint(dialog.StartXSetting - 1, dialog.StartYSetting - 1);
 
-                    m_Simulator = new PropabilityMethodSimulator(width, height, startLocation);
-
-                    m_Visualizer = new PropabilityMethodVisualizer(m_Simulator.Width, m_Simulator.Height, pallete) { DrawBorder = false, HeightCoefficient = 25 };
+                    m_Simulator = new PrSimulator(width, height, startLocation);
+                    m_Visualizer = new PrVisualizer(m_Simulator, pallete) { DrawBorder = false, HeightCoefficient = 25 };
                     VisualContext.Simulator = m_Simulator;
                     VisualContext.Visualizer = m_Visualizer;
                     VisualContext.Update();
@@ -194,15 +193,14 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private DelegateCommand c_ExportToCsvCommand;
         public ICommand ExportToCsvCommand => c_ExportToCsvCommand;
 
-        private int p_SimulateToStep;
         public int SimulateToStep
         {
-            get { return p_SimulateToStep; }
+            get { return m_SimulateToStep; }
             set
             {
-                if (p_SimulateToStep != value)
+                if (m_SimulateToStep != value)
                 {
-                    p_SimulateToStep = value; OnPropertyChanged("SimuateToStep");
+                    m_SimulateToStep = value; OnPropertyChanged("SimuateToStep");
                     c_SimulateToCommand.RaiseCanExecuteChanged();
                 }
             }
@@ -211,15 +209,14 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         public SelectorCommand VisualTypeSelector { get; private set; }
 
-        private PrVisualContext p_VisualContext;
         public PrVisualContext VisualContext
         {
-            get { return p_VisualContext; }
+            get { return m_VisualContext; }
             set
             {
-                if (p_VisualContext != value)
+                if (m_VisualContext != value)
                 {
-                    p_VisualContext = value; OnPropertyChanged("VisualContext");
+                    m_VisualContext = value; OnPropertyChanged("VisualContext");
                 }
             }
         }

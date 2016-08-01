@@ -10,17 +10,22 @@ namespace Monte_Carlo_Method_3D.GraphRendering
 {
     public class PrVisualContext3D : PrVisualContext
     {
-        public PrVisualContext3D(PropabilityMethodSimulator simulator, PropabilityMethodVisualizer visualizer) : base(simulator, visualizer)
+        private GeometryModel3D m_Model;
+
+        public PrVisualContext3D(PrSimulator simulator, PrVisualizer visualizer) : base(simulator, visualizer)
         {
 
         }
 
-        public GeometryModel3D Model => Visualizer.Model;
+        public GeometryModel3D Model
+        {
+            get { return m_Model; }
+            set { m_Model = value; OnPropertyChanged(nameof(Model)); }
+        }
 
         public override void Update()
         {
-            base.Update();
-            Visualizer.UpdateModelAndTexture(Simulator);
+            Model = Visualizer.GenerateModel();
             OnPropertyChanged("Model");
         }
 

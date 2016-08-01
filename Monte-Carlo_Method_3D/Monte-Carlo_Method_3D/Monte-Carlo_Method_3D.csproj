@@ -77,10 +77,10 @@
     <Compile Include="Util\Rotation3DBehavior.cs" />
     <Compile Include="Util\SwitchStateCommand.cs" />
     <Compile Include="ViewModels\ComparisonViewModel.cs" />
-    <Compile Include="ViewModels\PropabilityMethodViewModel.cs" />
+    <Compile Include="ViewModels\PrMethodViewModel.cs" />
     <Compile Include="ViewModels\StatMethodViewModel.cs" />
     <Compile Include="ViewModels\TabViewModel.cs" />
-    <Compile Include="Visualization\PropabilityMethodVisualizer.cs" />
+    <Compile Include="Visualization\PrVisualizer.cs" />
     <Compile Include="Util\IntPoint.cs" />
     <Compile Include="Util\SelectorCommand.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -89,7 +89,7 @@
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="GraphRendering\PrVisualContext.cs" />
-    <Compile Include="Simulation\PropabilityMethodSimulator.cs" />
+    <Compile Include="Simulation\PrSimulator.cs" />
     <Compile Include="GraphRendering\PrVisualContext2D.cs" />
     <Compile Include="GraphRendering\PrVisualContext3D.cs" />
     <Compile Include="App.xaml.cs">

@@ -11,17 +11,22 @@ namespace Monte_Carlo_Method_3D.GraphRendering
 {
     public class PrTableVisualContext : PrGridVisualContext
     {
-        public PrTableVisualContext(PropabilityMethodSimulator simulator, PropabilityMethodVisualizer visualizer) : base(simulator, visualizer)
+        private ImageSource m_Texture;
+
+        public PrTableVisualContext(PrSimulator simulator, PrVisualizer visualizer) : base(simulator, visualizer)
         {
 
         }
 
-        public ImageSource Texture => Visualizer.TableTexture;
+        public ImageSource Texture
+        {
+            get { return m_Texture; }
+            private set { m_Texture = value; OnPropertyChanged(nameof(Texture)); }
+        }
 
         public override void Update()
         {
-            base.Update();
-            Visualizer.UpdateTableTexture(Simulator);
+            Texture = Visualizer.GenerateTableTexture();
             OnPropertyChanged("Texture");
         }
     }

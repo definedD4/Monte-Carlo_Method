@@ -7,19 +7,16 @@ namespace Monte_Carlo_Method_3D.GraphRendering
 {
     public abstract class PrVisualContext : INotifyPropertyChanged
     {
-        public PropabilityMethodSimulator Simulator { get; set; }
-        public PropabilityMethodVisualizer Visualizer { get; set; }
+        public PrSimulator Simulator { get; set; }
+        public PrVisualizer Visualizer { get; set; }
         
-        public PrVisualContext(PropabilityMethodSimulator simulator, PropabilityMethodVisualizer visualizer)
+        public PrVisualContext(PrSimulator simulator, PrVisualizer visualizer)
         {
             Simulator = simulator;
             Visualizer = visualizer;
         }
 
-        public virtual void Update()
-        {
-
-        }
+        public abstract void Update();
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -10,16 +10,17 @@ namespace Monte_Carlo_Method_3D.GraphRendering
 {
     public abstract class PrGridVisualContext : PrVisualContext
     {
-        public PrGridVisualContext(PropabilityMethodSimulator simulator, PropabilityMethodVisualizer visualizer) : base(simulator, visualizer)
+        private double m_PointedValue;
+
+        public PrGridVisualContext(PrSimulator simulator, PrVisualizer visualizer) : base(simulator, visualizer)
         {
 
         }
 
-        private double p_PointedValue;
         public double PointedValue
         {
-            get { return p_PointedValue; }
-            set { p_PointedValue = Math.Round(value, 8); OnPropertyChanged("PointedValue"); }
+            get { return m_PointedValue; }
+            set { m_PointedValue = Math.Round(value, 8); OnPropertyChanged("PointedValue"); }
         }
 
         public double GetValueAtImageCoordinates(Point position, Size controlSize)
