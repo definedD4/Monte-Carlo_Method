@@ -75,6 +75,7 @@
     <Compile Include="Util\EdgeData.cs" />
     <Compile Include="Util\PointedValueBehavior.cs" />
     <Compile Include="Util\Rotation3DBehavior.cs" />
+    <Compile Include="Util\SwitchStateCommand.cs" />
     <Compile Include="ViewModels\ComparisonViewModel.cs" />
     <Compile Include="ViewModels\PropabilityMethodViewModel.cs" />
     <Compile Include="ViewModels\StatMethodViewModel.cs" />

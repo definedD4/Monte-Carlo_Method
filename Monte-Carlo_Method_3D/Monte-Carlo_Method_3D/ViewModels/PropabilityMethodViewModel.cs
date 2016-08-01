@@ -17,9 +17,6 @@ namespace Monte_Carlo_Method_3D.ViewModels
 {
     public class PropabilityMethodViewModel : TabViewModel
     {
-        private static readonly string str_play = "Воспроизвести";
-        private static readonly string str_pause = "Пауза";
-
         private PropabilityMethodSimulator m_Simulator;
         private PropabilityMethodVisualizer m_Visualizer;
         private IPallete m_Pallete;
@@ -78,23 +75,20 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 OnPropertyChanged(nameof(SimulationInfo));
             }, x => !(SimulationInProgress || m_Timer.IsEnabled));
 
-
-            PlayPauseText = str_play;
-            c_PlayPauseCommand = new DelegateCommand(x =>
+            c_PlayPauseCommand = new SwitchStateCommand("Пауза", "Воспроизвести", false, _ => !(SimulationInProgress && !m_Timer.IsEnabled));
+            c_PlayPauseCommand.StateChanged += (s, e) =>
             {
-                if (PlayPauseText == str_play)
+                if (c_PlayPauseCommand.State)
                 {
-                    PlayPauseText = str_pause;
                     m_Timer.Start();
                     UpdateCommands();
                 }
-                else if (PlayPauseText == str_pause)
+                else
                 {
-                    PlayPauseText = str_play;
                     m_Timer.Stop();
                     UpdateCommands();
                 }
-            }, x => !(SimulationInProgress && !m_Timer.IsEnabled));
+            };
 
             c_RestartCommand = new DelegateCommand(x =>
             {
@@ -182,17 +176,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         public SimulationInfo SimulationInfo => m_Simulator.SimulationInfo;
 
-        private string p_PlayPauseText;
-        public string PlayPauseText
-        {
-            get { return p_PlayPauseText; }
-            set
-            {
-                p_PlayPauseText = value; OnPropertyChanged("PlayPauseText");
-            }
-        }
-
-        private DelegateCommand c_PlayPauseCommand;
+        private SwitchStateCommand c_PlayPauseCommand;
         public ICommand PlayPauseCommand => c_PlayPauseCommand;
 
         private DelegateCommand c_StepCommand;

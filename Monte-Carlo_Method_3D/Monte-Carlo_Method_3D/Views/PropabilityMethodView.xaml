@@ -18,7 +18,7 @@
             </Grid.RowDefinitions>
             <ToolBar Grid.Row="0">
                 <Button Content="Перезапуск" Command="{Binding RestartCommand}"/>
-                <Button Content="{Binding PlayPauseText}" Command="{Binding PlayPauseCommand}"/>
+                <Button DataContext="{Binding PlayPauseCommand}" Content="{Binding Label}" Command="{Binding }"/>
                 <Button Content="Следующий шаг" Command="{Binding StepCommand}"/>
                 <Button Content="Симулировать до: " Command="{Binding SimulateToCommand}"/>
                 <TextBox Text="{Binding SimulateToStep, UpdateSourceTrigger=PropertyChanged}"/>
