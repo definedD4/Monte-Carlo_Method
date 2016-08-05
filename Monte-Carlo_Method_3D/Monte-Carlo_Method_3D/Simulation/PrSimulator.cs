@@ -12,9 +12,10 @@ namespace Monte_Carlo_Method_3D.Simulation
         public int Width { get; }
         public int Height { get; }
         public IntPoint StartLocation { get; }
-        public int Step { get; private set; }
-        public int TotalSimTime { get; private set; }
-        public SimulationInfo SimulationInfo { get; private set; }
+        public long Step { get; private set; }
+        public double TotalSimTime { get; private set; }
+
+        public PrSimulationInfo SimulationInfo { get; private set; }
 
         public PrSimulator(int width, int height, IntPoint startLocation)
         {
@@ -25,7 +26,7 @@ namespace Monte_Carlo_Method_3D.Simulation
             data[startLocation.X, startLocation.Y] = 1;
             Step = 0;
             TotalSimTime = 0;
-            SimulationInfo = new SimulationInfo(Step, TotalSimTime, 1, 0, 1);
+            SimulationInfo = new PrSimulationInfo(Step, TotalSimTime, 1, 0, 1);
         }
 
         public double this[int x, int y] => data[x, y];
@@ -34,7 +35,7 @@ namespace Monte_Carlo_Method_3D.Simulation
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
             double[,] newData = new double[Width, Height];
-            for (int x = 1; x < Width - 1; x++)
+            /*for (int x = 1; x < Width - 1; x++)
             {
                 for (int y = 1; y < Height - 1; y++)
                 {
@@ -89,19 +90,47 @@ namespace Monte_Carlo_Method_3D.Simulation
             newData[0, 0] = data[0, 0] + data[1, 1] / 20;
             newData[0, Height - 1] = data[0, 0] + data[1, 1] / 20;
             newData[Width - 1, 0] = data[0, 0] + data[1, 1] / 20;
-            newData[Width - 1, Height - 1] = data[0, 0] + data[1, 1] / 20;
+            newData[Width - 1, Height - 1] = data[0, 0] + data[1, 1] / 20;*/
+
+            for(int x = 1; x < Width - 1; x++)
+            {
+                for(int y = 1; y < Height - 1; y++)
+                {
+                    newData[x + 1, y    ] += data[x, y] / 5;
+                    newData[x + 1, y + 1] += data[x, y] / 20;
+                    newData[x    , y + 1] += data[x, y] / 5;
+                    newData[x - 1, y + 1] += data[x, y] / 20;
+                    newData[x - 1, y    ] += data[x, y] / 5;
+                    newData[x - 1, y - 1] += data[x, y] / 20;
+                    newData[x    , y - 1] += data[x, y] / 5;
+                    newData[x + 1, y - 1] += data[x, y] / 20;
+                }
+            }
+
+            for(int x = 0; x < Width; x++)
+            {
+                newData[x, 0] += data[x, 0];
+                newData[x, Height - 1] += data[x, Height - 1];
+            }
+
+            for(int y = 1; y < Height - 1; y++)
+            {
+                newData[0, y] += data[0, y];
+                newData[Width - 1, y] += data[Width - 1, y];
+            }
 
             data = newData;
             Step++;
             stopwatch.Stop();
-            TotalSimTime += stopwatch.Elapsed.Milliseconds;
+            TotalSimTime += stopwatch.Elapsed.TotalMilliseconds;
 
-            SimulationInfo = new SimulationInfo(Step, TotalSimTime, GetCenterSum(), GetEdgeSum(), GetTotalSum());
+            SimulationInfo = new PrSimulationInfo(Step, TotalSimTime, GetCenterSum(), GetEdgeSum(), GetTotalSum());
         }
 
         public void Reset()
         {
             data = new double[Width, Height];
+            Step = 0;
             TotalSimTime = 0;
             data[StartLocation.X, StartLocation.Y] = 1;
         }

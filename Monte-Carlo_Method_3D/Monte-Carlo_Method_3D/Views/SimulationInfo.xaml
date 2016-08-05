@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Monte_Carlo_Method_3D.Views"
                     xmlns:sim="clr-namespace:Monte_Carlo_Method_3D.Simulation">
-    <DataTemplate DataType="{x:Type sim:SimulationInfo}">
+    <DataTemplate DataType="{x:Type sim:PrSimulationInfo}">
         <StackPanel Margin="4" Grid.Row="1" Background="#FF00366C">
             <WrapPanel Margin="2">
                 <TextBlock Text="Шаг:" Foreground="White" Margin="1"/>
@@ -10,20 +10,33 @@
             </WrapPanel>
             <WrapPanel Margin="2">
                 <TextBlock Text="Сумма в центре:" Foreground="White" Margin="1"/>
-                <TextBlock Text="{Binding CenterSum}" Foreground="White" Margin="1"/>
+                <TextBlock Text="{Binding CenterSum, StringFormat={}{0:E10}}" Foreground="White" Margin="1"/>
             </WrapPanel>
             <WrapPanel Margin="2">
                 <TextBlock Text="Сумма на границе:" Foreground="White" Margin="1"/>
-                <TextBlock Text="{Binding EdgeSum}" Foreground="White" Margin="1"/>
+                <TextBlock Text="{Binding EdgeSum, StringFormat={}{0:E10}}" Foreground="White" Margin="1"/>
             </WrapPanel>
-            <WrapPanel Margin="2">
+            <!--<WrapPanel Margin="2">
                 <TextBlock Text="Общяя сумма:" Foreground="White" Margin="1"/>
                 <TextBlock Text="{Binding TotalSum}" Foreground="White" Margin="1"/>
-            </WrapPanel>
+            </WrapPanel>-->
             <WrapPanel Margin="2">
                 <TextBlock Text="Полное время симуляции:" Foreground="White" Margin="1"/>
-                <TextBlock Text="{Binding TotalSimTime}" Foreground="White" Margin="1"/>
+                <TextBlock Text="{Binding TotalSimTime, StringFormat={}{0:N4}}" Foreground="White" Margin="1"/>
                 <TextBlock Text="мс" Foreground="White" Margin="1"/>
+            </WrapPanel>
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type sim:StSimulationInfo}">
+        <StackPanel Margin="4" Grid.Row="1" Background="#FF00366C">
+            <WrapPanel Margin="2">
+                <TextBlock Text="Симуляций проведено:" Foreground="White" Margin="1"/>
+                <TextBlock Text="{Binding TotalSimulationsFormated}" Foreground="White" Margin="1"/>
+            </WrapPanel>
+            <WrapPanel Margin="2">
+                <TextBlock Text="Средняя продолжительность пути:" Foreground="White" Margin="1"/>
+                <TextBlock Text="{Binding AverageTravelPathFormated}" Foreground="White" Margin="1"/>
             </WrapPanel>
         </StackPanel>
     </DataTemplate>

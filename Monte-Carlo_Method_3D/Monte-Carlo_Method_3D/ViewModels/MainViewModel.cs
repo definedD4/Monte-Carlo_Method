@@ -30,7 +30,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
             Tabs.Add(propabilityMethodViewModel);
             SelectedTab = propabilityMethodViewModel;
-            Tabs.Add(new StatMethodViewModel());
+            Tabs.Add(new StMethodViewModel());
             Tabs.Add(new ComparisonViewModel());
         }
 

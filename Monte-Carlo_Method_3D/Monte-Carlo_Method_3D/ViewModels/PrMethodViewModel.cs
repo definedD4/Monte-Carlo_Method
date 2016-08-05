@@ -26,12 +26,6 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private bool m_SimulationInProgress = false;
         private int m_SimulateToStep;
 
-        public bool SimulationInProgress
-        {
-            get { return m_SimulationInProgress; }
-            set { m_SimulationInProgress = value; OnPropertyChanged(nameof(SimulationInProgress)); UpdateCommands(); }
-        }
-
         public PrMethodViewModel(IPallete pallete) : base("Метод вероятностей")
         {
             m_Pallete = pallete;
@@ -46,6 +40,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
             //init visual context
             VisualContext = new PrVisualContext2D(m_Simulator, m_Visualizer);
+            VisualContext.UpdateVisualization();
 
             //Init timer
             m_Timer = new DispatcherTimer(DispatcherPriority.ContextIdle) {Interval = TimeSpan.FromMilliseconds(10)};
@@ -56,7 +51,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                     SimulationInProgress = true;
 
                     m_Simulator.SimulateStep();
-                    VisualContext.Update();
+                    VisualContext.UpdateVisualization();
 
                     SimulationInProgress = false;
 
@@ -69,7 +64,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 SimulationInProgress = true;
 
                 m_Simulator.SimulateStep();
-                VisualContext.Update();
+                VisualContext.UpdateVisualization();
 
                 SimulationInProgress = false;
                 OnPropertyChanged(nameof(SimulationInfo));
@@ -93,7 +88,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
             c_RestartCommand = new DelegateCommand(x =>
             {
                 m_Simulator.Reset();
-                VisualContext.Update();
+                VisualContext.UpdateVisualization();
                 OnPropertyChanged(nameof(SimulationInfo));
             }, x => !(SimulationInProgress || m_Timer.IsEnabled));
 
@@ -112,7 +107,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                     m_Visualizer = new PrVisualizer(m_Simulator, pallete) { DrawBorder = false, HeightCoefficient = 25 };
                     VisualContext.Simulator = m_Simulator;
                     VisualContext.Visualizer = m_Visualizer;
-                    VisualContext.Update();
+                    VisualContext.UpdateVisualization();
                     OnPropertyChanged(nameof(SimulationInfo));
                 }
             }, x => !(SimulationInProgress || m_Timer.IsEnabled));
@@ -126,7 +121,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                     m_Simulator.SimulateStep();
                 }
 
-                VisualContext.Update();
+                VisualContext.UpdateVisualization();
 
                 SimulationInProgress = false;
                 OnPropertyChanged(nameof(SimulationInfo));
@@ -157,7 +152,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 {
                     VisualContext = new PrTableVisualContext(m_Simulator, m_Visualizer);
                 }
-                VisualContext.Update();
+                VisualContext.UpdateVisualization();
             };
 
             VisualTypeSelector.UpdateSelectors();
@@ -173,7 +168,13 @@ namespace Monte_Carlo_Method_3D.ViewModels
             c_ExportToCsvCommand.RaiseCanExecuteChanged();
         }
 
-        public SimulationInfo SimulationInfo => m_Simulator.SimulationInfo;
+        public bool SimulationInProgress
+        {
+            get { return m_SimulationInProgress; }
+            set { m_SimulationInProgress = value; OnPropertyChanged(nameof(SimulationInProgress)); UpdateCommands(); }
+        }
+
+        public PrSimulationInfo SimulationInfo => m_Simulator.SimulationInfo;
 
         private SwitchStateCommand c_PlayPauseCommand;
         public ICommand PlayPauseCommand => c_PlayPauseCommand;

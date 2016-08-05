@@ -10,7 +10,7 @@ namespace Monte_Carlo_Method_3D.GraphRendering
 {
     public abstract class StGridVisualContext : StVisualContext
     {
-        public StGridVisualContext(StatMethodSimulator simulator, StatMethodVisualizer visualizer) : base(simulator, visualizer)
+        public StGridVisualContext(StSimulator simulator, StVisualizer visualizer) : base(simulator, visualizer)
         {
 
         }

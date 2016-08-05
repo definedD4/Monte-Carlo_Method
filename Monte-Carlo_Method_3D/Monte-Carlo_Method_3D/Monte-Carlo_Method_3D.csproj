@@ -68,8 +68,9 @@
     <Compile Include="GraphRendering\StGridVisualContext.cs" />
     <Compile Include="GraphRendering\StVisualContext.cs" />
     <Compile Include="GraphRendering\StVisualContext2D.cs" />
-    <Compile Include="Simulation\SimulationInfo.cs" />
-    <Compile Include="Simulation\StatMethodSimulator.cs" />
+    <Compile Include="Simulation\PrSimulationInfo.cs" />
+    <Compile Include="Simulation\StSimulationInfo.cs" />
+    <Compile Include="Simulation\StSimulator.cs" />
     <Compile Include="Util\CsvExporter.cs" />
     <Compile Include="Util\DelegateCommand.cs" />
     <Compile Include="Util\EdgeData.cs" />
@@ -78,7 +79,7 @@
     <Compile Include="Util\SwitchStateCommand.cs" />
     <Compile Include="ViewModels\ComparisonViewModel.cs" />
     <Compile Include="ViewModels\PrMethodViewModel.cs" />
-    <Compile Include="ViewModels\StatMethodViewModel.cs" />
+    <Compile Include="ViewModels\StMethodViewModel.cs" />
     <Compile Include="ViewModels\TabViewModel.cs" />
     <Compile Include="Visualization\PrVisualizer.cs" />
     <Compile Include="Util\IntPoint.cs" />
@@ -98,7 +99,7 @@
     </Compile>
     <Compile Include="Visualization\HSVPallete.cs" />
     <Compile Include="Visualization\IPallete.cs" />
-    <Compile Include="Visualization\StatMethodVisualizer.cs" />
+    <Compile Include="Visualization\StVisualizer.cs" />
     <Page Include="Dialogs\SimulationOptionsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -74,11 +74,14 @@ namespace Monte_Carlo_Method_3D.Util
                     {
                         m_DataC[1] = value;
                     }
-                    if (y == Height - 1) // bottom-left
+                    else if (y == Height - 1) // bottom-left
                     {
                         m_DataC[2] = value;
                     }
-                    m_DataL[y - 1] = value;
+                    else
+                    {
+                        m_DataL[y - 1] = value;
+                    }
                 }
                 else if (x == Width - 1) // right edge
                 {
@@ -86,11 +89,14 @@ namespace Monte_Carlo_Method_3D.Util
                     {
                         m_DataC[0] = value;
                     }
-                    if (y == Height - 1) // bottom-right
+                    else if (y == Height - 1) // bottom-right
                     {
                         m_DataC[3] = value;
                     }
-                    m_DataR[y - 1] = value;
+                    else
+                    {
+                        m_DataR[y - 1] = value;
+                    }
                 }
                 else if (y == 0) // top edge
                 {

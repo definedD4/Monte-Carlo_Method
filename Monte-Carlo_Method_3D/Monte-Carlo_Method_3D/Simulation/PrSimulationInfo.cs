@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Monte_Carlo_Method_3D.Simulation
 {
-    public class SimulationInfo
+    public class PrSimulationInfo
     {
-        public SimulationInfo(int step, int totalSimTime, double centerSum, double edgeSum, double totalSum)
+        public PrSimulationInfo(long step, double totalSimTime, double centerSum, double edgeSum, double totalSum)
         {
             Step = step;
             TotalSimTime = totalSimTime;
@@ -16,8 +16,8 @@ namespace Monte_Carlo_Method_3D.Simulation
             TotalSum = totalSum;
         }
 
-        public int Step { get; private set; }
-        public int TotalSimTime { get; private set; }
+        public long Step { get; private set; }
+        public double TotalSimTime { get; private set; }
         public double CenterSum { get; private set; }
         public double EdgeSum { get; private set; }
         public double TotalSum { get; private set; }

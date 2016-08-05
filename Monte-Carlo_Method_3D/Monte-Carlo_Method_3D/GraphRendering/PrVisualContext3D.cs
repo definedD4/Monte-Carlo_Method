@@ -23,7 +23,7 @@ namespace Monte_Carlo_Method_3D.GraphRendering
             set { m_Model = value; OnPropertyChanged(nameof(Model)); }
         }
 
-        public override void Update()
+        public override void UpdateVisualization()
         {
             Model = Visualizer.GenerateModel();
             OnPropertyChanged("Model");

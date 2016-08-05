@@ -25,7 +25,7 @@ namespace Monte_Carlo_Method_3D.Visualization
 
         public int Width => m_Simulator.Width;
         public int Height => m_Simulator.Height;
-        public int PixelsPerCell { get; set; } = 3;
+        public int PixelsPerCell { get; set; } = 1;
         public int ImageWidth => Width * PixelsPerCell;
         public int ImageHeight => Height * PixelsPerCell;
 
@@ -136,8 +136,8 @@ namespace Monte_Carlo_Method_3D.Visualization
                     for (int j = 0; j < m_Simulator.Height; j++)
                     {
                         double val = m_Simulator[i, j];
-                        drawingContext.DrawText(new FormattedText(Math.Round(val, 5).ToString(), 
-                            CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), 0.5, Brushes.White),
+                        drawingContext.DrawText(new FormattedText(Math.Round(val, 5).ToString("E2"), 
+                            CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), 0.15, Brushes.White),
                             new Point(i * PixelsPerCell + PixelsPerCell * 0.3f, j * PixelsPerCell + PixelsPerCell * 0.3f));
                     }
                 }

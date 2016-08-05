@@ -16,7 +16,7 @@ namespace Monte_Carlo_Method_3D.GraphRendering
             Visualizer = visualizer;
         }
 
-        public abstract void Update();
+        public abstract void UpdateVisualization();
 
         public event PropertyChangedEventHandler PropertyChanged;
 

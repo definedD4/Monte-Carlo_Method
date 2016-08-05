@@ -10,18 +10,18 @@ using Monte_Carlo_Method_3D.Simulation;
 
 namespace Monte_Carlo_Method_3D.Visualization
 {
-    public class StatMethodVisualizer
+    public class StVisualizer
     {
         private IPallete m_Pallete;
 
-        public StatMethodVisualizer(int width, int height, IPallete pallete)
+        public StVisualizer(int width, int height, IPallete pallete)
         {
             m_Pallete = pallete;
             Width = width;
             Height = height;
         }
 
-        public int PixelsPerCell { get; set; } = 3;
+        public int PixelsPerCell { get; set; } = 1;
         public ImageSource Texture { get; private set; }
         public ImageSource TableTexture { get; private set; }
         public bool DrawBorder { get; set; }
@@ -30,17 +30,17 @@ namespace Monte_Carlo_Method_3D.Visualization
         public int ImageWidth => Width * PixelsPerCell;
         public int ImageHeight => Height * PixelsPerCell;
 
-        public void UpdateTexture(StatMethodSimulator simulator)
+        public void UpdateTexture(StSimulator simulator)
         {
             Texture = GenerateTexture(simulator);
         }
 
-        public void UpdateTableTexture(StatMethodSimulator simulator)
+        public void UpdateTableTexture(StSimulator simulator)
         {
             TableTexture = GenerateTableTexture(simulator);
         }
 
-        private ImageSource GenerateTexture(StatMethodSimulator simulator)
+        private ImageSource GenerateTexture(StSimulator simulator)
         {
             int cellSize = PixelsPerCell;
             int bytesPerPixel = 3;
@@ -64,7 +64,7 @@ namespace Monte_Carlo_Method_3D.Visualization
             return result;
         }
 
-        private void DrawCell(StatMethodSimulator simulator, int cellSize, int x, int y, int stride, int bytesPerPixel,
+        private void DrawCell(StSimulator simulator, int cellSize, int x, int y, int stride, int bytesPerPixel,
             byte[] bytes)
         {
             for (int _x = 0; _x < cellSize; _x++)
@@ -90,7 +90,7 @@ namespace Monte_Carlo_Method_3D.Visualization
             }
         }
 
-        private ImageSource GenerateTableTexture(StatMethodSimulator simulator)
+        private ImageSource GenerateTableTexture(StSimulator simulator)
         {
             int cellSize = PixelsPerCell;
             int width = simulator.Width * cellSize;
@@ -114,7 +114,7 @@ namespace Monte_Carlo_Method_3D.Visualization
             return image;
         }
 
-        private void DrawTableCell(StatMethodSimulator simulator, int i, int j, DrawingContext drawingContext, int cellSize)
+        private void DrawTableCell(StSimulator simulator, int i, int j, DrawingContext drawingContext, int cellSize)
         {
             double val = simulator[i, j];
             drawingContext.DrawText(new FormattedText(Math.Round(val, 5).ToString(),
