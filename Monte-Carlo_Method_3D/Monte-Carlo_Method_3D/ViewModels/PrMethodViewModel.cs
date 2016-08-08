@@ -50,7 +50,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 {
                     SimulationInProgress = true;
 
-                    m_Simulator.SimulateStep();
+                    m_Simulator.SimulateSteps(5);
                     VisualContext.UpdateVisualization();
 
                     SimulationInProgress = false;
@@ -63,7 +63,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
             {
                 SimulationInProgress = true;
 
-                m_Simulator.SimulateStep();
+                m_Simulator.SimulateSteps();
                 VisualContext.UpdateVisualization();
 
                 SimulationInProgress = false;
@@ -118,7 +118,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
                 while (m_Simulator.Step < SimulateToStep)
                 {
-                    m_Simulator.SimulateStep();
+                    m_Simulator.SimulateSteps();
                 }
 
                 VisualContext.UpdateVisualization();

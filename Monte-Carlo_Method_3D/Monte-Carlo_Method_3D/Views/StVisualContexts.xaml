@@ -22,7 +22,7 @@
             </WrapPanel>
         </Grid>
     </DataTemplate>
-    <!--<DataTemplate DataType="{x:Type g:StTableVisualContext}">
+    <DataTemplate DataType="{x:Type g:StTableVisualContext}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -38,5 +38,5 @@
                 <TextBlock Text="{Binding PointedValue}" Foreground="White" FontSize="13" FontWeight="Bold"/>
             </WrapPanel>
         </Grid>
-    </DataTemplate>-->
+    </DataTemplate>
 </ResourceDictionary>

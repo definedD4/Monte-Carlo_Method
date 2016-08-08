@@ -25,11 +25,12 @@ namespace Monte_Carlo_Method_3D.ViewModels
         //Commands
         private DelegateCommand m_StepCommand;
         private SwitchStateCommand m_PlayPauseCommand;
+        private DelegateCommand m_RestartCommand;
 
         public StMethodViewModel() : base("Метод статистических испытаний")
         {
             m_Simulator = new StSimulator(5, 5, new IntPoint(2, 2));
-            m_Visualizer = new StVisualizer(m_Simulator.Width, m_Simulator.Height, new HSVPallete());
+            m_Visualizer = new StVisualizer(m_Simulator, new HSVPallete());
             VisualContext = new StVisualContext2D(m_Simulator, m_Visualizer);
 
             VisualContext.UpdateVisualization();
@@ -44,7 +45,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 SimulationInProgress = false;
 
                 OnPropertyChanged(nameof(SimulationInfo));
-            }, _ => !SimulationInProgress);
+            }, _ => !(SimulationInProgress || m_Timer.IsEnabled));
 
             m_PlayPauseCommand = new SwitchStateCommand("Пауза", "Воспроизвести", false, _ => !(SimulationInProgress && !m_Timer.IsEnabled));
             m_PlayPauseCommand.StateChanged += (s, e) =>
@@ -68,7 +69,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 {
                     SimulationInProgress = true;
 
-                    m_Simulator.SimulateSteps(100);
+                    m_Simulator.SimulateSteps(5);
                     VisualContext.UpdateVisualization();
 
                     SimulationInProgress = false;
@@ -76,12 +77,37 @@ namespace Monte_Carlo_Method_3D.ViewModels
                     OnPropertyChanged(nameof(SimulationInfo));
                 }
             };
+
+            m_RestartCommand = new DelegateCommand(x =>
+            {
+                m_Simulator.Reset();
+                VisualContext.UpdateVisualization();
+                OnPropertyChanged(nameof(SimulationInfo));
+            }, _ => !(SimulationInProgress || m_Timer.IsEnabled));
+
+            VisualTypeSelector = new SelectorCommand("2D");
+
+            VisualTypeSelector.SelectionChanged += (s, e) =>
+            {
+                if (VisualTypeSelector.SelectedValue == "2D" && !(VisualContext is StVisualContext2D))
+                {
+                    VisualContext = new StVisualContext2D(m_Simulator, m_Visualizer);
+                }
+                else if (VisualTypeSelector.SelectedValue == "Table" && !(VisualContext is StTableVisualContext))
+                {
+                    VisualContext = new StTableVisualContext(m_Simulator, m_Visualizer);
+                }
+                VisualContext.UpdateVisualization();
+            };
+
+            VisualTypeSelector.UpdateSelectors();
         }
 
         private void UpdateCommands()
         {
             m_StepCommand.RaiseCanExecuteChanged();
             m_PlayPauseCommand.RaiseCanExecuteChanged();
+            m_RestartCommand.RaiseCanExecuteChanged();
         }
 
         public bool SimulationInProgress
@@ -101,5 +127,9 @@ namespace Monte_Carlo_Method_3D.ViewModels
         public ICommand StepCommand => m_StepCommand;
 
         public ICommand PlayPauseCommand => m_PlayPauseCommand;
+
+        public ICommand RestartCommand => m_RestartCommand;
+
+        public SelectorCommand VisualTypeSelector { get; private set; }
     }
 }

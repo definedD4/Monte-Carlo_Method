@@ -13,76 +13,61 @@ namespace Monte_Carlo_Method_3D.Visualization
     public class StVisualizer
     {
         private IPallete m_Pallete;
+        private StSimulator m_Simulator;
 
-        public StVisualizer(int width, int height, IPallete pallete)
+        public StVisualizer(StSimulator simulator, IPallete pallete)
         {
-            m_Pallete = pallete;
-            Width = width;
-            Height = height;
+            m_Simulator = simulator;
+            m_Pallete = pallete;          
         }
 
-        public int PixelsPerCell { get; set; } = 1;
-        public ImageSource Texture { get; private set; }
-        public ImageSource TableTexture { get; private set; }
-        public bool DrawBorder { get; set; }
-        public int Width { get; private set; }
-        public int Height { get; private set; }
+        public int Width => m_Simulator.Width;
+        public int Height => m_Simulator.Height;
         public int ImageWidth => Width * PixelsPerCell;
         public int ImageHeight => Height * PixelsPerCell;
 
-        public void UpdateTexture(StSimulator simulator)
-        {
-            Texture = GenerateTexture(simulator);
-        }
+        public int PixelsPerCell { get; set; } = 1;
+        public bool DrawBorder { get; set; }
 
-        public void UpdateTableTexture(StSimulator simulator)
+        public ImageSource GenerateColorTexture()
         {
-            TableTexture = GenerateTableTexture(simulator);
-        }
-
-        private ImageSource GenerateTexture(StSimulator simulator)
-        {
-            int cellSize = PixelsPerCell;
             int bytesPerPixel = 3;
             int dpi = 96;
-            int width = simulator.Width * cellSize;
-            int height = simulator.Height * cellSize;
-            int stride = width * bytesPerPixel;
-            byte[] bytes = new byte[height * stride];
+            int stride = Width * bytesPerPixel;
+            byte[] bytes = new byte[Height * stride];
 
-            for (int x = 0; x < simulator.Width; x++)
+            for (int x = 0; x < m_Simulator.Width; x++)
             {
-                DrawCell(simulator, cellSize, x, 0, stride, bytesPerPixel, bytes);
-                DrawCell(simulator, cellSize, x, simulator.Height - 1, stride, bytesPerPixel, bytes);
+                DrawCell(x, 0, stride, bytesPerPixel, bytes);
+                DrawCell(x, Height - 1, stride, bytesPerPixel, bytes);
             }
-            for (int y = 1; y < simulator.Height; y++)
+            for (int y = 1; y < Height; y++)
             {
-                DrawCell(simulator, cellSize, 0, y, stride, bytesPerPixel, bytes);
-                DrawCell(simulator, cellSize, simulator.Width - 1, y, stride, bytesPerPixel, bytes);
+                DrawCell(0, y, stride, bytesPerPixel, bytes);
+                DrawCell(Width - 1, y, stride, bytesPerPixel, bytes);
             }
-            BitmapSource result = BitmapSource.Create(width, height, dpi, dpi, PixelFormats.Bgr24, null, bytes, stride);
+            BitmapSource result = BitmapSource.Create(Width, Height, dpi, dpi, PixelFormats.Bgr24, null, bytes, stride);
             return result;
         }
 
-        private void DrawCell(StSimulator simulator, int cellSize, int x, int y, int stride, int bytesPerPixel,
-            byte[] bytes)
+        private void DrawCell(int x, int y, int stride, int bytesPerPixel, byte[] bytes)
         {
-            for (int _x = 0; _x < cellSize; _x++)
+            for (int _x = 0; _x < PixelsPerCell; _x++)
             {
-                for (int _y = 0; _y < cellSize; _y++)
+                for (int _y = 0; _y < PixelsPerCell; _y++)
                 {
                     Color color = Colors.Purple;
 
-                    if (DrawBorder && (_x == 0 || _x == cellSize - 1 || _y == 0 || _y == cellSize - 1))
+                    if (DrawBorder && (_x == 0 || _x == PixelsPerCell - 1 || _y == 0 || _y == PixelsPerCell - 1))
                     {
                         color = Colors.Black;
                     }
                     else
                     {
-                        color = m_Pallete.GetColor(simulator[x, y]);
+                        color = m_Pallete.GetColor(m_Simulator[x, y]);
                     }
 
-                    int index = (y*cellSize + _y)*stride + (x*cellSize + _x)*bytesPerPixel;
+                    int index = (y * PixelsPerCell + _y) * stride + (x * PixelsPerCell + _x) * bytesPerPixel;
                     bytes[index] = color.B;
                     bytes[index + 1] = color.G;
                     bytes[index + 2] = color.R;
@@ -90,36 +75,33 @@ namespace Monte_Carlo_Method_3D.Visualization
             }
         }
 
-        private ImageSource GenerateTableTexture(StSimulator simulator)
+        public ImageSource GenerateTableTexture()
         {
-            int cellSize = PixelsPerCell;
-            int width = simulator.Width * cellSize;
-            int height = simulator.Height * cellSize;
             var visual = new DrawingVisual();
             using (DrawingContext drawingContext = visual.RenderOpen())
             {
-                drawingContext.DrawRectangle(Brushes.Black, null, new Rect(new Size(width, height)));
-                for (int x = 0; x < simulator.Width; x++)
+                drawingContext.DrawRectangle(Brushes.Black, null, new Rect(new Size(Width, Height)));
+                for (int x = 0; x < Width; x++)
                 {
-                    DrawTableCell(simulator, x, 0, drawingContext, cellSize);
-                    DrawTableCell(simulator, x, simulator.Height - 1, drawingContext, cellSize);
+                    DrawTableCell(x, 0, drawingContext);
+                    DrawTableCell(x, Height - 1, drawingContext);
                 }
-                for (int y = 0; y < simulator.Height; y++)
+                for (int y = 0; y < Height; y++)
                 {
-                    DrawTableCell(simulator, 0, y, drawingContext, cellSize);
-                    DrawTableCell(simulator, simulator.Width - 1, y, drawingContext, cellSize);
+                    DrawTableCell(0, y, drawingContext);
+                    DrawTableCell(Width - 1, y, drawingContext);
                 }
             }
             var image = new DrawingImage(visual.Drawing);
             return image;
         }
 
-        private void DrawTableCell(StSimulator simulator, int i, int j, DrawingContext drawingContext, int cellSize)
+        private void DrawTableCell(int i, int j, DrawingContext drawingContext)
         {
-            double val = simulator[i, j];
-            drawingContext.DrawText(new FormattedText(Math.Round(val, 5).ToString(),
-                CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), 0.5, Brushes.White),
-                new Point(i*cellSize + cellSize*0.3f, j*cellSize + cellSize*0.3f));
+            double val = m_Simulator[i, j];
+            drawingContext.DrawText(new FormattedText(Math.Round(val, 5).ToString("E2"),
+                            CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), 0.15, Brushes.White),
+                            new Point(i * PixelsPerCell + PixelsPerCell * 0.3f, j * PixelsPerCell + PixelsPerCell * 0.3f));
         }
     }
 }

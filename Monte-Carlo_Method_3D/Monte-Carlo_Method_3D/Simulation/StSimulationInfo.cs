@@ -7,10 +7,11 @@ namespace Monte_Carlo_Method_3D.Simulation
 {
     public class StSimulationInfo
     {
-        public StSimulationInfo(long totalSimulations, double averageTravelPath)
+        public StSimulationInfo(long totalSimulations, double averageTravelPath, double totalSimTime)
         {
             TotalSimulations = totalSimulations;
             AverageTravelPath = averageTravelPath;
+            TotalSimTime = totalSimTime;
         }
 
         public long TotalSimulations { get; private set; }
@@ -32,5 +33,7 @@ namespace Monte_Carlo_Method_3D.Simulation
                 return Math.Round(AverageTravelPath, 4).ToString();
             }
         }
+
+        public double TotalSimTime { get; private set; }
     }
 }

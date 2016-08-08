@@ -8,7 +8,7 @@ using Monte_Carlo_Method_3D.Visualization;
 
 namespace Monte_Carlo_Method_3D.GraphRendering
 {
-    public abstract class PrGridVisualContext : PrVisualContext
+    public abstract class PrGridVisualContext : PrVisualContext, IGridContext
     {
         private double m_PointedValue;
 

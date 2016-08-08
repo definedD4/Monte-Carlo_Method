@@ -31,96 +31,42 @@ namespace Monte_Carlo_Method_3D.Simulation
 
         public double this[int x, int y] => data[x, y];
 
-        public void SimulateStep()
+        public void SimulateSteps(int steps = 1)
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
-            double[,] newData = new double[Width, Height];
-            /*for (int x = 1; x < Width - 1; x++)
+            for (int i = 0; i < steps; i++)
             {
+                double[,] newData = new double[Width, Height];
+                for (int x = 1; x < Width - 1; x++)
+                {
+                    for (int y = 1; y < Height - 1; y++)
+                    {
+                        newData[x + 1, y] += data[x, y]/5;
+                        newData[x + 1, y + 1] += data[x, y]/20;
+                        newData[x, y + 1] += data[x, y]/5;
+                        newData[x - 1, y + 1] += data[x, y]/20;
+                        newData[x - 1, y] += data[x, y]/5;
+                        newData[x - 1, y - 1] += data[x, y]/20;
+                        newData[x, y - 1] += data[x, y]/5;
+                        newData[x + 1, y - 1] += data[x, y]/20;
+                    }
+                }
+
+                for (int x = 0; x < Width; x++)
+                {
+                    newData[x, 0] += data[x, 0];
+                    newData[x, Height - 1] += data[x, Height - 1];
+                }
+
                 for (int y = 1; y < Height - 1; y++)
                 {
-                    double s = 0;
-                    if (x > 1)
-                        s += data[x - 1, y] / 5;
-                    if (x < Width - 2)
-                        s += data[x + 1, y] / 5;
-                    if (y > 1)
-                        s += data[x, y - 1] / 5;
-                    if (y < Height - 2)
-                        s += data[x, y + 1] / 5;
-                    if (x > 1 && y > 1)
-                        s += data[x - 1, y - 1] / 20;
-                    if (x < Width - 2 && y > 1)
-                        s += data[x + 1, y - 1] / 20;
-                    if (x > 1 && y < Height - 2)
-                        s += data[x - 1, y + 1] / 20;
-                    if (x < Width - 2 && y < Height - 2)
-                        s += data[x + 1, y + 1] / 20;
-                    newData[x, y] = s;
+                    newData[0, y] += data[0, y];
+                    newData[Width - 1, y] += data[Width - 1, y];
                 }
-            }
-            for (int x = 1; x < Width - 1; x++)
-            {
-                newData[x, 0] = data[x, 0] + data[x, 1] / 5;
-                if (x > 1)
-                    newData[x, 0] += data[x - 1, 1] / 20;
-                if (x < Width - 2)
-                    newData[x, 0] += data[x + 1, 1] / 20;
 
-                newData[x, Height - 1] = data[x, Height - 1] + data[x, Height - 2] / 5;
-                if (x > 1)
-                    newData[x, Height - 1] += data[x - 1, Height - 2] / 20;
-                if (x < Width - 2)
-                    newData[x, Height - 1] += data[x + 1, Height - 2] / 20;
+                data = newData;
+                Step++;
             }
-            for (int y = 1; y < Height - 1; y++)
-            {
-                newData[0, y] = data[0, y] + data[1, y] / 5; // right
-                if (y > 1)
-                    newData[0, y] += data[1, y - 1] / 20; // upper right
-                if (y < Width - 2)
-                    newData[0, y] += data[1, y + 1] / 20; // lower right
-
-                newData[Width - 1, y] = data[Width - 1, y] + data[Width - 2, y] / 5; // left
-                if (y > 1)
-                    newData[Width - 1, y] += data[Width - 2, y - 1] / 20; // upper left
-                if (y < Width - 2)
-                    newData[Width - 1, y] += data[Width - 2, y + 1] / 20; // lower left
-            }
-            newData[0, 0] = data[0, 0] + data[1, 1] / 20;
-            newData[0, Height - 1] = data[0, 0] + data[1, 1] / 20;
-            newData[Width - 1, 0] = data[0, 0] + data[1, 1] / 20;
-            newData[Width - 1, Height - 1] = data[0, 0] + data[1, 1] / 20;*/
-
-            for(int x = 1; x < Width - 1; x++)
-            {
-                for(int y = 1; y < Height - 1; y++)
-                {
-                    newData[x + 1, y    ] += data[x, y] / 5;
-                    newData[x + 1, y + 1] += data[x, y] / 20;
-                    newData[x    , y + 1] += data[x, y] / 5;
-                    newData[x - 1, y + 1] += data[x, y] / 20;
-                    newData[x - 1, y    ] += data[x, y] / 5;
-                    newData[x - 1, y - 1] += data[x, y] / 20;
-                    newData[x    , y - 1] += data[x, y] / 5;
-                    newData[x + 1, y - 1] += data[x, y] / 20;
-                }
-            }
-
-            for(int x = 0; x < Width; x++)
-            {
-                newData[x, 0] += data[x, 0];
-                newData[x, Height - 1] += data[x, Height - 1];
-            }
-
-            for(int y = 1; y < Height - 1; y++)
-            {
-                newData[0, y] += data[0, y];
-                newData[Width - 1, y] += data[Width - 1, y];
-            }
-
-            data = newData;
-            Step++;
             stopwatch.Stop();
             TotalSimTime += stopwatch.Elapsed.TotalMilliseconds;
 

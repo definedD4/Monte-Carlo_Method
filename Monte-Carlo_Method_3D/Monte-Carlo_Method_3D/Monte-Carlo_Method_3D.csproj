@@ -63,7 +63,9 @@
       <DependentUpon>SimulationOptionsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Gauge\GaugeContext.cs" />
+    <Compile Include="GraphRendering\IGridContext.cs" />
     <Compile Include="GraphRendering\PrGridVisualContext.cs" />
+    <Compile Include="GraphRendering\StTableVisualContext.cs" />
     <Compile Include="GraphRendering\PrTableVisualContext.cs" />
     <Compile Include="GraphRendering\StGridVisualContext.cs" />
     <Compile Include="GraphRendering\StVisualContext.cs" />

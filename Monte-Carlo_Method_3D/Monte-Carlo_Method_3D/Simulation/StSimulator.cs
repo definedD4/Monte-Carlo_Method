@@ -2,12 +2,13 @@
 using System.Security.Policy;
 using Monte_Carlo_Method_3D.Util;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Monte_Carlo_Method_3D.Simulation
 {
     public class StSimulator
     {
-        private static List<Tuple<IntPoint, double>> MovePropabilities = new List<Tuple<IntPoint, double>>{
+        private static readonly List<Tuple<IntPoint, double>> MovePropabilities = new List<Tuple<IntPoint, double>>{
             Tuple.Create(new IntPoint(1, 0), 1d / 5d),
             Tuple.Create(new IntPoint(1, 1), 1d / 20d),
             Tuple.Create(new IntPoint(0, 1), 1d / 5d),
@@ -22,14 +23,6 @@ namespace Monte_Carlo_Method_3D.Simulation
 
         private EdgeData m_Data;
 
-        public int Width { get; }
-        public int Height { get; }
-        public IntPoint StartLocation { get; }
-        public long TotalSimulations { get; private set; }
-        public double AverageTravelPath { get; private set; }
-
-        public StSimulationInfo SimulationInfo { get; private set; }
-
         public StSimulator(int width, int height, IntPoint startLocation)
         {
             Width = width;
@@ -37,10 +30,22 @@ namespace Monte_Carlo_Method_3D.Simulation
             StartLocation = startLocation;
 
             m_Data = new EdgeData(Width, Height);
+
+            SimulationInfo = new StSimulationInfo(TotalSimulations, AverageTravelPath, TotalSimTime);
         }
+
+        public int Width { get; }
+        public int Height { get; }
+        public IntPoint StartLocation { get; }
+        public long TotalSimulations { get; private set; }
+        public double AverageTravelPath { get; private set; }
+        public double TotalSimTime { get; private set; }
+
+        public StSimulationInfo SimulationInfo { get; private set; }
 
         public void SimulateSteps(int steps)
         {
+            Stopwatch stopwatch = Stopwatch.StartNew();
             for (int i = 0; i < steps; i++)
             {
                 IntPoint pos = StartLocation;
@@ -54,8 +59,10 @@ namespace Monte_Carlo_Method_3D.Simulation
 
                 AverageTravelPath = (AverageTravelPath * TotalSimulations + travelPath) / ++TotalSimulations;
             }
+            stopwatch.Stop();
+            TotalSimTime += stopwatch.Elapsed.TotalMilliseconds;
 
-            SimulationInfo = new StSimulationInfo(TotalSimulations, AverageTravelPath);
+            SimulationInfo = new StSimulationInfo(TotalSimulations, AverageTravelPath, TotalSimTime);
         }
 
         private IntPoint SelectRandomDirection()
@@ -75,5 +82,14 @@ namespace Monte_Carlo_Method_3D.Simulation
         }
 
         public double this[int x, int y] => m_Data[x, y]/TotalSimulations;
+
+        public void Reset()
+        {
+            m_Data = new EdgeData(Width, Height);
+            TotalSimulations = 0;
+            AverageTravelPath = 0;
+
+            SimulationInfo = new StSimulationInfo(TotalSimulations, AverageTravelPath, TotalSimTime);
+        }
     }
 }

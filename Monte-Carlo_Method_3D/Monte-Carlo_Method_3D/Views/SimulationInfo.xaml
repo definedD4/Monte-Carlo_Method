@@ -38,6 +38,11 @@
                 <TextBlock Text="Средняя продолжительность пути:" Foreground="White" Margin="1"/>
                 <TextBlock Text="{Binding AverageTravelPathFormated}" Foreground="White" Margin="1"/>
             </WrapPanel>
+            <WrapPanel Margin="2">
+                <TextBlock Text="Полное время симуляции:" Foreground="White" Margin="1"/>
+                <TextBlock Text="{Binding TotalSimTime, StringFormat={}{0:N4}}" Foreground="White" Margin="1"/>
+                <TextBlock Text="мс" Foreground="White" Margin="1"/>
+            </WrapPanel>
         </StackPanel>
     </DataTemplate>
 </ResourceDictionary>

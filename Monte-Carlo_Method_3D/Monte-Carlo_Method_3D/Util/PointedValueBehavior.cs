@@ -14,12 +14,12 @@ namespace Monte_Carlo_Method_3D.Util
         {
             AssociatedObject.MouseMove += (s, e) =>
             {
-                PrGridVisualContext context = AssociatedObject.DataContext as PrGridVisualContext;
-                //if (context == null)
-                    //throw new InvalidOperationException("Cannot retrive data context.");
+                IGridContext context = AssociatedObject.DataContext as IGridContext;
+                if (context == null)
+                    throw new InvalidOperationException("Cannot retrive data context.");
 
-                //context.PointedValue = context.GetValueAtImageCoordinates(e.GetPosition(AssociatedObject),
-                //    new System.Windows.Size(AssociatedObject.ActualWidth, AssociatedObject.ActualHeight));
+                context.PointedValue = context.GetValueAtImageCoordinates(e.GetPosition(AssociatedObject),
+                    new System.Windows.Size(AssociatedObject.ActualWidth, AssociatedObject.ActualHeight));
             };
         }
     }
