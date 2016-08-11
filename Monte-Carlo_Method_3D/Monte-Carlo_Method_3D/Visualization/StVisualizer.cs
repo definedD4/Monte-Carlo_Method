@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Monte_Carlo_Method_3D.Simulation;
+using Monte_Carlo_Method_3D.Util;
 
 namespace Monte_Carlo_Method_3D.Visualization
 {
@@ -27,16 +28,16 @@ namespace Monte_Carlo_Method_3D.Visualization
         public int ImageHeight => Height * PixelsPerCell;
 
         public int PixelsPerCell { get; set; } = 1;
-        public bool DrawBorder { get; set; }
 
-        public ImageSource GenerateColorTexture()
+        public ImageSource GenerateColorTexture(bool drawPath = false)
         {
-            int bytesPerPixel = 3;
+            PixelFormat format = PixelFormats.Bgr24;
+            int bytesPerPixel = format.BitsPerPixel / 8;
             int dpi = 96;
-            int stride = Width * bytesPerPixel;
+            int stride = ImageWidth * bytesPerPixel;
             byte[] bytes = new byte[Height * stride];
 
-            for (int x = 0; x < m_Simulator.Width; x++)
+            for (int x = 0; x < Width; x++)
             {
                 DrawCell(x, 0, stride, bytesPerPixel, bytes);
                 DrawCell(x, Height - 1, stride, bytesPerPixel, bytes);
@@ -46,8 +47,33 @@ namespace Monte_Carlo_Method_3D.Visualization
                 DrawCell(0, y, stride, bytesPerPixel, bytes);
                 DrawCell(Width - 1, y, stride, bytesPerPixel, bytes);
             }
-            BitmapSource result = BitmapSource.Create(Width, Height, dpi, dpi, PixelFormats.Bgr24, null, bytes, stride);
-            return result;
+            BitmapSource texture = BitmapSource.Create(ImageWidth, ImageHeight, dpi, dpi, PixelFormats.Bgr24, null, bytes, stride);
+            if (m_Simulator.LastPath == null)
+            {
+                return texture;
+            }
+            else
+            {
+                var visual = new DrawingVisual();
+                using (DrawingContext drawingContext = visual.RenderOpen())
+                {
+                    drawingContext.DrawImage(texture, new Rect(new Size(ImageWidth, ImageHeight)));
+
+                    StParticlePath path = m_Simulator.LastPath;
+
+                    IntPoint prev = path.Points[0];
+                    for(int i = 1; i < path.Points.Count; i++)
+                    {
+                        IntPoint curr = path.Points[i];
+
+                        drawingContext.DrawLine(new Pen(Brushes.Purple, 1d/(double)PixelsPerCell * 0.1),
+                            new Point(prev.X * PixelsPerCell + 0.5, prev.Y * PixelsPerCell + 0.5), new Point(curr.X * PixelsPerCell + 0.5, curr.Y * PixelsPerCell + 0.5));
+
+                        prev = curr;
+                    }
+                }
+                return new DrawingImage(visual.Drawing);
+            }
         }
 
         private void DrawCell(int x, int y, int stride, int bytesPerPixel, byte[] bytes)
@@ -56,16 +82,7 @@ namespace Monte_Carlo_Method_3D.Visualization
             {
                 for (int _y = 0; _y < PixelsPerCell; _y++)
                 {
-                    Color color = Colors.Purple;
-
-                    if (DrawBorder && (_x == 0 || _x == PixelsPerCell - 1 || _y == 0 || _y == PixelsPerCell - 1))
-                    {
-                        color = Colors.Black;
-                    }
-                    else
-                    {
-                        color = m_Pallete.GetColor(m_Simulator[x, y]);
-                    }
+                    Color color = m_Pallete.GetColor(m_Simulator[x, y]);
 
                     int index = (y * PixelsPerCell + _y) * stride + (x * PixelsPerCell + _x) * bytesPerPixel;
                     bytes[index] = color.B;

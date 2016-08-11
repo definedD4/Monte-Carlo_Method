@@ -46,14 +46,27 @@ namespace Monte_Carlo_Method_3D.Simulation
         public void SimulateSteps(int steps)
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
+
+            List<IntPoint> path = new List<IntPoint>();
             for (int i = 0; i < steps; i++)
             {
                 IntPoint pos = StartLocation;
                 int travelPath = 0;
+
+                if (i == steps - 1) // last step
+                {
+                    path.Add(pos);
+                }
+
                 while (pos.InBoundsStrict(0, Width - 1, 0, Height - 1))
                 {
                     pos += SelectRandomDirection();
+
                     travelPath++;
+                    if (i == steps - 1) // last step
+                    {
+                        path.Add(pos);
+                    }
                 }
                 m_Data[pos.X, pos.Y] += 1;
 
@@ -63,6 +76,7 @@ namespace Monte_Carlo_Method_3D.Simulation
             TotalSimTime += stopwatch.Elapsed.TotalMilliseconds;
 
             SimulationInfo = new StSimulationInfo(TotalSimulations, AverageTravelPath, TotalSimTime);
+            LastPath = new StParticlePath(path);
         }
 
         private IntPoint SelectRandomDirection()
@@ -82,6 +96,8 @@ namespace Monte_Carlo_Method_3D.Simulation
         }
 
         public double this[int x, int y] => m_Data[x, y]/TotalSimulations;
+
+        public StParticlePath LastPath { get; private set; }
 
         public void Reset()
         {

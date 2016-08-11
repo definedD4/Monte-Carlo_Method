@@ -94,16 +94,13 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
             c_SimulationOptionsCommand = new DelegateCommand(x =>
             {
-                SimulationOptionsDialog dialog = new SimulationOptionsDialog(m_Simulator.Width, m_Simulator.Height, m_Simulator.StartLocation + new IntPoint(1, 1));
+                SimulationOptionsDialog dialog = new SimulationOptionsDialog(SimulationOptions.FromSimulator(m_Simulator));
                 dialog.ShowDialog();
 
                 if (dialog.DialogResult.GetValueOrDefault(false))
                 {
-                    int width = dialog.WidthSetting;
-                    int height = dialog.HeightSetting;
-                    IntPoint startLocation = new IntPoint(dialog.StartXSetting - 1, dialog.StartYSetting - 1);
-
-                    m_Simulator = new PrSimulator(width, height, startLocation);
+                    SimulationOptions result = dialog.SimulationOptions;
+                    m_Simulator = new PrSimulator(result.Width, result.Height, result.StartLocation);
                     m_Visualizer = new PrVisualizer(m_Simulator, pallete) { DrawBorder = false, HeightCoefficient = 25 };
                     VisualContext.Simulator = m_Simulator;
                     VisualContext.Visualizer = m_Visualizer;

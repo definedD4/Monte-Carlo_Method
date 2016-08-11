@@ -21,67 +21,66 @@ namespace Monte_Carlo_Method_3D.Dialogs
     /// </summary>
     public partial class SimulationOptionsDialog : Window, INotifyPropertyChanged
     {
-        public SimulationOptionsDialog(int width, int height, IntPoint startLoc)
+        private int m_WidthSetting;
+        private int m_HeightSetting;
+        private int m_StartXSetting;
+        private int m_StartYSetting;
+
+        public SimulationOptionsDialog(SimulationOptions options)
         {
             InitializeComponent();
             DataContext = this;
 
-            WidthSetting = width;
-            HeightSetting = height;
-            StartXSetting = startLoc.X;
-            StartYSetting = startLoc.Y;
+            WidthSetting = options.Width;
+            HeightSetting = options.Height;
+            StartXSetting = options.StartLocation.X + 1;
+            StartYSetting = options.StartLocation.Y + 1;
         }
 
-
-        private int p_WidthSetting;
         public int WidthSetting
         {
-            get { return p_WidthSetting; }
+            get { return m_WidthSetting; }
             set
             {
-                if (p_WidthSetting != value)
+                if (m_WidthSetting != value)
                 {
-                    p_WidthSetting = value; OnPropertyChanged("WidthSetting");
+                    m_WidthSetting = value; OnPropertyChanged("WidthSetting");
                 }
             }
         }
 
-
-        private int p_HeightSetting;
         public int HeightSetting
         {
-            get { return p_HeightSetting; }
+            get { return m_HeightSetting; }
             set
             {
-                if (p_HeightSetting != value)
+                if (m_HeightSetting != value)
                 {
-                    p_HeightSetting = value; OnPropertyChanged("HeightSetting");
+                    m_HeightSetting = value; OnPropertyChanged("HeightSetting");
                 }
             }
         }
 
-        private int p_StartXSetting;
         public int StartXSetting
         {
-            get { return p_StartXSetting; }
+            get { return m_StartXSetting; }
             set
             {
-                if (p_StartXSetting != value)
+                if (m_StartXSetting != value)
                 {
-                    p_StartXSetting = value; OnPropertyChanged("StartXSetting");
+                    m_StartXSetting = value; OnPropertyChanged("StartXSetting");
                 }
             }
         }
 
-        private int p_StartYSetting;
         public int StartYSetting
         {
-            get { return p_StartYSetting; }
+            get { return m_StartYSetting; }
             set
             {
-                if (p_StartYSetting != value)
+                if (m_StartYSetting != value)
                 {
-                    p_StartYSetting = value; OnPropertyChanged("StartYSetting");
+                    m_StartYSetting = value; OnPropertyChanged("StartYSetting");
                 }
             }
         }
@@ -109,20 +108,28 @@ namespace Monte_Carlo_Method_3D.Dialogs
             return true;
         }
 
+        public SimulationOptions SimulationOptions
+        {
+            get
+            {
+                if (DialogResult.GetValueOrDefault(false))
+                {
+                    return new SimulationOptions(WidthSetting, HeightSetting, new IntPoint(StartXSetting - 1, StartYSetting - 1));
+                }
+                throw new InvalidOperationException(); 
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(string propertyName)
         {
-            if (String.IsNullOrWhiteSpace(propertyName))
+            if (string.IsNullOrWhiteSpace(propertyName))
             {
                 throw new ArgumentException("Invalid property name.");
             }
 
-            PropertyChangedEventHandler temp = PropertyChanged;
-            if (temp != null)
-            {
-                temp(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

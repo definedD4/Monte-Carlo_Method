@@ -21,7 +21,7 @@ namespace Monte_Carlo_Method_3D.GraphRendering
 
         public override void UpdateVisualization()
         {
-            Texture = Visualizer.GenerateColorTexture();
+            Texture = Visualizer.GenerateColorTexture(true);
         }
     }
 }

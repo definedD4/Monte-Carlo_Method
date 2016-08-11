@@ -8,6 +8,7 @@ using Monte_Carlo_Method_3D.Simulation;
 using Monte_Carlo_Method_3D.Util;
 using Monte_Carlo_Method_3D.Visualization;
 using System.Windows.Threading;
+using Monte_Carlo_Method_3D.Dialogs;
 
 namespace Monte_Carlo_Method_3D.ViewModels
 {
@@ -26,6 +27,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private DelegateCommand m_StepCommand;
         private SwitchStateCommand m_PlayPauseCommand;
         private DelegateCommand m_RestartCommand;
+        private DelegateCommand m_SimulationOptionsCommand;
 
         public StMethodViewModel() : base("Метод статистических испытаний")
         {
@@ -101,6 +103,23 @@ namespace Monte_Carlo_Method_3D.ViewModels
             };
 
             VisualTypeSelector.UpdateSelectors();
+
+            m_SimulationOptionsCommand = new DelegateCommand(x =>
+            {
+                SimulationOptionsDialog dialog = new SimulationOptionsDialog(SimulationOptions.FromSimulator(m_Simulator));
+                dialog.ShowDialog();
+
+                if (dialog.DialogResult.GetValueOrDefault(false))
+                {
+                    SimulationOptions result = dialog.SimulationOptions;
+                    m_Simulator = new StSimulator(result.Width, result.Height, result.StartLocation);
+                    m_Visualizer = new StVisualizer(m_Simulator, new HSVPallete());
+                    VisualContext.Simulator = m_Simulator;
+                    VisualContext.Visualizer = m_Visualizer;
+                    VisualContext.UpdateVisualization();
+                    OnPropertyChanged(nameof(SimulationInfo));
+                }
+            }, x => !(SimulationInProgress || m_Timer.IsEnabled));
         }
 
         private void UpdateCommands()
@@ -131,5 +150,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
         public ICommand RestartCommand => m_RestartCommand;
 
         public SelectorCommand VisualTypeSelector { get; private set; }
+
+        public ICommand SimulationOptionsCommand => m_SimulationOptionsCommand;
     }
 }
