@@ -106,6 +106,7 @@ namespace Monte_Carlo_Method_3D.Simulation
             AverageTravelPath = 0;
 
             SimulationInfo = new StSimulationInfo(TotalSimulations, AverageTravelPath, TotalSimTime);
+            LastPath = null;
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
 using Monte_Carlo_Method_3D.GraphRendering;
 using Monte_Carlo_Method_3D.Simulation;
@@ -9,6 +10,7 @@ using Monte_Carlo_Method_3D.Util;
 using Monte_Carlo_Method_3D.Visualization;
 using System.Windows.Threading;
 using Monte_Carlo_Method_3D.Dialogs;
+using Microsoft.Win32;
 
 namespace Monte_Carlo_Method_3D.ViewModels
 {
@@ -28,6 +30,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private SwitchStateCommand m_PlayPauseCommand;
         private DelegateCommand m_RestartCommand;
         private DelegateCommand m_SimulationOptionsCommand;
+        private DelegateCommand m_ExportToCsvCommand;
 
         public StMethodViewModel() : base("Метод статистических испытаний")
         {
@@ -120,6 +123,29 @@ namespace Monte_Carlo_Method_3D.ViewModels
                     OnPropertyChanged(nameof(SimulationInfo));
                 }
             }, x => !(SimulationInProgress || m_Timer.IsEnabled));
+
+            m_ExportToCsvCommand = new DelegateCommand(_ =>
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                if (saveFileDialog.ShowDialog(Application.Current.MainWindow).GetValueOrDefault())
+                {
+                    double[,] data = new double[m_Simulator.Width, m_Simulator.Height];
+
+                    for(int x = 0; x < m_Simulator.Width; x++)
+                    {
+                        data[x, 0] = m_Simulator[x, 0];
+                        data[x, m_Simulator.Height - 1] = m_Simulator[x, m_Simulator.Height - 1];
+                    }
+
+                    for (int y = 1; y < m_Simulator.Height - 1; y++)
+                    {
+                        data[0, y] = m_Simulator[0, y];
+                        data[m_Simulator.Width - 1, y] = m_Simulator[m_Simulator.Width - 1, y];
+                    }
+
+                    new CsvExporter(';').ExportToFile(data, saveFileDialog.FileName);
+                }
+            });
         }
 
         private void UpdateCommands()
@@ -152,5 +178,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
         public SelectorCommand VisualTypeSelector { get; private set; }
 
         public ICommand SimulationOptionsCommand => m_SimulationOptionsCommand;
+
+        public ICommand ExportToCsvCommand => m_ExportToCsvCommand;
     }
 }

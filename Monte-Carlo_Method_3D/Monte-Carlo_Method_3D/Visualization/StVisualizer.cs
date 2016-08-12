@@ -48,32 +48,31 @@ namespace Monte_Carlo_Method_3D.Visualization
                 DrawCell(Width - 1, y, stride, bytesPerPixel, bytes);
             }
             BitmapSource texture = BitmapSource.Create(ImageWidth, ImageHeight, dpi, dpi, PixelFormats.Bgr24, null, bytes, stride);
-            if (m_Simulator.LastPath == null)
+            var visual = new DrawingVisual();
+            using (DrawingContext drawingContext = visual.RenderOpen())
             {
-                return texture;
-            }
-            else
-            {
-                var visual = new DrawingVisual();
-                using (DrawingContext drawingContext = visual.RenderOpen())
-                {
-                    drawingContext.DrawImage(texture, new Rect(new Size(ImageWidth, ImageHeight)));
+                drawingContext.DrawImage(texture, new Rect(new Size(ImageWidth, ImageHeight)));
 
+                if (m_Simulator.LastPath != null)
+                {
                     StParticlePath path = m_Simulator.LastPath;
 
                     IntPoint prev = path.Points[0];
-                    for(int i = 1; i < path.Points.Count; i++)
+                    for (int i = 1; i < path.Points.Count; i++)
                     {
                         IntPoint curr = path.Points[i];
 
-                        drawingContext.DrawLine(new Pen(Brushes.Purple, 1d/(double)PixelsPerCell * 0.1),
+                        drawingContext.DrawLine(new Pen(Brushes.Purple, 1d / (double)PixelsPerCell * 0.1),
                             new Point(prev.X * PixelsPerCell + 0.5, prev.Y * PixelsPerCell + 0.5), new Point(curr.X * PixelsPerCell + 0.5, curr.Y * PixelsPerCell + 0.5));
 
                         prev = curr;
                     }
                 }
-                return new DrawingImage(visual.Drawing);
+
+                IntPoint startLoc = m_Simulator.StartLocation;
+                drawingContext.DrawEllipse(Brushes.Purple, null, new Point(startLoc.X + 0.5, startLoc.Y + 0.5), 0.3, 0.3);
             }
+            return new DrawingImage(visual.Drawing);
         }
 
         private void DrawCell(int x, int y, int stride, int bytesPerPixel, byte[] bytes)
