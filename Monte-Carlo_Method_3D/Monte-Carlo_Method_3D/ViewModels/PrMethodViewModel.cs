@@ -24,7 +24,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private PrVisualContext m_VisualContext;
 
         private bool m_SimulationInProgress = false;
-        private int m_SimulateToStep;
+        private long m_SimulateToStep;
 
         public PrMethodViewModel(IPallete pallete) : base("Метод вероятностей")
         {
@@ -113,10 +113,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
             {
                 SimulationInProgress = true;
 
-                while (m_Simulator.Step < SimulateToStep)
-                {
-                    m_Simulator.SimulateSteps();
-                }
+                m_Simulator.SimulateSteps(Math.Max(SimulateToStep - m_Simulator.Step, 0L));
 
                 VisualContext.UpdateVisualization();
 
@@ -191,7 +188,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private DelegateCommand c_ExportToCsvCommand;
         public ICommand ExportToCsvCommand => c_ExportToCsvCommand;
 
-        public int SimulateToStep
+        public long SimulateToStep
         {
             get { return m_SimulateToStep; }
             set

@@ -43,12 +43,12 @@ namespace Monte_Carlo_Method_3D.Simulation
 
         public StSimulationInfo SimulationInfo { get; private set; }
 
-        public void SimulateSteps(int steps)
+        public void SimulateSteps(long steps)
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
 
             List<IntPoint> path = new List<IntPoint>();
-            for (int i = 0; i < steps; i++)
+            for (long i = 0; i < steps; i++)
             {
                 IntPoint pos = StartLocation;
                 int travelPath = 0;

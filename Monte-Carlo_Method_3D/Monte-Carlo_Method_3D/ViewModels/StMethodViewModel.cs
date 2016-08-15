@@ -146,6 +146,8 @@ namespace Monte_Carlo_Method_3D.ViewModels
                     new CsvExporter(';').ExportToFile(data, saveFileDialog.FileName);
                 }
             });
+
+
         }
 
         private void UpdateCommands()

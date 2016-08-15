@@ -31,10 +31,10 @@ namespace Monte_Carlo_Method_3D.Simulation
 
         public double this[int x, int y] => data[x, y];
 
-        public void SimulateSteps(int steps = 1)
+        public void SimulateSteps(long steps = 1)
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
-            for (int i = 0; i < steps; i++)
+            for (long i = 0; i < steps; i++)
             {
                 double[,] newData = new double[Width, Height];
                 for (int x = 1; x < Width - 1; x++)

@@ -20,8 +20,10 @@
                 <Button Content="Перезапуск" Command="{Binding RestartCommand}"/>
                 <Button DataContext="{Binding PlayPauseCommand}" Content="{Binding Label}" Command="{Binding }"/>
                 <Button Content="Следующий шаг" Command="{Binding StepCommand}"/>
-                <Button Content="Симулировать до: " Command="{Binding SimulateToCommand}"/>
-                <TextBox Text="{Binding SimulateToStep, UpdateSourceTrigger=PropertyChanged}"/>
+                <!--
+                    <Button Content="Симулировать до: " Command="{Binding SimulateToCommand}"/>
+                    <TextBox Text="{Binding SimulateToStep, UpdateSourceTrigger=PropertyChanged}"/>
+                -->
                 <Separator/>
                 <Button Content="Настройки симуляции" Command="{Binding SimulationOptionsCommand}"/>
                 <Button Content="Экспортировать в файл CSV" Command="{Binding ExportToCsvCommand}"/>
