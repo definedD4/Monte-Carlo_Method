@@ -61,7 +61,7 @@
                             <Button Content="Таблица" Command="{Binding VisualTypeSelector}" CommandParameter="Table" Margin="1,0"/>
                         </StackPanel>
                         <ContentControl Content="{Binding VisualContext}" Grid.Row="1" Grid.Column="0"/>
-                        <ContentControl Grid.Column="1" Grid.Row="1" Content="{Binding SimulationInfo}"/>
+                        <ContentControl Grid.Column="1" Grid.Row="1" Content="{Binding SimulationInfo}" Width="240"/>
                     </Grid>
                 </Grid>
             </Border>

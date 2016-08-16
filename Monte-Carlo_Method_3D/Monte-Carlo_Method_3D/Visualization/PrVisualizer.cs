@@ -25,12 +25,8 @@ namespace Monte_Carlo_Method_3D.Visualization
 
         public int Width => m_Simulator.Width;
         public int Height => m_Simulator.Height;
-        public int PixelsPerCell { get; set; } = 1;
-        public int ImageWidth => Width * PixelsPerCell;
-        public int ImageHeight => Height * PixelsPerCell;
 
         public double HeightCoefficient { get; set; }
-        public bool DrawBorder { get; set; }
 
         public GeometryModel3D GenerateModel()
         {
@@ -86,42 +82,25 @@ namespace Monte_Carlo_Method_3D.Visualization
 
         public ImageSource GenerateColorTexture()
         {
-            int cellSize = PixelsPerCell;
-            int bytesPerPixel = 3;
+            PixelFormat format = PixelFormats.Bgr24;
+            int bytesPerPixel = format.BitsPerPixel / 8;
             int dpi = 96;
-            int width = m_Simulator.Width * cellSize;
-            int height = m_Simulator.Height * cellSize;
-            int stride = width * bytesPerPixel;
-            byte[] bytes = new byte[height * stride];
+            int stride = Width * bytesPerPixel;
+            byte[] bytes = new byte[Height * stride];
 
             for (int x = 0; x < m_Simulator.Width; x++)
             {
                 for (int y = 0; y < m_Simulator.Height; y++)
                 {
-                    for (int _x = 0; _x < cellSize; _x++)
-                    {
-                        for (int _y = 0; _y < cellSize; _y++)
-                        {
-                            Color color = Colors.Purple;
+                    Color color = m_Pallete.GetColor(m_Simulator[x, y]);
 
-                            if(DrawBorder && (_x == 0 || _x == 9 || _y == 0 || _y == 9))
-                            {
-                                color = Colors.Black;
-                            }
-                            else
-                            {
-                                color = m_Pallete.GetColor(m_Simulator[x, y]);
-                            }
-
-                            int index = (y * cellSize + _y) * stride + (x * cellSize + _x) * bytesPerPixel;
-                            bytes[index] = color.B;
-                            bytes[index + 1] = color.G;
-                            bytes[index + 2] = color.R;
-                        }
-                    }
+                    int index = y * stride + x * bytesPerPixel;
+                    bytes[index] = color.B;
+                    bytes[index + 1] = color.G;
+                    bytes[index + 2] = color.R;
                 }
             }
-            BitmapSource result = BitmapSource.Create(width, height, dpi, dpi, PixelFormats.Bgr24, null, bytes, stride);
+            BitmapSource result = BitmapSource.Create(Width, Height, dpi, dpi, format, null, bytes, stride);
             return result;
         }
 
@@ -130,7 +109,7 @@ namespace Monte_Carlo_Method_3D.Visualization
             var visual = new DrawingVisual();
             using (DrawingContext drawingContext = visual.RenderOpen())
             {
-                drawingContext.DrawRectangle(Brushes.Black, null, new Rect(new Size(ImageWidth, ImageHeight)));
+                drawingContext.DrawRectangle(Brushes.Black, null, new Rect(new Size(Width, Height)));
                 for (int i = 0; i < m_Simulator.Width; i++)
                 {
                     for (int j = 0; j < m_Simulator.Height; j++)
@@ -138,7 +117,7 @@ namespace Monte_Carlo_Method_3D.Visualization
                         double val = m_Simulator[i, j];
                         drawingContext.DrawText(new FormattedText(Math.Round(val, 5).ToString("E2"), 
                             CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), 0.15, Brushes.White),
-                            new Point(i * PixelsPerCell + PixelsPerCell * 0.3f, j * PixelsPerCell + PixelsPerCell * 0.3f));
+                            new Point(i + 0.3f, j + 0.3f));
                     }
                 }
             }

@@ -1,20 +1,22 @@
-﻿using Monte_Carlo_Method_3D.Visualization;
+﻿using Monte_Carlo_Method_3D.ViewModels;
+using Monte_Carlo_Method_3D.Visualization;
 using System.Windows.Media;
 
 namespace Monte_Carlo_Method_3D.Gauge
 {
-    public class GaugeContext
+    public class GaugeContext : ViewModelBase
     {
+        private IPallete m_Pallete;
+
         public GaugeContext(IPallete pallete)
         {
-            double value = 0d;
-            for (int i = 0; i < 11; i++)
-            {
-                Colors[i] = pallete.GetColor(value);
-                value += 0.1d;
-            }
+            Pallete = pallete;
         }
 
-        public Color[] Colors { get; } = new Color[11]; 
+        public IPallete Pallete
+        {
+            get { return m_Pallete; }
+            set { m_Pallete = value; OnPropertyChanged(nameof(Pallete)); }
+        }
     }
 }

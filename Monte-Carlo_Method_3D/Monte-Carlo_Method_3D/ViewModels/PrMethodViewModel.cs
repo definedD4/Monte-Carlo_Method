@@ -22,9 +22,16 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private IPallete m_Pallete;
         private DispatcherTimer m_Timer;
         private PrVisualContext m_VisualContext;
+        private GaugeContext m_Gauge;
 
         private bool m_SimulationInProgress = false;
         private long m_SimulateToStep;
+
+        private SwitchStateCommand c_PlayPauseCommand;
+        private DelegateCommand c_StepCommand;
+        private DelegateCommand c_RestartCommand;
+        private DelegateCommand c_SimulationOptionsCommand;
+        private DelegateCommand c_SimulateToCommand;
 
         public PrMethodViewModel(IPallete pallete) : base("Метод вероятностей")
         {
@@ -36,7 +43,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
             m_Simulator = new PrSimulator(5, 5, new IntPoint(2, 2));
 
             //Init m_Visualizer and visual output
-            m_Visualizer = new PrVisualizer(m_Simulator, pallete) { DrawBorder = false, HeightCoefficient = 50 };
+            m_Visualizer = new PrVisualizer(m_Simulator, pallete) {  HeightCoefficient = 50 };
 
             //init visual context
             VisualContext = new PrVisualContext2D(m_Simulator, m_Visualizer);
@@ -101,7 +108,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 {
                     SimulationOptions result = dialog.SimulationOptions;
                     m_Simulator = new PrSimulator(result.Width, result.Height, result.StartLocation);
-                    m_Visualizer = new PrVisualizer(m_Simulator, pallete) { DrawBorder = false, HeightCoefficient = 25 };
+                    m_Visualizer = new PrVisualizer(m_Simulator, pallete) { HeightCoefficient = 25 };
                     VisualContext.Simulator = m_Simulator;
                     VisualContext.Visualizer = m_Visualizer;
                     VisualContext.UpdateVisualization();
@@ -170,37 +177,19 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         public PrSimulationInfo SimulationInfo => m_Simulator.SimulationInfo;
 
-        private SwitchStateCommand c_PlayPauseCommand;
         public ICommand PlayPauseCommand => c_PlayPauseCommand;
-
-        private DelegateCommand c_StepCommand;
         public ICommand StepCommand => c_StepCommand;
-
-        private DelegateCommand c_RestartCommand;
         public ICommand RestartCommand => c_RestartCommand;
-
-        private DelegateCommand c_SimulationOptionsCommand;
         public ICommand SimulationOptionsCommand => c_SimulationOptionsCommand;
-
-        private DelegateCommand c_SimulateToCommand;
         public ICommand SimulateToCommand => c_SimulateToCommand;
-
         private DelegateCommand c_ExportToCsvCommand;
         public ICommand ExportToCsvCommand => c_ExportToCsvCommand;
 
         public long SimulateToStep
         {
             get { return m_SimulateToStep; }
-            set
-            {
-                if (m_SimulateToStep != value)
-                {
-                    m_SimulateToStep = value; OnPropertyChanged("SimuateToStep");
-                    c_SimulateToCommand.RaiseCanExecuteChanged();
-                }
-            }
+            set { m_SimulateToStep = value; OnPropertyChanged("SimuateToStep"); c_SimulateToCommand.RaiseCanExecuteChanged(); }
         }
-
 
         public SelectorCommand VisualTypeSelector { get; private set; }
 
@@ -216,6 +205,10 @@ namespace Monte_Carlo_Method_3D.ViewModels
             }
         }
 
-        public GaugeContext Gauge { get; private set; }
+        public GaugeContext Gauge
+        {
+            get { return m_Gauge; }
+            set { m_Gauge = value;  OnPropertyChanged(nameof(Gauge)); }
+        }
     }
 }

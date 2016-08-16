@@ -24,19 +24,14 @@ namespace Monte_Carlo_Method_3D.Visualization
 
         public int Width => m_Simulator.Width;
         public int Height => m_Simulator.Height;
-        public int ImageWidth => Width * PixelsPerCell;
-        public int ImageHeight => Height * PixelsPerCell;
-
-        public int PixelsPerCell { get; set; } = 1;
 
         public ImageSource GenerateColorTexture(bool drawPath = false)
         {
             PixelFormat format = PixelFormats.Bgr24;
             int bytesPerPixel = format.BitsPerPixel / 8;
             int dpi = 96;
-            int stride = ImageWidth * bytesPerPixel;
+            int stride = Width * bytesPerPixel;
             byte[] bytes = new byte[Height * stride];
-
             for (int x = 0; x < Width; x++)
             {
                 DrawCell(x, 0, stride, bytesPerPixel, bytes);
@@ -47,26 +42,29 @@ namespace Monte_Carlo_Method_3D.Visualization
                 DrawCell(0, y, stride, bytesPerPixel, bytes);
                 DrawCell(Width - 1, y, stride, bytesPerPixel, bytes);
             }
-            BitmapSource texture = BitmapSource.Create(ImageWidth, ImageHeight, dpi, dpi, PixelFormats.Bgr24, null, bytes, stride);
+            BitmapSource texture = BitmapSource.Create(Width, Height, dpi, dpi, format, null, bytes, stride);
+            texture.Freeze();
+
             var visual = new DrawingVisual();
             using (DrawingContext drawingContext = visual.RenderOpen())
             {
-                drawingContext.DrawImage(texture, new Rect(new Size(ImageWidth, ImageHeight)));
+                drawingContext.DrawImage(texture, new Rect(new Size(Width, Height)));
 
-                if (m_Simulator.LastPath != null)
+                if (drawPath && m_Simulator.LastPath != null)
                 {
-                    StParticlePath path = m_Simulator.LastPath;
+                    var pen = new Pen(Brushes.Purple, 0.1D);
+                    pen.Freeze();
 
-                    IntPoint prev = path.Points[0];
-                    for (int i = 1; i < path.Points.Count; i++)
+                    var geometry = new StreamGeometry();
+                    using (StreamGeometryContext ctx = geometry.Open())
                     {
-                        IntPoint curr = path.Points[i];
-
-                        drawingContext.DrawLine(new Pen(Brushes.Purple, 1d / (double)PixelsPerCell * 0.1),
-                            new Point(prev.X * PixelsPerCell + 0.5, prev.Y * PixelsPerCell + 0.5), new Point(curr.X * PixelsPerCell + 0.5, curr.Y * PixelsPerCell + 0.5));
-
-                        prev = curr;
+                        var points = m_Simulator.LastPath.Points.Select(p => new Point(p.X + 0.5, p.Y + 0.5));
+                        ctx.BeginFigure(points.First(), true, false);
+                        ctx.PolyLineTo(points.Skip(1).ToList(), true, true);
                     }
+                    geometry.Freeze();
+
+                    drawingContext.DrawGeometry(null, pen, geometry);
                 }
 
                 IntPoint startLoc = m_Simulator.StartLocation;
@@ -77,18 +75,12 @@ namespace Monte_Carlo_Method_3D.Visualization
 
         private void DrawCell(int x, int y, int stride, int bytesPerPixel, byte[] bytes)
         {
-            for (int _x = 0; _x < PixelsPerCell; _x++)
-            {
-                for (int _y = 0; _y < PixelsPerCell; _y++)
-                {
                     Color color = m_Pallete.GetColor(m_Simulator[x, y]);
 
-                    int index = (y * PixelsPerCell + _y) * stride + (x * PixelsPerCell + _x) * bytesPerPixel;
+                    int index = y * stride + x * bytesPerPixel;
                     bytes[index] = color.B;
                     bytes[index + 1] = color.G;
                     bytes[index + 2] = color.R;
-                }
-            }
         }
 
         public ImageSource GenerateTableTexture()
@@ -117,7 +109,7 @@ namespace Monte_Carlo_Method_3D.Visualization
             double val = m_Simulator[i, j];
             drawingContext.DrawText(new FormattedText(Math.Round(val, 5).ToString("E2"),
                             CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), 0.15, Brushes.White),
-                            new Point(i * PixelsPerCell + PixelsPerCell * 0.3f, j * PixelsPerCell + PixelsPerCell * 0.3f));
+                            new Point(i + 0.3f, j + 0.3f));
         }
     }
 }

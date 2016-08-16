@@ -11,6 +11,7 @@ using Monte_Carlo_Method_3D.Visualization;
 using System.Windows.Threading;
 using Monte_Carlo_Method_3D.Dialogs;
 using Microsoft.Win32;
+using Monte_Carlo_Method_3D.Gauge;
 
 namespace Monte_Carlo_Method_3D.ViewModels
 {
@@ -24,6 +25,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
         // Property Backing Fields
         private bool m_SimulationInProgress = false;
         private StVisualContext m_VisualContext;
+        private GaugeContext m_Gauge;
 
         //Commands
         private DelegateCommand m_StepCommand;
@@ -34,11 +36,14 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         public StMethodViewModel() : base("Метод статистических испытаний")
         {
-            m_Simulator = new StSimulator(5, 5, new IntPoint(2, 2));
-            m_Visualizer = new StVisualizer(m_Simulator, new HSVPallete());
-            VisualContext = new StVisualContext2D(m_Simulator, m_Visualizer);
+            IPallete pallete = new HSVPallete();
 
+            m_Simulator = new StSimulator(5, 5, new IntPoint(2, 2));
+            m_Visualizer = new StVisualizer(m_Simulator, pallete);
+            VisualContext = new StVisualContext2D(m_Simulator, m_Visualizer);
             VisualContext.UpdateVisualization();
+
+            Gauge = new GaugeContext(pallete);
 
             m_StepCommand = new DelegateCommand(_ =>
             {
@@ -74,7 +79,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 {
                     SimulationInProgress = true;
 
-                    m_Simulator.SimulateSteps(5);
+                    m_Simulator.SimulateSteps(200);
                     VisualContext.UpdateVisualization();
 
                     SimulationInProgress = false;
@@ -167,6 +172,12 @@ namespace Monte_Carlo_Method_3D.ViewModels
         {
             get { return m_VisualContext; }
             set { m_VisualContext = value; OnPropertyChanged(nameof(VisualContext)); }
+        }
+
+        public GaugeContext Gauge
+        {
+            get { return m_Gauge; }
+            set { m_Gauge = value; OnPropertyChanged(nameof(Gauge)); }
         }
 
         public StSimulationInfo SimulationInfo => m_Simulator.SimulationInfo;

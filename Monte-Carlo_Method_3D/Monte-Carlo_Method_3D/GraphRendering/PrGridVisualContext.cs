@@ -25,8 +25,8 @@ namespace Monte_Carlo_Method_3D.GraphRendering
 
         public double GetValueAtImageCoordinates(Point position, Size controlSize)
         {
-            int x = (int)Math.Truncate(position.X * Visualizer.ImageWidth / controlSize.Width / Visualizer.PixelsPerCell);
-            int y = (int)Math.Truncate(position.Y * Visualizer.ImageHeight / controlSize.Height / Visualizer.PixelsPerCell);
+            int x = (int)Math.Truncate(position.X * Visualizer.Width / controlSize.Width);
+            int y = (int)Math.Truncate(position.Y * Visualizer.Height / controlSize.Height);
             return Simulator != null ? Simulator[x, y] : double.NaN;
         }
     }
