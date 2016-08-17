@@ -8,11 +8,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Monte_Carlo_Method_3D.Simulation;
 using Monte_Carlo_Method_3D.Util;
+using System.Diagnostics;
 
 namespace Monte_Carlo_Method_3D.Visualization
 {
     public class StVisualizer
     {
+        private const int Dpi = 96;
+
         private IPallete m_Pallete;
         private StSimulator m_Simulator;
 
@@ -27,22 +30,28 @@ namespace Monte_Carlo_Method_3D.Visualization
 
         public ImageSource GenerateColorTexture(bool drawPath = false)
         {
-            PixelFormat format = PixelFormats.Bgr24;
-            int bytesPerPixel = format.BitsPerPixel / 8;
-            int dpi = 96;
-            int stride = Width * bytesPerPixel;
-            byte[] bytes = new byte[Height * stride];
-            for (int x = 0; x < Width; x++)
+            WriteableBitmap texture = new WriteableBitmap(Width, Height, Dpi, Dpi, PixelFormats.Bgr24, null);
+            int bytesPerPixel = texture.Format.BitsPerPixel / 8;
+            int stride = texture.BackBufferStride;
+
+            texture.Lock();
+            unsafe
             {
-                DrawCell(x, 0, stride, bytesPerPixel, bytes);
-                DrawCell(x, Height - 1, stride, bytesPerPixel, bytes);
+                byte* bytes = (byte*)texture.BackBuffer.ToPointer();
+
+                for (int x = 0; x < Width; x++)
+                {
+                    DrawingUtil.DrawColorCell(bytes, x,          0, m_Pallete.GetColor(m_Simulator[x,          0]), bytesPerPixel, stride);
+                    DrawingUtil.DrawColorCell(bytes, x, Height - 1, m_Pallete.GetColor(m_Simulator[x, Height - 1]), bytesPerPixel, stride);
+                }
+                for (int y = 1; y < Height; y++)
+                {
+                    DrawingUtil.DrawColorCell(bytes,         0, y, m_Pallete.GetColor(m_Simulator[        0, y]), bytesPerPixel, stride);
+                    DrawingUtil.DrawColorCell(bytes, Width - 1, y, m_Pallete.GetColor(m_Simulator[Width - 1, y]), bytesPerPixel, stride);
+                }
+                texture.AddDirtyRect(new Int32Rect(0, 0, texture.PixelWidth, texture.PixelHeight));
+                texture.Unlock();
             }
-            for (int y = 1; y < Height; y++)
-            {
-                DrawCell(0, y, stride, bytesPerPixel, bytes);
-                DrawCell(Width - 1, y, stride, bytesPerPixel, bytes);
-            }
-            BitmapSource texture = BitmapSource.Create(Width, Height, dpi, dpi, format, null, bytes, stride);
             texture.Freeze();
 
             var visual = new DrawingVisual();
@@ -73,16 +82,6 @@ namespace Monte_Carlo_Method_3D.Visualization
             return new DrawingImage(visual.Drawing);
         }
 
-        private void DrawCell(int x, int y, int stride, int bytesPerPixel, byte[] bytes)
-        {
-                    Color color = m_Pallete.GetColor(m_Simulator[x, y]);
-
-                    int index = y * stride + x * bytesPerPixel;
-                    bytes[index] = color.B;
-                    bytes[index + 1] = color.G;
-                    bytes[index + 2] = color.R;
-        }
-
         public ImageSource GenerateTableTexture()
         {
             var visual = new DrawingVisual();
@@ -91,25 +90,17 @@ namespace Monte_Carlo_Method_3D.Visualization
                 drawingContext.DrawRectangle(Brushes.Black, null, new Rect(new Size(Width, Height)));
                 for (int x = 0; x < Width; x++)
                 {
-                    DrawTableCell(x, 0, drawingContext);
-                    DrawTableCell(x, Height - 1, drawingContext);
+                    DrawingUtil.DrawTableCell(drawingContext, x,          0, Math.Round(m_Simulator[x,          0], 5).ToString("E2"));
+                    DrawingUtil.DrawTableCell(drawingContext, x, Height - 1, Math.Round(m_Simulator[x, Height - 1], 5).ToString("E2"));
                 }
                 for (int y = 0; y < Height; y++)
                 {
-                    DrawTableCell(0, y, drawingContext);
-                    DrawTableCell(Width - 1, y, drawingContext);
+                    DrawingUtil.DrawTableCell(drawingContext,         0, y, Math.Round(m_Simulator[        0, y], 5).ToString("E2"));
+                    DrawingUtil.DrawTableCell(drawingContext, Width - 1, y, Math.Round(m_Simulator[Width - 1, y], 5).ToString("E2"));
                 }
             }
             var image = new DrawingImage(visual.Drawing);
             return image;
-        }
-
-        private void DrawTableCell(int i, int j, DrawingContext drawingContext)
-        {
-            double val = m_Simulator[i, j];
-            drawingContext.DrawText(new FormattedText(Math.Round(val, 5).ToString("E2"),
-                            CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), 0.15, Brushes.White),
-                            new Point(i + 0.3f, j + 0.3f));
         }
     }
 }

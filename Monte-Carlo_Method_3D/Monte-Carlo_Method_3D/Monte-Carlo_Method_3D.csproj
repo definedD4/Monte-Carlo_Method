@@ -27,6 +27,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -79,6 +80,7 @@
     <Compile Include="Simulation\StSimulator.cs" />
     <Compile Include="Util\CsvExporter.cs" />
     <Compile Include="Util\DelegateCommand.cs" />
+    <Compile Include="Util\DrawingUtil.cs" />
     <Compile Include="Util\EdgeData.cs" />
     <Compile Include="Util\PointedValueBehavior.cs" />
     <Compile Include="Util\Rotation3DBehavior.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="ViewModels\PrMethodViewModel.cs" />
     <Compile Include="ViewModels\StMethodViewModel.cs" />
     <Compile Include="ViewModels\TabViewModel.cs" />
+    <Compile Include="Visualization\GraphMesh.cs" />
     <Compile Include="Visualization\PrVisualizer.cs" />
     <Compile Include="Util\IntPoint.cs" />
     <Compile Include="Util\SelectorCommand.cs" />

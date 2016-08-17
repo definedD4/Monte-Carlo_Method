@@ -43,7 +43,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
             m_Simulator = new PrSimulator(5, 5, new IntPoint(2, 2));
 
             //Init m_Visualizer and visual output
-            m_Visualizer = new PrVisualizer(m_Simulator, pallete) {  HeightCoefficient = 50 };
+            m_Visualizer = new PrVisualizer(m_Simulator, pallete);
 
             //init visual context
             VisualContext = new PrVisualContext2D(m_Simulator, m_Visualizer);
@@ -108,7 +108,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 {
                     SimulationOptions result = dialog.SimulationOptions;
                     m_Simulator = new PrSimulator(result.Width, result.Height, result.StartLocation);
-                    m_Visualizer = new PrVisualizer(m_Simulator, pallete) { HeightCoefficient = 25 };
+                    m_Visualizer = new PrVisualizer(m_Simulator, pallete);
                     VisualContext.Simulator = m_Simulator;
                     VisualContext.Visualizer = m_Visualizer;
                     VisualContext.UpdateVisualization();

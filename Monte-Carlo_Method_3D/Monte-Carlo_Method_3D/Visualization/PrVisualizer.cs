@@ -1,4 +1,5 @@
 ﻿using Monte_Carlo_Method_3D.Simulation;
+using Monte_Carlo_Method_3D.Util;
 using System;
 using System.Diagnostics;
 using System.Globalization;
@@ -11,97 +12,55 @@ namespace Monte_Carlo_Method_3D.Visualization
 {
     public class PrVisualizer
     {
+        private const int Dpi = 96;
+
         private readonly IPallete m_Pallete;
         private readonly PrSimulator m_Simulator;
-        private MeshGeometry3D m_Mesh;
+        private GraphMesh m_Mesh;
 
         public PrVisualizer(PrSimulator simulator, IPallete pallete)
         {
             m_Simulator = simulator;
             m_Pallete = pallete;
 
-            m_Mesh = GenerateMesh(Width, Height);     
+            m_Mesh = new GraphMesh(Width, Height);     
         }
 
         public int Width => m_Simulator.Width;
         public int Height => m_Simulator.Height;
 
-        public double HeightCoefficient { get; set; }
-
         public GeometryModel3D GenerateModel()
         {
-            GeometryModel3D model = new GeometryModel3D(m_Mesh, new DiffuseMaterial(new ImageBrush(GenerateColorTexture())));
-
-            double offsetX = -(double)m_Simulator.Width / 2;
-            double offsetY = -(double)m_Simulator.Height / 2;
-
-            Point3DCollection points = m_Mesh.Positions;
-            for(int i = 0; i < points.Count; i++)
-            {
-                Point3D p = points[i];
-                int x = (int)(p.X - offsetX);
-                int y = (int)(p.Z - offsetY);
-                p.Y = Math.Sqrt(Math.Sqrt(m_Simulator[x, y])) * HeightCoefficient;
-                points[i] = p;
-            }
-
-            return model;
-        }
-
-        private MeshGeometry3D GenerateMesh(int width, int height)
-        {
-            double offsetX = -(double)width / 2;
-            double offsetY = -(double)height / 2;
-
-            MeshGeometry3D mesh = new MeshGeometry3D();
-            for (int x = 0; x < width; x++)
-            {
-                for (int y = 0; y < height; y++)
-                {
-                    mesh.Positions.Add(new Point3D(x + offsetX, 0, y + offsetY));
-                    mesh.TextureCoordinates.Add(new Point((double)x / width, (double)y / height));
-                }
-            }
-
-            for (int x = 0; x < width - 1; x++)
-            {
-                for (int y = 0; y < height - 1; y++)
-                {
-                    int i = x * height + y;
-                    mesh.TriangleIndices.Add(i);
-                    mesh.TriangleIndices.Add(i + 1);
-                    mesh.TriangleIndices.Add(i + height);
-
-                    mesh.TriangleIndices.Add(i + height);
-                    mesh.TriangleIndices.Add(i + 1);
-                    mesh.TriangleIndices.Add(i + height + 1);
-                }
-            }
-            return mesh;
+            m_Mesh.UpdateMesh(m_Simulator);
+            return new GeometryModel3D(m_Mesh.Mesh, new DiffuseMaterial(new ImageBrush(GenerateColorTexture())));
         }
 
         public ImageSource GenerateColorTexture()
         {
-            PixelFormat format = PixelFormats.Bgr24;
-            int bytesPerPixel = format.BitsPerPixel / 8;
-            int dpi = 96;
-            int stride = Width * bytesPerPixel;
-            byte[] bytes = new byte[Height * stride];
+            WriteableBitmap bitmap = new WriteableBitmap(Width, Height, Dpi, Dpi, PixelFormats.Bgr24, null);
+            int bytesPerPixel = bitmap.Format.BitsPerPixel / 8;
+            int stride = bitmap.BackBufferStride;
 
-            for (int x = 0; x < m_Simulator.Width; x++)
+            bitmap.Lock();
+            unsafe
             {
-                for (int y = 0; y < m_Simulator.Height; y++)
-                {
-                    Color color = m_Pallete.GetColor(m_Simulator[x, y]);
+                byte* bytes = (byte*)bitmap.BackBuffer.ToPointer();
 
-                    int index = y * stride + x * bytesPerPixel;
-                    bytes[index] = color.B;
-                    bytes[index + 1] = color.G;
-                    bytes[index + 2] = color.R;
+                for (int x = 0; x < m_Simulator.Width; x++)
+                {
+                    for (int y = 0; y < m_Simulator.Height; y++)
+                    {
+                        Color color = m_Pallete.GetColor(m_Simulator[x, y]);
+
+                        DrawingUtil.DrawColorCell(bytes, x, y, color, bytesPerPixel, stride);
+                    }
                 }
+                bitmap.AddDirtyRect(new Int32Rect(0, 0, bitmap.PixelWidth, bitmap.PixelHeight));
+                bitmap.Unlock();
             }
-            BitmapSource result = BitmapSource.Create(Width, Height, dpi, dpi, format, null, bytes, stride);
-            return result;
+            bitmap.Freeze();
+
+            return bitmap;
         }
 
         public ImageSource GenerateTableTexture()
@@ -114,10 +73,7 @@ namespace Monte_Carlo_Method_3D.Visualization
                 {
                     for (int j = 0; j < m_Simulator.Height; j++)
                     {
-                        double val = m_Simulator[i, j];
-                        drawingContext.DrawText(new FormattedText(Math.Round(val, 5).ToString("E2"), 
-                            CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), 0.15, Brushes.White),
-                            new Point(i + 0.3f, j + 0.3f));
+                        DrawingUtil.DrawTableCell(drawingContext, i, j, Math.Round(m_Simulator[i, j], 5).ToString("E2"));
                     }
                 }
             }

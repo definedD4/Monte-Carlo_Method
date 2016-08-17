@@ -49,21 +49,19 @@
                     </Canvas>
                     <ContentControl Content="{Binding Gauge}" ContentTemplate="{StaticResource GaugeTemplate}" Margin="8" Grid.Column="1"/>
                     <Grid Grid.Column="2">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="1*"/>
-                        </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.ColumnSpan="2">
-                            <Button Content="2D" Command="{Binding VisualTypeSelector}" CommandParameter="2D" Margin="1,0"/>
-                            <Button Content="3D" Command="{Binding VisualTypeSelector}" CommandParameter="3D" Margin="1,0"/>
-                            <Button Content="Таблица" Command="{Binding VisualTypeSelector}" CommandParameter="Table" Margin="1,0"/>
+                        <ContentControl Content="{Binding VisualContext}"/>
+                        <StackPanel Orientation="Vertical" Grid.Column="1">
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="2D" Command="{Binding VisualTypeSelector}" CommandParameter="2D" Margin="1,0"/>
+                                <Button Content="3D" Command="{Binding VisualTypeSelector}" CommandParameter="3D" Margin="1,0"/>
+                                <Button Content="Таблица" Command="{Binding VisualTypeSelector}" CommandParameter="Table" Margin="1,0"/>
+                            </StackPanel>
+                            <ContentControl Content="{Binding SimulationInfo}"/>
                         </StackPanel>
-                        <ContentControl Content="{Binding VisualContext}" Grid.Row="1" Grid.Column="0"/>
-                        <ContentControl Grid.Column="1" Grid.Row="1" Content="{Binding SimulationInfo}"/>
                     </Grid>
                 </Grid>
             </Border>
