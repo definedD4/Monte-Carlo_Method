@@ -2,28 +2,32 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Monte_Carlo_Method_3D.Views"
                     xmlns:sim="clr-namespace:Monte_Carlo_Method_3D.Simulation">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../Styles/Resources.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
     <DataTemplate DataType="{x:Type sim:PrSimulationInfo}">
-        <StackPanel Margin="4" Grid.Row="1" Background="#FF00366C">
+        <StackPanel Margin="4" Grid.Row="1" Background="{DynamicResource PrimaryBackgroundColor}">
+            <StackPanel.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}"/>
+                </Style>
+            </StackPanel.Resources>
             <WrapPanel Margin="2">
-                <TextBlock Text="Шаг:" Foreground="White" Margin="1"/>
-                <TextBlock Text="{Binding Step}" Foreground="White" Margin="1"/>
+                <TextBlock Text="Шаг:" Margin="1"/>
+                <TextBlock Text="{Binding Step}" Margin="1"/>
             </WrapPanel>
             <WrapPanel Margin="2">
-                <TextBlock Text="Сумма в центре:" Foreground="White" Margin="1"/>
-                <TextBlock Text="{Binding CenterSum, StringFormat={}{0:E10}}" Foreground="White" Margin="1"/>
+                <TextBlock Text="Сумма в центре:" Margin="1"/>
+                <TextBlock Text="{Binding CenterSum, StringFormat={}{0:E10}}" Margin="1"/>
             </WrapPanel>
             <WrapPanel Margin="2">
-                <TextBlock Text="Сумма на границе:" Foreground="White" Margin="1"/>
-                <TextBlock Text="{Binding EdgeSum, StringFormat={}{0:E10}}" Foreground="White" Margin="1"/>
+                <TextBlock Text="Сумма на границе:" Margin="1"/>
+                <TextBlock Text="{Binding EdgeSum, StringFormat={}{0:E10}}" Margin="1"/>
             </WrapPanel>
-            <!--<WrapPanel Margin="2">
-                <TextBlock Text="Общяя сумма:" Foreground="White" Margin="1"/>
-                <TextBlock Text="{Binding TotalSum}" Foreground="White" Margin="1"/>
-            </WrapPanel>-->
             <WrapPanel Margin="2">
-                <TextBlock Text="Полное время симуляции:" Foreground="White" Margin="1"/>
-                <TextBlock Text="{Binding TotalSimTime, StringFormat={}{0:N4}}" Foreground="White" Margin="1"/>
-                <TextBlock Text="мс" Foreground="White" Margin="1"/>
+                <TextBlock Text="Полное время симуляции:" Margin="1"/>
+                <TextBlock Text="{Binding TotalSimTime, StringFormat={}{0:N4}}" Margin="1"/>
+                <TextBlock Text="мс" Margin="1"/>
             </WrapPanel>
         </StackPanel>
     </DataTemplate>

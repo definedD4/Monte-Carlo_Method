@@ -63,8 +63,7 @@ namespace Monte_Carlo_Method_3D.Util
 
         public void UpdateSelectors()
         {
-            if(CanExecuteChanged != null)
-                CanExecuteChanged(this, new EventArgs());
+                CanExecuteChanged?.Invoke(this, new EventArgs());
         }
     }
 }

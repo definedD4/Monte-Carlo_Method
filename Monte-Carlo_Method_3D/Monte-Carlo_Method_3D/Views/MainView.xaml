@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Monte_Carlo_Method_3D.Views"
         mc:Ignorable="d"
-        Title="Метод Монте-Карло" Height="640" Width="920">
+        Title="Метод Монте-Карло" Height="640" Width="920"
+        WindowState="Maximized"
+        >
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -14,16 +16,28 @@
                 <ResourceDictionary Source="PropabilityMethodView.xaml"/>
                 <ResourceDictionary Source="StatMethodView.xaml"/>
                 <ResourceDictionary Source="Gauge.xaml"/>
+
+                <ResourceDictionary Source="../Styles/Resources.xaml"/>
+                <ResourceDictionary Source="../Styles/TabControlStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid Background="#FF94BADA">
-        <TabControl ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab}">
+    <Grid Background="{DynamicResource SecondaryBackgroundColor}">
+        <TabControl ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab}" IsSynchronizedWithCurrentItem="False">
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Header}" Margin="2"/>
                 </DataTemplate>
             </TabControl.ItemTemplate>
         </TabControl>
+        
+        <!--<TabControl>
+            <TabItem Header="Tab 1">
+                
+            </TabItem>
+            <TabItem Header="Tab 2">
+                
+            </TabItem>
+        </TabControl>-->
     </Grid>
 </Window>
