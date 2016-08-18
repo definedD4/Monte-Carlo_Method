@@ -11,14 +11,14 @@ namespace Monte_Carlo_Method_3D.Gauge
 {
     public class GaugeGradient : FrameworkElement
     {
-        public IPallete Pallete
+        public Pallete Pallete
         {
-            get { return (IPallete)GetValue(PalleteProperty); }
+            get { return (Pallete)GetValue(PalleteProperty); }
             set { SetValue(PalleteProperty, value); }
         }
 
         public static readonly DependencyProperty PalleteProperty =
-            DependencyProperty.Register("Pallete", typeof(IPallete), typeof(GaugeGradient), new PropertyMetadata(null));
+            DependencyProperty.Register("Pallete", typeof(Pallete), typeof(GaugeGradient), new PropertyMetadata(null));
 
         protected override void OnRender(DrawingContext drawingContext)
         {

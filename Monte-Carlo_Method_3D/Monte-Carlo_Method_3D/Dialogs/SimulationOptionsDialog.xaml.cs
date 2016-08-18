@@ -131,5 +131,11 @@ namespace Monte_Carlo_Method_3D.Dialogs
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            StartXSetting = (int)Math.Round((double)WidthSetting / 2, MidpointRounding.AwayFromZero);
+            StartYSetting = (int)Math.Round((double)HeightSetting / 2, MidpointRounding.AwayFromZero);
+        }
     }
 }

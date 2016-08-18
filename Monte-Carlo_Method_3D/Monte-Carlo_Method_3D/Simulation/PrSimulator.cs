@@ -102,7 +102,7 @@ namespace Monte_Carlo_Method_3D.Simulation
                 edgeSum += data[x, 0];
                 edgeSum += data[x, Height - 1];
             }
-            for (int y = 0; y < Width; y++)
+            for (int y = 0; y < Height; y++)
             {
                 edgeSum += data[0, y];
                 edgeSum += data[Width - 1, y];

@@ -18,11 +18,11 @@ namespace Monte_Carlo_Method_3D.Util
             pixels[index + 2] = color.R;
         }
 
-        public static void DrawTableCell(DrawingContext drawingContext, int x, int y, string str)
+        public static void DrawTableCell(DrawingContext drawingContext, int x, int y, string str, Color foregroundColor)
         {
             drawingContext.DrawText(new FormattedText(str,
-                            CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), 0.15, Brushes.White),
-                            new Point(x + 0.3f, y + 0.3f));
+                            CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), 0.15, new SolidColorBrush(foregroundColor)),
+                            new Point(x + 0.2f, y + 0.2f));
         }
     }
 }

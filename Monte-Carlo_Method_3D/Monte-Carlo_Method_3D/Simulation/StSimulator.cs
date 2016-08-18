@@ -97,7 +97,7 @@ namespace Monte_Carlo_Method_3D.Simulation
             return MovePropabilities[MovePropabilities.Count].Item1;
         }
 
-        public double this[int x, int y] => m_Data[x, y]/TotalSimulations;
+        public double this[int x, int y] => TotalSimulations == 0 ? 0 : m_Data[x, y]/TotalSimulations;
 
         public StParticlePath LastPath { get; private set; }
 

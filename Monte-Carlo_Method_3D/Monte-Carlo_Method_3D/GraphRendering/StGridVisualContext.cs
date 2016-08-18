@@ -10,17 +10,9 @@ namespace Monte_Carlo_Method_3D.GraphRendering
 {
     public abstract class StGridVisualContext : StVisualContext, IGridContext
     {
-        private double m_PointedValue;
-
         public StGridVisualContext(StSimulator simulator, StVisualizer visualizer) : base(simulator, visualizer)
         {
 
-        }
-
-        public double PointedValue
-        {
-            get { return m_PointedValue; }
-            set { m_PointedValue = Math.Round(value, 8); OnPropertyChanged("PointedValue"); }
         }
 
         public double GetValueAtImageCoordinates(Point position, Size controlSize)

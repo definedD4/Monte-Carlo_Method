@@ -20,8 +20,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -32,12 +30,25 @@
         <TextBox Text="{Binding WidthSetting}" Grid.Row="0" Grid.Column="2"/>
         <TextBlock Text="Высота:" Grid.Row="1" />
         <TextBox Text="{Binding HeightSetting}" Grid.Row="1" Grid.Column="2"/>
-        <TextBlock Text="Стартовая позиция:" Grid.Row="2" Grid.ColumnSpan="2" Margin="4,9,4,4"/>
-        <TextBlock Text="X:" Grid.Row="3" />
-        <TextBox Text="{Binding StartXSetting}" Grid.Row="3" Grid.Column="2"/>
-        <TextBlock Text="Y:" Grid.Row="4" />
-        <TextBox Text="{Binding StartYSetting}" Grid.Row="4" Grid.Column="2"/>
-        <WrapPanel HorizontalAlignment="Right" MinWidth="144" Grid.ColumnSpan="2" Grid.Row="5">
+        <GroupBox Grid.Row="2" Grid.ColumnSpan="2" Header="Стартовая позиция:">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="X:" Grid.Row="0" />
+                <TextBox Text="{Binding StartXSetting}" Grid.Row="0" Grid.Column="2"/>
+                <TextBlock Text="Y:" Grid.Row="1" />
+                <TextBox Text="{Binding StartYSetting}" Grid.Row="1" Grid.Column="2"/>
+                <Button Content="По центру" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Right" Click="Button_Click"  Margin="4"/>
+            </Grid>
+        </GroupBox>
+        <WrapPanel HorizontalAlignment="Right" MinWidth="144" Grid.ColumnSpan="2" Grid.Row="3">
             <Button Content="ОК" IsDefault="True" Margin="4" Width="60" Click="btnOk_Click"/>
             <Button Content="Отмена" IsCancel="True" Margin="4" Width=" 60"/>
         </WrapPanel>

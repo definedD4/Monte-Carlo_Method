@@ -33,19 +33,24 @@
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type sim:StSimulationInfo}">
-        <StackPanel Margin="4" Grid.Row="1" Background="#FF00366C">
+        <StackPanel Margin="4" Grid.Row="1" Background="{DynamicResource PrimaryBackgroundColor}">
+            <StackPanel.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="{DynamicResource PrimaryForegroundColor}"/>
+                </Style>
+            </StackPanel.Resources>
             <WrapPanel Margin="2">
-                <TextBlock Text="Симуляций проведено:" Foreground="White" Margin="1"/>
-                <TextBlock Text="{Binding TotalSimulationsFormated}" Foreground="White" Margin="1"/>
+                <TextBlock Text="Симуляций проведено:" Margin="1"/>
+                <TextBlock Text="{Binding TotalSimulationsFormated}" Margin="1"/>
             </WrapPanel>
             <WrapPanel Margin="2">
-                <TextBlock Text="Средняя продолжительность пути:" Foreground="White" Margin="1"/>
-                <TextBlock Text="{Binding AverageTravelPathFormated}" Foreground="White" Margin="1"/>
+                <TextBlock Text="Средняя продолжительность пути:" Margin="1"/>
+                <TextBlock Text="{Binding AverageTravelPathFormated}" Margin="1"/>
             </WrapPanel>
             <WrapPanel Margin="2">
-                <TextBlock Text="Полное время симуляции:" Foreground="White" Margin="1"/>
-                <TextBlock Text="{Binding TotalSimTime, StringFormat={}{0:N4}}" Foreground="White" Margin="1"/>
-                <TextBlock Text="мс" Foreground="White" Margin="1"/>
+                <TextBlock Text="Полное время симуляции:" Margin="1"/>
+                <TextBlock Text="{Binding TotalSimTime, StringFormat={}{0:N4}}" Margin="1"/>
+                <TextBlock Text="мс" Margin="1"/>
             </WrapPanel>
         </StackPanel>
     </DataTemplate>

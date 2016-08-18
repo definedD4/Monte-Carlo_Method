@@ -16,10 +16,10 @@ namespace Monte_Carlo_Method_3D.Visualization
     {
         private const int Dpi = 96;
 
-        private IPallete m_Pallete;
+        private Pallete m_Pallete;
         private StSimulator m_Simulator;
 
-        public StVisualizer(StSimulator simulator, IPallete pallete)
+        public StVisualizer(StSimulator simulator, Pallete pallete)
         {
             m_Simulator = simulator;
             m_Pallete = pallete;          
@@ -28,7 +28,15 @@ namespace Monte_Carlo_Method_3D.Visualization
         public int Width => m_Simulator.Width;
         public int Height => m_Simulator.Height;
 
-        public ImageSource GenerateColorTexture(bool drawPath = false)
+        public Color BackgroundColor { get; set; } = Colors.White;
+        public Color ForegroundColor { get; set; } = Colors.Black;
+        public Color PathColor { get; set; } = Colors.Black;
+        public Color StartPointColor { get; set; } = Colors.Black;
+
+        public bool DrawPath { get; set; } = true;
+        public bool DrawStartPoint { get; set; } = true;
+
+        public ImageSource GenerateColorTexture()
         {
             WriteableBitmap texture = new WriteableBitmap(Width, Height, Dpi, Dpi, PixelFormats.Bgr24, null);
             int bytesPerPixel = texture.Format.BitsPerPixel / 8;
@@ -39,15 +47,19 @@ namespace Monte_Carlo_Method_3D.Visualization
             {
                 byte* bytes = (byte*)texture.BackBuffer.ToPointer();
 
-                for (int x = 0; x < Width; x++)
+                for(int x = 0; x < Width; x++)
                 {
-                    DrawingUtil.DrawColorCell(bytes, x,          0, m_Pallete.GetColor(m_Simulator[x,          0]), bytesPerPixel, stride);
-                    DrawingUtil.DrawColorCell(bytes, x, Height - 1, m_Pallete.GetColor(m_Simulator[x, Height - 1]), bytesPerPixel, stride);
-                }
-                for (int y = 1; y < Height; y++)
-                {
-                    DrawingUtil.DrawColorCell(bytes,         0, y, m_Pallete.GetColor(m_Simulator[        0, y]), bytesPerPixel, stride);
-                    DrawingUtil.DrawColorCell(bytes, Width - 1, y, m_Pallete.GetColor(m_Simulator[Width - 1, y]), bytesPerPixel, stride);
+                    for(int y = 0; y < Height; y++)
+                    {
+                        if(m_Simulator.CanIndex(x, y))
+                        {
+                            DrawingUtil.DrawColorCell(bytes, x, y, m_Pallete.GetColor(m_Simulator[x, y]), bytesPerPixel, stride);
+                        }
+                        else
+                        {
+                            DrawingUtil.DrawColorCell(bytes, x, y, BackgroundColor, bytesPerPixel, stride);
+                        }
+                    }
                 }
                 texture.AddDirtyRect(new Int32Rect(0, 0, texture.PixelWidth, texture.PixelHeight));
                 texture.Unlock();
@@ -59,9 +71,9 @@ namespace Monte_Carlo_Method_3D.Visualization
             {
                 drawingContext.DrawImage(texture, new Rect(new Size(Width, Height)));
 
-                if (drawPath && m_Simulator.LastPath != null)
+                if (DrawPath && m_Simulator.LastPath != null)
                 {
-                    var pen = new Pen(Brushes.Purple, 0.1D);
+                    var pen = new Pen(new SolidColorBrush(PathColor), 0.1D);
                     pen.Freeze();
 
                     var geometry = new StreamGeometry();
@@ -77,7 +89,8 @@ namespace Monte_Carlo_Method_3D.Visualization
                 }
 
                 IntPoint startLoc = m_Simulator.StartLocation;
-                drawingContext.DrawEllipse(Brushes.Purple, null, new Point(startLoc.X + 0.5, startLoc.Y + 0.5), 0.3, 0.3);
+                if(DrawStartPoint)
+                    drawingContext.DrawEllipse(new SolidColorBrush(StartPointColor), null, new Point(startLoc.X + 0.5, startLoc.Y + 0.5), 0.3, 0.3);
             }
             return new DrawingImage(visual.Drawing);
         }
@@ -87,16 +100,16 @@ namespace Monte_Carlo_Method_3D.Visualization
             var visual = new DrawingVisual();
             using (DrawingContext drawingContext = visual.RenderOpen())
             {
-                drawingContext.DrawRectangle(Brushes.Black, null, new Rect(new Size(Width, Height)));
+                drawingContext.DrawRectangle(new SolidColorBrush(BackgroundColor), null, new Rect(new Size(Width, Height)));
                 for (int x = 0; x < Width; x++)
                 {
-                    DrawingUtil.DrawTableCell(drawingContext, x,          0, Math.Round(m_Simulator[x,          0], 5).ToString("E2"));
-                    DrawingUtil.DrawTableCell(drawingContext, x, Height - 1, Math.Round(m_Simulator[x, Height - 1], 5).ToString("E2"));
+                    DrawingUtil.DrawTableCell(drawingContext, x,          0, Math.Round(m_Simulator[x,          0], 5).ToString("E2"), ForegroundColor);
+                    DrawingUtil.DrawTableCell(drawingContext, x, Height - 1, Math.Round(m_Simulator[x, Height - 1], 5).ToString("E2"), ForegroundColor);
                 }
                 for (int y = 0; y < Height; y++)
                 {
-                    DrawingUtil.DrawTableCell(drawingContext,         0, y, Math.Round(m_Simulator[        0, y], 5).ToString("E2"));
-                    DrawingUtil.DrawTableCell(drawingContext, Width - 1, y, Math.Round(m_Simulator[Width - 1, y], 5).ToString("E2"));
+                    DrawingUtil.DrawTableCell(drawingContext,         0, y, Math.Round(m_Simulator[        0, y], 5).ToString("E2"), ForegroundColor);
+                    DrawingUtil.DrawTableCell(drawingContext, Width - 1, y, Math.Round(m_Simulator[Width - 1, y], 5).ToString("E2"), ForegroundColor);
                 }
             }
             var image = new DrawingImage(visual.Drawing);

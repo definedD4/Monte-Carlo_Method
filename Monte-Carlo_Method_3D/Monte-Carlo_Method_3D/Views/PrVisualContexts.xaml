@@ -9,7 +9,7 @@
         <ResourceDictionary Source="../Styles/Resources.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     <DataTemplate DataType="{x:Type g:PrVisualContext3D}">
-        <Viewport3D x:Name="viewport">
+        <Viewport3D x:Name="viewport" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Viewport3D.Camera>
                 <PerspectiveCamera
                         FarPlaneDistance="1000"
@@ -40,15 +40,19 @@
                 <RowDefinition/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Image Source="{Binding Texture}" RenderOptions.BitmapScalingMode="NearestNeighbor">
-            <i:Interaction.Behaviors>
-                <util:PointedValueBehavior/>
-            </i:Interaction.Behaviors>
-            </Image>
-            <WrapPanel Grid.Row="1" HorizontalAlignment="Right">
-                <TextBlock Text="Значение:" Foreground="{DynamicResource PrimaryForegroundColor}" FontSize="13" FontWeight="Bold" Margin="0,0,4,0"/>
-                <TextBlock Text="{Binding PointedValue}" Foreground="{DynamicResource PrimaryForegroundColor}" FontSize="13" FontWeight="Bold"/>
-            </WrapPanel>
+            <Border BorderThickness="2" BorderBrush="DarkGray" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image x:Name="dataImage" Source="{Binding Texture}" RenderOptions.BitmapScalingMode="NearestNeighbor">
+                    <i:Interaction.Behaviors>
+                        <util:PointedValueBehavior/>
+                    </i:Interaction.Behaviors>
+                </Image>
+            </Border>
+            <Popup Name="pointedValuePopup" AllowsTransparency="True" Placement="Relative" PlacementTarget="{Binding ElementName=dataImage}">
+                <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="{DynamicResource BorderThickness}" 
+                        Background="{DynamicResource PrimaryBackgroundColor}" Padding="4">
+                    <TextBlock x:Name="pointedValueText"/>
+                </Border>
+            </Popup>
         </Grid>
     </DataTemplate>
     
@@ -58,15 +62,19 @@
                 <RowDefinition/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Image Source="{Binding Texture}">
-                <i:Interaction.Behaviors>
-                    <util:PointedValueBehavior/>
-                </i:Interaction.Behaviors>
-            </Image>
-            <WrapPanel Grid.Row="1" HorizontalAlignment="Right">
-                <TextBlock Text="Значение:" Foreground="White" FontSize="13" FontWeight="Bold" Margin="0,0,4,0"/>
-                <TextBlock Text="{Binding PointedValue}" Foreground="White" FontSize="13" FontWeight="Bold"/>
-            </WrapPanel>
+            <Border BorderThickness="2" BorderBrush="DarkGray" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image x:Name="dataImage" Source="{Binding Texture}" RenderOptions.BitmapScalingMode="NearestNeighbor">
+                    <i:Interaction.Behaviors>
+                        <util:PointedValueBehavior/>
+                    </i:Interaction.Behaviors>
+                </Image>
+            </Border>
+            <Popup Name="pointedValuePopup" AllowsTransparency="True" Placement="Relative" PlacementTarget="{Binding ElementName=dataImage}">
+                <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="{DynamicResource BorderThickness}" 
+                        Background="{DynamicResource PrimaryBackgroundColor}" Padding="4">
+                    <TextBlock x:Name="pointedValueText"/>
+                </Border>
+            </Popup>
         </Grid>
     </DataTemplate>
 </ResourceDictionary>

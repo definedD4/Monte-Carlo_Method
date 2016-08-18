@@ -13,13 +13,13 @@ namespace Monte_Carlo_Method_3D.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        private HSVPallete pallete;
+        private Pallete pallete;
 
         public MainViewModel()
         {
             Tabs = new ObservableCollection<TabViewModel>();
 
-            pallete = new HSVPallete();
+            pallete = new Pallete();
 
             PrMethodViewModel propabilityMethodViewModel = new PrMethodViewModel(pallete);
 

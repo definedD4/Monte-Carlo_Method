@@ -14,11 +14,11 @@ namespace Monte_Carlo_Method_3D.Visualization
     {
         private const int Dpi = 96;
 
-        private readonly IPallete m_Pallete;
+        private readonly Pallete m_Pallete;
         private readonly PrSimulator m_Simulator;
         private GraphMesh m_Mesh;
 
-        public PrVisualizer(PrSimulator simulator, IPallete pallete)
+        public PrVisualizer(PrSimulator simulator, Pallete pallete)
         {
             m_Simulator = simulator;
             m_Pallete = pallete;
@@ -28,6 +28,9 @@ namespace Monte_Carlo_Method_3D.Visualization
 
         public int Width => m_Simulator.Width;
         public int Height => m_Simulator.Height;
+
+        public Color BackgroundColor { get; set; } = Colors.White;
+        public Color ForegroundColor { get; set; } = Colors.Black;
 
         public GeometryModel3D GenerateModel()
         {
@@ -68,12 +71,12 @@ namespace Monte_Carlo_Method_3D.Visualization
             var visual = new DrawingVisual();
             using (DrawingContext drawingContext = visual.RenderOpen())
             {
-                drawingContext.DrawRectangle(Brushes.Black, null, new Rect(new Size(Width, Height)));
+                drawingContext.DrawRectangle(new SolidColorBrush(BackgroundColor), null, new Rect(new Size(Width, Height)));
                 for (int i = 0; i < m_Simulator.Width; i++)
                 {
                     for (int j = 0; j < m_Simulator.Height; j++)
                     {
-                        DrawingUtil.DrawTableCell(drawingContext, i, j, Math.Round(m_Simulator[i, j], 5).ToString("E2"));
+                        DrawingUtil.DrawTableCell(drawingContext, i, j, Math.Round(m_Simulator[i, j], 5).ToString("E2"), ForegroundColor);
                     }
                 }
             }

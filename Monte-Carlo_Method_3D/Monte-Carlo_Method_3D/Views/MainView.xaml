@@ -30,14 +30,5 @@
                 </DataTemplate>
             </TabControl.ItemTemplate>
         </TabControl>
-        
-        <!--<TabControl>
-            <TabItem Header="Tab 1">
-                
-            </TabItem>
-            <TabItem Header="Tab 2">
-                
-            </TabItem>
-        </TabControl>-->
     </Grid>
 </Window>

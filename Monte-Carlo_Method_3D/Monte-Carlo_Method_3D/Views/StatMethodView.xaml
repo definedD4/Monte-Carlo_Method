@@ -8,10 +8,14 @@
                 <ResourceDictionary.MergedDictionaries>
                     <ResourceDictionary Source="Gauge.xaml"/>
                     <ResourceDictionary Source="SimulationInfo.xaml"/>
+
+                    <ResourceDictionary Source="../Styles/Resources.xaml"/>
+                    <ResourceDictionary Source="../Styles/GroupBoxStyle.xaml"/>
+                    <ResourceDictionary Source="../Styles/SelectorButtonStyle.xaml"/>
                 </ResourceDictionary.MergedDictionaries>
             </ResourceDictionary>
         </DataTemplate.Resources>
-        <Grid Background="#FF94BADA">
+        <Grid Background="{DynamicResource SecondaryBackgroundColor}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
@@ -20,49 +24,59 @@
                 <Button Content="Перезапуск" Command="{Binding RestartCommand}"/>
                 <Button DataContext="{Binding PlayPauseCommand}" Content="{Binding Label}" Command="{Binding }"/>
                 <Button Content="Следующий шаг" Command="{Binding StepCommand}"/>
-                <Button Content="Симулировать до: " Command="{Binding SimulateToCommand}"/>
-                <TextBox Text="{Binding SimulateToStep, UpdateSourceTrigger=PropertyChanged}"/>
+                <!--<Button Content="Симулировать до: " Command="{Binding SimulateToCommand}"/>
+                <TextBox Text="{Binding SimulateToStep, UpdateSourceTrigger=PropertyChanged}"/>-->
                 <Separator/>
                 <Button Content="Настройки симуляции" Command="{Binding SimulationOptionsCommand}"/>
                 <Button Content="Экспортировать в файл CSV" Command="{Binding ExportToCsvCommand}"/>
             </ToolBar>
-            <Border Background="#FF00366C" Grid.Row="1" Margin="0" Padding="10" MinWidth="259" MinHeight="169">
-                <Grid Margin="10">
+            <Border Background="{DynamicResource SecondaryBackgroundColor}" Grid.Row="1" Margin="0" Padding="10" MinWidth="259" MinHeight="169">
+                <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="10"/>
-                        <ColumnDefinition Width="80"/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="4"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Canvas>
-                        <TextBlock Text="Шкала вероятности" Foreground="White" RenderTransformOrigin="0.5,0.5" Canvas.Left="-62" Canvas.Top="68" FontSize="15">
-                            <TextBlock.RenderTransform>
-                                <TransformGroup>
-                                    <ScaleTransform/>
-                                    <SkewTransform/>
-                                    <RotateTransform Angle="90"/>
-                                    <TranslateTransform/>
-                                </TransformGroup>
-                            </TextBlock.RenderTransform>
-                        </TextBlock>
-                    </Canvas>
-                    <ContentControl Content="{Binding Gauge}" ContentTemplate="{StaticResource GaugeTemplate}" Margin="8" Grid.Column="1"/>
-                    <Grid Grid.Column="2">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="1*"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.ColumnSpan="2">
-                            <Button Content="2D" Command="{Binding VisualTypeSelector}" CommandParameter="2D" Margin="1,0"/>
-                            <Button Content="3D" Command="{Binding VisualTypeSelector}" CommandParameter="3D" Margin="1,0"/>
-                            <Button Content="Таблица" Command="{Binding VisualTypeSelector}" CommandParameter="Table" Margin="1,0"/>
+                    <Border Grid.Column="0" BorderBrush="{DynamicResource BorderColor}" BorderThickness="{DynamicResource BorderThickness}" 
+                            Background="{DynamicResource PrimaryBackgroundColor}" Padding="4">
+                        <Grid Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Canvas Grid.Column="0">
+                                <TextBlock Text="Шкала вероятности" Foreground="{DynamicResource PrimaryForegroundColor}" RenderTransformOrigin="0.5,0.5" Canvas.Left="-62" Canvas.Top="68" FontSize="15">
+                                    <TextBlock.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform Angle="90"/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </TextBlock.RenderTransform>
+                                </TextBlock>
+                            </Canvas>
+                            <ContentControl Content="{Binding Gauge}" ContentTemplate="{StaticResource GaugeTemplate}" Margin="8" Grid.Column="1"/>
+                            <Border Grid.Column="2" BorderThickness="2" BorderBrush="Black" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <ContentControl Content="{Binding VisualContext}"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+                    <Border Grid.Column="2" BorderBrush="{DynamicResource BorderColor}" BorderThickness="{DynamicResource BorderThickness}" 
+                            Background="{DynamicResource PrimaryBackgroundColor}" Padding="4" Width="250">
+                        <StackPanel>
+                            <GroupBox Header="Визуализация:">
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Style="{DynamicResource SelectorButtonStyle}" Content="2D"      Command="{Binding VisualTypeSelector}" CommandParameter="2D" Margin="1,0"/>
+                                    <Button Style="{DynamicResource SelectorButtonStyle}" Content="Таблица" Command="{Binding VisualTypeSelector}" CommandParameter="Table" Margin="1,0"/>
+                                </StackPanel>
+                            </GroupBox>
+                            <GroupBox Header="Информация о симуляции:">
+                                <ContentControl Content="{Binding SimulationInfo}"/>
+                            </GroupBox>
                         </StackPanel>
-                        <ContentControl Content="{Binding VisualContext}" Grid.Row="1" Grid.Column="0"/>
-                        <ContentControl Grid.Column="1" Grid.Row="1" Content="{Binding SimulationInfo}" Width="240"/>
-                    </Grid>
+                    </Border>
                 </Grid>
             </Border>
         </Grid>

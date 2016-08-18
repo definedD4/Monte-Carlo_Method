@@ -19,7 +19,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
     {
         private PrSimulator m_Simulator;
         private PrVisualizer m_Visualizer;
-        private IPallete m_Pallete;
+        private Pallete m_Pallete;
         private DispatcherTimer m_Timer;
         private PrVisualContext m_VisualContext;
         private GaugeContext m_Gauge;
@@ -33,7 +33,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private DelegateCommand c_SimulationOptionsCommand;
         private DelegateCommand c_SimulateToCommand;
 
-        public PrMethodViewModel(IPallete pallete) : base("Метод вероятностей")
+        public PrMethodViewModel(Pallete pallete) : base("Метод вероятностей")
         {
             m_Pallete = pallete;
 

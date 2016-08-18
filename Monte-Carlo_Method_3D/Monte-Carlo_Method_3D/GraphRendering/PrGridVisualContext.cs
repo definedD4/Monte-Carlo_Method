@@ -17,12 +17,6 @@ namespace Monte_Carlo_Method_3D.GraphRendering
 
         }
 
-        public double PointedValue
-        {
-            get { return m_PointedValue; }
-            set { m_PointedValue = Math.Round(value, 8); OnPropertyChanged("PointedValue"); }
-        }
-
         public double GetValueAtImageCoordinates(Point position, Size controlSize)
         {
             int x = (int)Math.Truncate(position.X * Visualizer.Width / controlSize.Width);

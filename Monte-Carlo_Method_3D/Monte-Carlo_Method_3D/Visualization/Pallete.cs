@@ -7,20 +7,21 @@ using System.Windows.Media;
 
 namespace Monte_Carlo_Method_3D.Visualization
 {
-    public class HSVPallete : IPallete
+    public class Pallete
     {
-        public HSVPallete()
+        public Pallete()
         {
 
         }
 
-        public bool DrawBlackIfZero { get; set; } = true;
+        public bool DrawSpecialColorForZero { get; set; } = true;
+        public Color ZeroColor { get; set; } = Colors.White;
 
         public Color GetColor(double value)
         {
-            if (DrawBlackIfZero && value == 0)
+            if (DrawSpecialColorForZero && value == 0)
             {
-                return Colors.Black;
+                return ZeroColor;
             }
             double val = Math.Sqrt(Math.Sqrt(Math.Sqrt(Math.Sqrt(value)))) * 0.625 + 0.325;
             double h = ((1d - val) * 360);

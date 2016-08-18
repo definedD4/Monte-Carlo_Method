@@ -6,14 +6,14 @@ namespace Monte_Carlo_Method_3D.Gauge
 {
     public class GaugeContext : ViewModelBase
     {
-        private IPallete m_Pallete;
+        private Pallete m_Pallete;
 
-        public GaugeContext(IPallete pallete)
+        public GaugeContext(Pallete pallete)
         {
             Pallete = pallete;
         }
 
-        public IPallete Pallete
+        public Pallete Pallete
         {
             get { return m_Pallete; }
             set { m_Pallete = value; OnPropertyChanged(nameof(Pallete)); }

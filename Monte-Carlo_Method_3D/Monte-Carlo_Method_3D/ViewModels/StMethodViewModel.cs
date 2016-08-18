@@ -36,7 +36,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         public StMethodViewModel() : base("Метод статистических испытаний")
         {
-            IPallete pallete = new HSVPallete();
+            Pallete pallete = new Pallete();
 
             m_Simulator = new StSimulator(5, 5, new IntPoint(2, 2));
             m_Visualizer = new StVisualizer(m_Simulator, pallete);
@@ -121,7 +121,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 {
                     SimulationOptions result = dialog.SimulationOptions;
                     m_Simulator = new StSimulator(result.Width, result.Height, result.StartLocation);
-                    m_Visualizer = new StVisualizer(m_Simulator, new HSVPallete());
+                    m_Visualizer = new StVisualizer(m_Simulator, new Pallete());
                     VisualContext.Simulator = m_Simulator;
                     VisualContext.Visualizer = m_Visualizer;
                     VisualContext.UpdateVisualization();
