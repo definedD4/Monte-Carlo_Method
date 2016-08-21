@@ -67,13 +67,15 @@
     </Compile>
     <Compile Include="Gauge\GaugeContext.cs" />
     <Compile Include="Gauge\GaugeGradient.cs" />
-    <Compile Include="GraphRendering\IGridContext.cs" />
+    <Compile Include="GraphRendering\DiffVisualContext.cs" />
+    <Compile Include="GraphRendering\Interfaces.cs" />
     <Compile Include="GraphRendering\PrGridVisualContext.cs" />
     <Compile Include="GraphRendering\StTableVisualContext.cs" />
     <Compile Include="GraphRendering\PrTableVisualContext.cs" />
     <Compile Include="GraphRendering\StGridVisualContext.cs" />
     <Compile Include="GraphRendering\StVisualContext.cs" />
     <Compile Include="GraphRendering\StVisualContext2D.cs" />
+    <Compile Include="Simulation\DiffGenerator.cs" />
     <Compile Include="Simulation\PrSimulationInfo.cs" />
     <Compile Include="Simulation\StParticlePath.cs" />
     <Compile Include="Simulation\StSimulationInfo.cs" />
@@ -82,13 +84,15 @@
     <Compile Include="Util\DelegateCommand.cs" />
     <Compile Include="Util\DrawingUtil.cs" />
     <Compile Include="Util\EdgeData.cs" />
+    <Compile Include="Util\InterfaceTemplateSelector.cs" />
     <Compile Include="Util\PointedValueBehavior.cs" />
     <Compile Include="Util\Rotation3DBehavior.cs" />
     <Compile Include="Util\SwitchStateCommand.cs" />
-    <Compile Include="ViewModels\ComparisonViewModel.cs" />
-    <Compile Include="ViewModels\PrMethodViewModel.cs" />
-    <Compile Include="ViewModels\StMethodViewModel.cs" />
+    <Compile Include="ViewModels\CpTabViewModel.cs" />
+    <Compile Include="ViewModels\PrTabViewModel.cs" />
+    <Compile Include="ViewModels\StTabViewModel.cs" />
     <Compile Include="ViewModels\TabViewModel.cs" />
+    <Compile Include="Visualization\DiffVisualizer.cs" />
     <Compile Include="Visualization\GraphMesh.cs" />
     <Compile Include="Visualization\PrVisualizer.cs" />
     <Compile Include="Util\IntPoint.cs" />
@@ -128,6 +132,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\CpTabView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Gauge.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -136,23 +144,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StVisualContexts.xaml">
+    <Page Include="Views\VisualContextView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\StatMethodView.xaml">
+    <Page Include="Views\StTabView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\PropabilityMethodView.xaml">
+    <Page Include="Views\PrTabView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SimulationInfo.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\PrVisualContexts.xaml">
+    <Page Include="Views\SimulationInfoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

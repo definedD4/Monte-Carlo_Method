@@ -2,10 +2,11 @@
 using Monte_Carlo_Method_3D.Visualization;
 using System;
 using System.ComponentModel;
+using Monte_Carlo_Method_3D.ViewModels;
 
 namespace Monte_Carlo_Method_3D.GraphRendering
 {
-    public abstract class PrVisualContext : INotifyPropertyChanged
+    public abstract class PrVisualContext : ViewModelBase
     {
         public PrSimulator Simulator { get; set; }
         public PrVisualizer Visualizer { get; set; }
@@ -17,19 +18,5 @@ namespace Monte_Carlo_Method_3D.GraphRendering
         }
 
         public abstract void UpdateVisualization();
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void OnPropertyChanged(string propertyName)
-        {
-            if (string.IsNullOrEmpty(propertyName))
-                throw new ArgumentException("Invalid property name.");
-
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
     }
 }

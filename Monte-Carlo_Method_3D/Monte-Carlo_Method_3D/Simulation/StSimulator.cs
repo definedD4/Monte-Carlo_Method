@@ -106,6 +106,7 @@ namespace Monte_Carlo_Method_3D.Simulation
             m_Data = new EdgeData(Width, Height);
             TotalSimulations = 0;
             AverageTravelPath = 0;
+            TotalSimTime = 0;
 
             SimulationInfo = new StSimulationInfo(TotalSimulations, AverageTravelPath, TotalSimTime);
             LastPath = null;

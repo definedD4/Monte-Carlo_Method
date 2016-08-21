@@ -6,26 +6,15 @@ namespace Monte_Carlo_Method_3D.GraphRendering
 {
     public abstract class StVisualContext : ViewModelBase
     {
-        private StSimulator m_Simulator;
-        private StVisualizer m_Visualizer;
-
         protected StVisualContext(StSimulator simulator, StVisualizer visualizer)
         {
-            m_Simulator = simulator;
-            m_Visualizer = visualizer;
+            Simulator = simulator;
+            Visualizer = visualizer;
         }
 
-        public StSimulator Simulator
-        {
-            get { return m_Simulator; }
-            set { m_Simulator = value; OnPropertyChanged(nameof(Simulator));}
-        }
+        public StSimulator Simulator { get; set; }
 
-        public StVisualizer Visualizer
-        {
-            get { return m_Visualizer; }
-            set { m_Visualizer = value; OnPropertyChanged(nameof(Visualizer));}
-        }
+        public StVisualizer Visualizer { get; set; }
 
         public abstract void UpdateVisualization();
     }

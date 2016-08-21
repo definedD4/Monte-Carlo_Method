@@ -8,7 +8,7 @@ using System.Windows.Media.Media3D;
 
 namespace Monte_Carlo_Method_3D.GraphRendering
 {
-    public class PrVisualContext3D : PrVisualContext
+    public class PrVisualContext3D : PrVisualContext, IModelRender
     {
         private GeometryModel3D m_Model;
 

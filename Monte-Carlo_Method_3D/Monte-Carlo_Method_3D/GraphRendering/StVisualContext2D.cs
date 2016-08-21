@@ -4,7 +4,7 @@ using Monte_Carlo_Method_3D.Visualization;
 
 namespace Monte_Carlo_Method_3D.GraphRendering
 {
-    public class StVisualContext2D : StGridVisualContext
+    public class StVisualContext2D : StGridVisualContext, ITextureRender
     {
         private ImageSource m_Texture;
 

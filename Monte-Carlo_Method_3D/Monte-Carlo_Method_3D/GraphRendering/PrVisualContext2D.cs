@@ -8,7 +8,7 @@ using System.Windows.Media;
 
 namespace Monte_Carlo_Method_3D.GraphRendering
 {
-    public class PrVisualContext2D : PrGridVisualContext
+    public class PrVisualContext2D : PrGridVisualContext, ITextureRender
     {
         private ImageSource m_Texture;
 

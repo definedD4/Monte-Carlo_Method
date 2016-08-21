@@ -15,7 +15,7 @@ using Microsoft.Win32;
 
 namespace Monte_Carlo_Method_3D.ViewModels
 {
-    public class PrMethodViewModel : TabViewModel
+    public class PrTabViewModel : TabViewModel
     {
         private PrSimulator m_Simulator;
         private PrVisualizer m_Visualizer;
@@ -33,7 +33,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private DelegateCommand c_SimulationOptionsCommand;
         private DelegateCommand c_SimulateToCommand;
 
-        public PrMethodViewModel(Pallete pallete) : base("Метод вероятностей")
+        public PrTabViewModel(Pallete pallete) : base("Метод вероятностей")
         {
             m_Pallete = pallete;
 
@@ -172,7 +172,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
         public bool SimulationInProgress
         {
             get { return m_SimulationInProgress; }
-            set { m_SimulationInProgress = value; OnPropertyChanged(nameof(SimulationInProgress)); UpdateCommands(); }
+            private set { m_SimulationInProgress = value; OnPropertyChanged(nameof(SimulationInProgress)); UpdateCommands(); }
         }
 
         public PrSimulationInfo SimulationInfo => m_Simulator.SimulationInfo;

@@ -79,6 +79,8 @@ namespace Monte_Carlo_Method_3D.Simulation
             Step = 0;
             TotalSimTime = 0;
             data[StartLocation.X, StartLocation.Y] = 1;
+
+            SimulationInfo = new PrSimulationInfo(Step, TotalSimTime, GetCenterSum(), GetEdgeSum(), GetTotalSum());
         }
 
         private double GetCenterSum()

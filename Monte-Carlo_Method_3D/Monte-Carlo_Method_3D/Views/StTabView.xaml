@@ -2,12 +2,12 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Monte_Carlo_Method_3D.Views"
                     xmlns:vm="clr-namespace:Monte_Carlo_Method_3D.ViewModels">
-    <DataTemplate DataType="{x:Type vm:StMethodViewModel}">
+    <DataTemplate DataType="{x:Type vm:StTabViewModel}">
         <DataTemplate.Resources>
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>
                     <ResourceDictionary Source="Gauge.xaml"/>
-                    <ResourceDictionary Source="SimulationInfo.xaml"/>
+                    <ResourceDictionary Source="SimulationInfoView.xaml"/>
 
                     <ResourceDictionary Source="../Styles/Resources.xaml"/>
                     <ResourceDictionary Source="../Styles/GroupBoxStyle.xaml"/>
@@ -58,9 +58,7 @@
                                 </TextBlock>
                             </Canvas>
                             <ContentControl Content="{Binding Gauge}" ContentTemplate="{StaticResource GaugeTemplate}" Margin="8" Grid.Column="1"/>
-                            <Border Grid.Column="2" BorderThickness="2" BorderBrush="Black" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <ContentControl Content="{Binding VisualContext}"/>
-                            </Border>
+                            <ContentControl Grid.Column="2" Content="{Binding VisualContext}" ContentTemplateSelector="{DynamicResource VisualContextTemplateSelector}"/>
                         </Grid>
                     </Border>
                     <Border Grid.Column="2" BorderBrush="{DynamicResource BorderColor}" BorderThickness="{DynamicResource BorderThickness}" 

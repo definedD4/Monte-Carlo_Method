@@ -21,7 +21,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
             pallete = new Pallete();
 
-            PrMethodViewModel propabilityMethodViewModel = new PrMethodViewModel(pallete);
+            PrTabViewModel propabilityMethodViewModel = new PrTabViewModel(pallete);
 
             propabilityMethodViewModel.PropertyChanged += (s, e) =>
             {
@@ -30,8 +30,8 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
             Tabs.Add(propabilityMethodViewModel);
             SelectedTab = propabilityMethodViewModel;
-            Tabs.Add(new StMethodViewModel());
-            Tabs.Add(new ComparisonViewModel());
+            Tabs.Add(new StTabViewModel());
+            Tabs.Add(new CpTabViewModel());
         }
 
         public ObservableCollection<TabViewModel> Tabs { get; private set; }

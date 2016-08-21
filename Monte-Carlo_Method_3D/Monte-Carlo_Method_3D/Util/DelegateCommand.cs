@@ -9,8 +9,8 @@ namespace Monte_Carlo_Method_3D.Util
 {
     public class DelegateCommand : ICommand
     {
-        private readonly Predicate<object> _canExecute;
-        private readonly Action<object> _execute;
+        private readonly Predicate<object> m_CanExecute;
+        private readonly Action<object> m_Execute;
 
         public event EventHandler CanExecuteChanged;
 
@@ -22,23 +22,23 @@ namespace Monte_Carlo_Method_3D.Util
         public DelegateCommand(Action<object> execute,
                        Predicate<object> canExecute)
         {
-            _execute = execute;
-            _canExecute = canExecute;
+            m_Execute = execute;
+            m_CanExecute = canExecute;
         }
 
         public bool CanExecute(object parameter)
         {
-            if (_canExecute == null)
+            if (m_CanExecute == null)
             {
                 return true;
             }
 
-            return _canExecute(parameter);
+            return m_CanExecute(parameter);
         }
 
         public void Execute(object parameter)
         {
-            _execute(parameter);
+            m_Execute(parameter);
         }
 
         public void RaiseCanExecuteChanged()

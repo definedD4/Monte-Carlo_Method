@@ -15,7 +15,7 @@ using Monte_Carlo_Method_3D.Gauge;
 
 namespace Monte_Carlo_Method_3D.ViewModels
 {
-    public class StMethodViewModel : TabViewModel
+    public class StTabViewModel : TabViewModel
     {
         private StSimulator m_Simulator;
         private StVisualizer m_Visualizer;
@@ -34,7 +34,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private DelegateCommand m_SimulationOptionsCommand;
         private DelegateCommand m_ExportToCsvCommand;
 
-        public StMethodViewModel() : base("Метод статистических испытаний")
+        public StTabViewModel() : base("Метод статистических испытаний")
         {
             Pallete pallete = new Pallete();
 
@@ -165,7 +165,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
         public bool SimulationInProgress
         {
             get { return m_SimulationInProgress; }
-            set { m_SimulationInProgress = value; OnPropertyChanged(nameof(m_SimulationInProgress)); m_StepCommand.RaiseCanExecuteChanged(); }
+            private set { m_SimulationInProgress = value; OnPropertyChanged(nameof(m_SimulationInProgress)); m_StepCommand.RaiseCanExecuteChanged(); }
         }
 
         public StVisualContext VisualContext

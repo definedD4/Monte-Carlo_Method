@@ -9,7 +9,7 @@ using Monte_Carlo_Method_3D.Visualization;
 
 namespace Monte_Carlo_Method_3D.GraphRendering
 {
-    public class PrTableVisualContext : PrGridVisualContext
+    public class PrTableVisualContext : PrGridVisualContext, ITableRender
     {
         private ImageSource m_Texture;
 

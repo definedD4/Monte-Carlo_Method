@@ -8,7 +8,10 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="../Styles/Resources.xaml"/>
     </ResourceDictionary.MergedDictionaries>
-    <DataTemplate DataType="{x:Type g:PrVisualContext3D}">
+    
+    <util:InterfaceTemplateSelector x:Key="VisualContextTemplateSelector"/>
+    
+    <DataTemplate DataType="{x:Type g:IModelRender}">
         <Viewport3D x:Name="viewport" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Viewport3D.Camera>
                 <PerspectiveCamera
@@ -34,7 +37,7 @@
         </Viewport3D>
     </DataTemplate>
     
-    <DataTemplate DataType="{x:Type g:PrVisualContext2D}">
+    <DataTemplate DataType="{x:Type g:ITextureRender}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -56,7 +59,7 @@
         </Grid>
     </DataTemplate>
     
-    <DataTemplate DataType="{x:Type g:PrTableVisualContext}">
+    <DataTemplate DataType="{x:Type g:ITableRender}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition/>
