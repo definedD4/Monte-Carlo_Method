@@ -45,7 +45,7 @@ namespace Monte_Carlo_Method_3D.Simulation
 
         public bool CanIndex(int x, int y) => m_Data.CanIndex(x, y);
 
-        public void SimulateSteps(long steps)
+        public void SimulateSteps(long steps = 1)
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
 
