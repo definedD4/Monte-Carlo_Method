@@ -30,9 +30,9 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         private bool m_SimulationInProgress = false;
 
-        private SwitchStateCommand m_PlayPauseCommand;
-        private DelegateCommand m_RestartCommand;
-        private DelegateCommand m_SimulationOptionsCommand;
+        private readonly SwitchStateCommand m_PlayPauseCommand;
+        private readonly DelegateCommand m_RestartCommand;
+        private readonly DelegateCommand m_SimulationOptionsCommand;
 
         public CpTabViewModel() : base("Сравнение")
         {
