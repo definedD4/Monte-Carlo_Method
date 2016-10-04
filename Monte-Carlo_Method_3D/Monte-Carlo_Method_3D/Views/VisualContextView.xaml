@@ -66,7 +66,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Border BorderThickness="2" BorderBrush="DarkGray" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Image x:Name="dataImage" Source="{Binding Texture}" RenderOptions.BitmapScalingMode="NearestNeighbor">
+                <Image x:Name="dataImage" Source="{Binding Texture}" RenderOptions.BitmapScalingMode="NearestNeighbor" Stretch="Uniform">
                     <i:Interaction.Behaviors>
                         <util:PointedValueBehavior/>
                     </i:Interaction.Behaviors>

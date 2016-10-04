@@ -30,9 +30,9 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         private bool m_SimulationInProgress = false;
 
-        private SwitchStateCommand m_PlayPauseCommand;
-        private DelegateCommand m_RestartCommand;
-        private DelegateCommand m_SimulationOptionsCommand;
+        private readonly SwitchStateCommand m_PlayPauseCommand;
+        private readonly DelegateCommand m_RestartCommand;
+        private readonly DelegateCommand m_SimulationOptionsCommand;
 
         public CpTabViewModel() : base("Сравнение")
         {
@@ -49,19 +49,27 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 {
                     SimulationInProgress = true;
 
-                    for (int i = 0; i < 50; i++)
+                    if (Math.Abs(m_PrSimulator.SimulationInfo.CenterSum) < 1e-100)
                     {
-                        if (m_PrSimulator.TotalSimTime < m_StSimulator.TotalSimTime)
+                        m_StSimulator.SimulateSteps(200);
+                    }
+                    else
+                    {
+                        for (int i = 0; i < 50; i++)
                         {
-                            m_PrSimulator.SimulateSteps(1);
+                            if (m_PrSimulator.TotalSimTime < m_StSimulator.TotalSimTime)
+                            {
+                                m_PrSimulator.SimulateSteps(1);
+                            }
+                            else
+                            {
+                                m_StSimulator.SimulateSteps(1);
+                            }
+
                         }
-                        else
-                        {
-                            m_StSimulator.SimulateSteps(1);                               
-                        }
+                        m_PrVisualContext.UpdateVisualization();
                     }
 
-                    m_PrVisualContext.UpdateVisualization();
                     m_StVisualContext.UpdateVisualization();
                     m_DiffVisualContext.UpdateVisualization();
 

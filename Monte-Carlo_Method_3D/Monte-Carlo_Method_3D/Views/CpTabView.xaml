@@ -66,15 +66,36 @@
                     </Border>
                     <Border Grid.Column="2" Grid.Row="0" BorderBrush="{DynamicResource BorderColor}" BorderThickness="{DynamicResource BorderThickness}" 
                             Background="{DynamicResource PrimaryBackgroundColor}" Padding="4">
-                        <ContentControl Content="{Binding PrVisualContext}" ContentTemplateSelector="{DynamicResource VisualContextTemplateSelector}"/>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Метод априорних вероятностей" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" Grid.Row="0"/>
+                            <ContentControl Content="{Binding PrVisualContext}" ContentTemplateSelector="{DynamicResource VisualContextTemplateSelector}" Grid.Row="1"/>
+                        </Grid>
                     </Border>
                     <Border Grid.Column="4" Grid.Row="0" BorderBrush="{DynamicResource BorderColor}" BorderThickness="{DynamicResource BorderThickness}" 
                             Background="{DynamicResource PrimaryBackgroundColor}" Padding="4">
-                        <ContentControl Content="{Binding StVisualContext}" ContentTemplateSelector="{DynamicResource VisualContextTemplateSelector}"/>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Метод статистических испытаний" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" Grid.Row="0"/>
+                            <ContentControl Content="{Binding StVisualContext}" ContentTemplateSelector="{DynamicResource VisualContextTemplateSelector}" Grid.Row="1"/>
+                        </Grid>
                     </Border>
                     <Border Grid.Column="2" Grid.Row="2" BorderBrush="{DynamicResource BorderColor}" BorderThickness="{DynamicResource BorderThickness}" 
                             Background="{DynamicResource PrimaryBackgroundColor}" Padding="4">
-                        <ContentControl Content="{Binding DiffVisualContext}" ContentTemplateSelector="{DynamicResource VisualContextTemplateSelector}"/>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Сравнение (разность результатов)" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" Grid.Row="0"/>
+                            <ContentControl Content="{Binding DiffVisualContext}" ContentTemplateSelector="{DynamicResource VisualContextTemplateSelector}" Grid.Row="1"/>
+                        </Grid>
                     </Border>
                     <Border Grid.Column="6" Grid.RowSpan="3" Grid.Row="0" BorderBrush="{DynamicResource BorderColor}" BorderThickness="{DynamicResource BorderThickness}" 
                             Background="{DynamicResource PrimaryBackgroundColor}" Padding="4" Width="250">
