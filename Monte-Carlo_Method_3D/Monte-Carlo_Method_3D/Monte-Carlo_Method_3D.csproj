@@ -83,6 +83,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Calculation\Calculation.cs" />
     <Compile Include="Dialogs\SimulationOptions.cs" />
     <Compile Include="Dialogs\SimulationOptionsDialog.xaml.cs">
       <DependentUpon>SimulationOptionsDialog.xaml</DependentUpon>
@@ -106,11 +107,13 @@
     <Compile Include="Util\DelegateCommand.cs" />
     <Compile Include="Util\DrawingUtil.cs" />
     <Compile Include="Util\EdgeData.cs" />
+    <Compile Include="Util\EnumUtil.cs" />
     <Compile Include="Util\InterfaceTemplateSelector.cs" />
     <Compile Include="Util\PointedValueBehavior.cs" />
     <Compile Include="Util\Rotation3DBehavior.cs" />
     <Compile Include="Util\SwitchStateCommand.cs" />
-    <Compile Include="ViewModels\CalculationConstraints.cs" />
+    <Compile Include="Calculation\CalculationConstraints.cs" />
+    <Compile Include="ViewModels\ConstraintChooserViewModel.cs" />
     <Compile Include="ViewModels\CpTabViewModel.cs" />
     <Compile Include="ViewModels\PrTabViewModel.cs" />
     <Compile Include="ViewModels\StTabViewModel.cs" />
@@ -153,6 +156,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\TabControlStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ClTabView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ConstraintChooserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
