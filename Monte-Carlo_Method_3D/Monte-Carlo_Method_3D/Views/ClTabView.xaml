@@ -8,17 +8,33 @@
         <ResourceDictionary Source="ConstraintChooserView.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     <DataTemplate DataType="{x:Type vm:СlTabViewModel}">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <WrapPanel Margin="4" Grid.Row="0">
-                <TextBlock Margin="2" Text="Способ симуляции:"/>
-                <ComboBox Margin="2" ItemsSource="{ut:EnumSelection {x:Type cl:CalculationMethod}}" SelectedValue="{Binding CalculationMethod}" 
-                          DisplayMemberPath="DisplayName" SelectedValuePath="Value"/>
-            </WrapPanel>
-            <ContentPresenter Content="{Binding ConstraintChooser}" Grid.Row="1"/>
-        </Grid>
+        <GroupBox Header="Параметры вычислений" Margin="4">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid Margin="4" Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Margin="2" Text="Способ симуляции:" Grid.Column="0"/>
+                    <ComboBox Margin="2" ItemsSource="{ut:EnumSelection {x:Type cl:CalculationMethod}}" SelectedValue="{Binding CalculationMethod}" 
+                          DisplayMemberPath="DisplayName" SelectedValuePath="Value" Grid.Column="1"/>
+                </Grid>
+                <ContentPresenter Content="{Binding ConstraintChooser}" Grid.Row="1"/>
+                <Grid Margin="4" Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Margin="2" Text="Способ симуляции:" Grid.Column="0"/>
+                    <ComboBox Margin="2" ItemsSource="{ut:EnumSelection {x:Type cl:CalculationMethod}}" SelectedValue="{Binding CalculationMethod}" 
+                          DisplayMemberPath="DisplayName" SelectedValuePath="Value" Grid.Column="1"/>
+                </Grid>
+            </Grid>
+        </GroupBox>
     </DataTemplate>
 </ResourceDictionary>

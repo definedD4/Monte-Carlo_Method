@@ -32,7 +32,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
             SelectedTab = propabilityMethodViewModel;
             Tabs.Add(new StTabViewModel());
             Tabs.Add(new CpTabViewModel());
-            Tabs.Add(new СlTabViewModel());
+            //Tabs.Add(new СlTabViewModel());
         }
 
         public ObservableCollection<TabViewModel> Tabs { get; private set; }

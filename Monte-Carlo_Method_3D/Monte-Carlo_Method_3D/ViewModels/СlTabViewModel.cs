@@ -4,8 +4,17 @@ namespace Monte_Carlo_Method_3D.ViewModels
 {
     public class СlTabViewModel : TabViewModel
     {
+        private enum TState
+        {
+            NotStarted,
+            Working,
+            Paused
+        }
+
         private CalculationMethod m_CalculationMethod;
         private ConstraintChooserViewModel m_ConstraintChooser;
+        private TState m_State;
+        private string m_OutputPath;
 
         public СlTabViewModel() : base("Розрахунок")
         {
@@ -18,7 +27,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
             set
             {
                 m_CalculationMethod = value;
-                m_ConstraintChooser = new ConstraintChooserViewModel(m_CalculationMethod);
+                ConstraintChooser = new ConstraintChooserViewModel(m_CalculationMethod);
                 OnPropertyChanged(nameof(CalculationMethod));
             }
         }
@@ -28,5 +37,23 @@ namespace Monte_Carlo_Method_3D.ViewModels
             get { return m_ConstraintChooser; }
             set { m_ConstraintChooser = value; OnPropertyChanged(nameof(ConstraintChooser)); }
         }
+
+        private TState State
+        {
+            get { return m_State; }
+            set
+            {
+                m_State = value;
+            }
+        }
+
+
+        public string OutputPath
+        {
+            get { return m_OutputPath; }
+            set { m_OutputPath = value;  OnPropertyChanged(nameof(OutputPath)); }
+        }
+
+
     }
 }

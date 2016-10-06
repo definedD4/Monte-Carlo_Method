@@ -3,16 +3,27 @@
                     xmlns:local="clr-namespace:Monte_Carlo_Method_3D.Views"
                     xmlns:vm="clr-namespace:Monte_Carlo_Method_3D.ViewModels"
                     xmlns:ut="clr-namespace:Monte_Carlo_Method_3D.Util">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../Styles/GroupBoxStyle.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
     <DataTemplate DataType="{x:Type vm:ConstraintChooserViewModel}">
         <StackPanel>
-            <WrapPanel Margin="4">
-                <TextBlock Text="Остановка симуляции:" Margin="2"/>
-                <ComboBox ItemsSource="{Binding Creators}" SelectedValue="{Binding CurrentConstraintCreator}"/>
-            </WrapPanel>
-            <WrapPanel Margin="4">
-                <TextBlock Text="{Binding ArgName}" Margin="2"/>
-                <TextBox Text="{Binding CreatorArg}" Margin="2"/>
-            </WrapPanel>
+            <Grid Margin="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Остановка симуляции:" Margin="2" Grid.Column="0"/>
+                <ComboBox ItemsSource="{Binding Creators}" SelectedValue="{Binding CurrentConstraintCreator}" Margin="2" Grid.Column="1"/>
+            </Grid>
+            <Grid Margin="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding ArgName}" Margin="2" Grid.Column="0" HorizontalAlignment="Stretch"/>
+                <TextBox Text="{Binding CreatorArg}" Margin="2" Grid.Column="1" HorizontalAlignment="Stretch"/>
+            </Grid>
         </StackPanel>
     </DataTemplate>
 </ResourceDictionary>

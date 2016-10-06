@@ -46,6 +46,8 @@ namespace Monte_Carlo_Method_3D.ViewModels
         public ConstraintChooserViewModel(CalculationMethod calculationMethod)
         {
             m_CalculationMethod = calculationMethod;
+
+            CurrentConstraintCreator = Creators.First();
         }
 
         public IEnumerable<ConstraintCreator> Creators => ConstraintCreators.Where(i => i.CalculationMethod == m_CalculationMethod);
