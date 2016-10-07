@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Monte_Carlo_Method_3D.Views"
         mc:Ignorable="d"
-        Title="Метод Монте-Карло" Height="640" Width="920"
+        Title="Визуализация расчета переходных вероятностей при решении задачи Дирихле методом Монте-Карло" Height="640" Width="920"
         WindowState="Maximized"
         >
     <Window.Resources>

@@ -97,11 +97,11 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
             VisualTypeSelector.SelectionChanged += (s, e) =>
             {
-                if (VisualTypeSelector.SelectedValue == "2D" && !(VisualContext is StVisualContext2D))
+                if (VisualTypeSelector.SelectedValue == "2D")
                 {
                     VisualContext = new StVisualContext2D(m_Simulator, m_Visualizer);
                 }
-                else if (VisualTypeSelector.SelectedValue == "Table" && !(VisualContext is StTableVisualContext))
+                else if (VisualTypeSelector.SelectedValue == "Table")
                 {
                     VisualContext = new StTableVisualContext(m_Simulator, m_Visualizer);
                 }
