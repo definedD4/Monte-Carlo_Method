@@ -25,7 +25,7 @@ namespace Monte_Carlo_Method_3D.Gauge
             int dpi = 96;
             PixelFormat format = PixelFormats.Bgr24;
             int bytesPerPixel = format.BitsPerPixel / 8;
-            int height = (int)RenderSize.Height;
+            int height = (int)RenderSize.Height * 2;
 
             byte[] pixels = new byte[height * bytesPerPixel];
 

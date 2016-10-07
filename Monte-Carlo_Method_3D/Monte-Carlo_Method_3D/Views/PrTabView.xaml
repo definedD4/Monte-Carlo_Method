@@ -43,24 +43,11 @@
                             Background="{DynamicResource PrimaryBackgroundColor}" Padding="4">
                         <Grid Margin="10">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="10"/>
-                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <Canvas Grid.Column="0">
-                                <TextBlock Text="Шкала вероятности" Foreground="{DynamicResource PrimaryForegroundColor}" RenderTransformOrigin="0.5,0.5" Canvas.Left="-62" Canvas.Top="68" FontSize="15">
-                                    <TextBlock.RenderTransform>
-                                        <TransformGroup>
-                                            <ScaleTransform/>
-                                            <SkewTransform/>
-                                            <RotateTransform Angle="90"/>
-                                            <TranslateTransform/>
-                                        </TransformGroup>
-                                    </TextBlock.RenderTransform>
-                                </TextBlock>
-                            </Canvas>
-                            <ContentControl Content="{Binding Gauge}" ContentTemplate="{StaticResource GaugeTemplate}" Margin="8" Grid.Column="1"/>
-                            <ContentControl Content="{Binding VisualContext}" Grid.Column="2" ContentTemplateSelector="{DynamicResource VisualContextTemplateSelector}"/>
+                            <ContentControl Content="{Binding Gauge}" ContentTemplate="{StaticResource GaugeTemplate}" Margin="8" Grid.Column="0"/>
+                            <ContentControl Content="{Binding VisualContext}" Grid.Column="1" ContentTemplateSelector="{DynamicResource VisualContextTemplateSelector}"/>
                         </Grid>
                     </Border>
                     <Border Grid.Column="2" BorderBrush="{DynamicResource BorderColor}" BorderThickness="{DynamicResource BorderThickness}" 

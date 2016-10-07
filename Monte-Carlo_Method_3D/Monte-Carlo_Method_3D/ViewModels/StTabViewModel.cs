@@ -21,6 +21,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private StVisualizer m_Visualizer;
 
         private DispatcherTimer m_Timer;
+        private Pallete m_Pallete;
 
         // Property Backing Fields
         private bool m_SimulationInProgress = false;
@@ -34,16 +35,13 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private DelegateCommand m_SimulationOptionsCommand;
         private DelegateCommand m_ExportToCsvCommand;
 
-        public StTabViewModel() : base("Метод статистических испытаний")
+        public StTabViewModel(SimulationOptions options) : base("Метод статистических испытаний")
         {
-            Pallete pallete = new Pallete();
+            m_Pallete = new Pallete();
 
-            m_Simulator = new StSimulator(5, 5, new IntPoint(2, 2));
-            m_Visualizer = new StVisualizer(m_Simulator, pallete);
-            VisualContext = new StVisualContext2D(m_Simulator, m_Visualizer);
-            VisualContext.UpdateVisualization();
+            InitComponents(options);
 
-            Gauge = new GaugeContext(pallete);
+            Gauge = new GaugeContext(m_Pallete);
 
             m_StepCommand = new DelegateCommand(_ =>
             {
@@ -109,7 +107,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 }
                 VisualContext.UpdateVisualization();
             };
-
+            VisualTypeSelector.RaiseSelectionChanged();
             VisualTypeSelector.UpdateSelectors();
 
             m_SimulationOptionsCommand = new DelegateCommand(x =>
@@ -120,12 +118,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 if (dialog.DialogResult.GetValueOrDefault(false))
                 {
                     SimulationOptions result = dialog.SimulationOptions;
-                    m_Simulator = new StSimulator(result.Width, result.Height, result.StartLocation);
-                    m_Visualizer = new StVisualizer(m_Simulator, new Pallete());
-                    VisualContext.Simulator = m_Simulator;
-                    VisualContext.Visualizer = m_Visualizer;
-                    VisualContext.UpdateVisualization();
-                    OnPropertyChanged(nameof(SimulationInfo));
+                    InitComponents(result);
                 }
             }, x => !(SimulationInProgress || m_Timer.IsEnabled));
 
@@ -153,6 +146,14 @@ namespace Monte_Carlo_Method_3D.ViewModels
             });
 
 
+        }
+
+        private void InitComponents(SimulationOptions options)
+        {
+            m_Simulator = new StSimulator(options.Width, options.Height, options.StartLocation);
+            m_Visualizer = new StVisualizer(m_Simulator, m_Pallete);
+            VisualTypeSelector?.RaiseSelectionChanged();
+            OnPropertyChanged(nameof(SimulationInfo));
         }
 
         private void UpdateCommands()

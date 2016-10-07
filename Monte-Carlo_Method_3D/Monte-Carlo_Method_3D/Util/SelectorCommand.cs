@@ -43,17 +43,8 @@ namespace Monte_Carlo_Method_3D.Util
                 {
                     selectedValue = value;
 
-                    EventHandler cec = CanExecuteChanged;
-                    if (cec != null)
-                    {
-                        cec(this, EventArgs.Empty);
-                    }
-
-                    EventHandler se = SelectionChanged;
-                    if (se != null)
-                    {
-                        se(this, EventArgs.Empty);
-                    }
+                    CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+                    SelectionChanged?.Invoke(this, EventArgs.Empty);
                 }
             }
         }
@@ -64,6 +55,11 @@ namespace Monte_Carlo_Method_3D.Util
         public void UpdateSelectors()
         {
                 CanExecuteChanged?.Invoke(this, new EventArgs());
+        }
+
+        public void RaiseSelectionChanged()
+        {
+            SelectionChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

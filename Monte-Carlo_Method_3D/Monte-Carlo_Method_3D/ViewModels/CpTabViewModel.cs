@@ -33,14 +33,15 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private readonly SwitchStateCommand m_PlayPauseCommand;
         private readonly DelegateCommand m_RestartCommand;
         private readonly DelegateCommand m_SimulationOptionsCommand;
+        private readonly DelegateCommand m_SimulateStepCommand;
 
-        public CpTabViewModel() : base("Сравнение")
+        public CpTabViewModel(SimulationOptions options) : base("Сравнение")
         {
             m_Pallete = new Pallete();
 
-            m_Gauge = new GaugeContext(m_Pallete);
+            Gauge = new GaugeContext(m_Pallete);
 
-            Init(5, 5, new IntPoint(3, 3));
+            InitComponents(options);
 
             m_Timer = new DispatcherTimer(DispatcherPriority.ContextIdle) { Interval = TimeSpan.FromMilliseconds(10) };
             m_Timer.Tick += (s, e) =>
@@ -49,27 +50,12 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 {
                     SimulationInProgress = true;
 
-                    if (Math.Abs(m_PrSimulator.SimulationInfo.CenterSum) < 1e-100)
+                    for (int i = 0; i < 50; i++)
                     {
-                        m_StSimulator.SimulateSteps(200);
-                    }
-                    else
-                    {
-                        for (int i = 0; i < 50; i++)
-                        {
-                            if (m_PrSimulator.TotalSimTime < m_StSimulator.TotalSimTime)
-                            {
-                                m_PrSimulator.SimulateSteps(1);
-                            }
-                            else
-                            {
-                                m_StSimulator.SimulateSteps(1);
-                            }
-
-                        }
-                        m_PrVisualContext.UpdateVisualization();
+                        Simulate();
                     }
 
+                    m_PrVisualContext.UpdateVisualization();
                     m_StVisualContext.UpdateVisualization();
                     m_DiffVisualContext.UpdateVisualization();
 
@@ -95,6 +81,21 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 }
             };
 
+            m_SimulateStepCommand = new DelegateCommand(x =>
+            {
+                SimulationInProgress = true;
+                Simulate(0.05d);
+
+                m_PrVisualContext.UpdateVisualization();
+                m_StVisualContext.UpdateVisualization();
+                m_DiffVisualContext.UpdateVisualization();
+
+                SimulationInProgress = false;
+
+                OnPropertyChanged(nameof(PrSimulationInfo));
+                OnPropertyChanged(nameof(StSimulationInfo));
+            }, x => !m_Timer.IsEnabled && !SimulationInProgress);
+
             m_RestartCommand = new DelegateCommand(x =>
             {
                 m_PrSimulator.Reset();
@@ -116,17 +117,43 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 if (dialog.DialogResult.GetValueOrDefault(false))
                 {
                     SimulationOptions result = dialog.SimulationOptions;
-                    Init(result.Width, result.Height, result.StartLocation);
+                    InitComponents(result);
                     OnPropertyChanged(nameof(PrSimulationInfo));
                     OnPropertyChanged(nameof(StSimulationInfo));
                 }
             }, x => !(SimulationInProgress || m_Timer.IsEnabled));
         }
 
-        private void Init(int width, int height, IntPoint startLocation)
+        private void Simulate(double time = 0d)
         {
-            m_PrSimulator = new PrSimulator(width, height, startLocation);
-            m_StSimulator = new StSimulator(width, height, startLocation);
+            double prStartSimTime = m_PrSimulator.TotalSimTime;
+            double stStartSimTime = m_StSimulator.TotalSimTime;
+
+            do
+            {
+                if (Math.Abs(m_PrSimulator.SimulationInfo.CenterSum) < 1e-100)
+                {
+                    m_StSimulator.SimulateSteps(200);
+                }
+                else
+                {
+                    if (m_PrSimulator.TotalSimTime < m_StSimulator.TotalSimTime)
+                    {
+                        m_PrSimulator.SimulateSteps(1);
+                    }
+                    else
+                    {
+                        m_StSimulator.SimulateSteps(1);
+                    }
+                }
+            } while (m_PrSimulator.TotalSimTime - prStartSimTime < time &&
+                     m_StSimulator.TotalSimTime - stStartSimTime < time);
+        }
+
+        private void InitComponents(SimulationOptions options)
+        {
+            m_PrSimulator = new PrSimulator(options.Width, options.Height, options.StartLocation);
+            m_StSimulator = new StSimulator(options.Width, options.Height, options.StartLocation);
             m_DiffGenerator = new DiffGenerator(m_PrSimulator, m_StSimulator);
 
 
@@ -159,19 +186,18 @@ namespace Monte_Carlo_Method_3D.ViewModels
         public ICommand PlayPauseCommand => m_PlayPauseCommand;
         public ICommand RestartCommand => m_RestartCommand;
         public ICommand SimulationOptionsCommand => m_SimulationOptionsCommand;
+        public ICommand SimulateStepCommand => m_SimulateStepCommand;
 
         public PrVisualContext PrVisualContext
         {
             get { return m_PrVisualContext; }
             set { m_PrVisualContext = value; OnPropertyChanged(nameof(PrVisualContext));}
         }
-
         public StVisualContext StVisualContext
         {
             get { return m_StVisualContext; }
             set { m_StVisualContext = value; OnPropertyChanged(nameof(StVisualContext)); }
         }
-
         public DiffVisualContext DiffVisualContext
         {
             get { return m_DiffVisualContext; }

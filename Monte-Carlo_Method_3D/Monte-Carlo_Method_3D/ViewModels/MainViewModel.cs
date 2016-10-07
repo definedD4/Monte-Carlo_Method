@@ -6,6 +6,7 @@ using Monte_Carlo_Method_3D.Util;
 using Monte_Carlo_Method_3D.Visualization;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -13,41 +14,26 @@ namespace Monte_Carlo_Method_3D.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        private Pallete pallete;
+        private TabViewModel m_SelectedTab;
 
         public MainViewModel()
         {
-            Tabs = new ObservableCollection<TabViewModel>();
+            SimulationOptions options = new SimulationOptions(9, 9, new IntPoint(4, 4));
 
-            pallete = new Pallete();
-
-            PrTabViewModel propabilityMethodViewModel = new PrTabViewModel(pallete);
-
-            propabilityMethodViewModel.PropertyChanged += (s, e) =>
-            {
-                RaisePropertyChanged(e);
-            };
-
-            Tabs.Add(propabilityMethodViewModel);
-            SelectedTab = propabilityMethodViewModel;
-            Tabs.Add(new StTabViewModel());
-            Tabs.Add(new CpTabViewModel());
+            Tabs.Add(new PrTabViewModel(options));
+            Tabs.Add(new StTabViewModel(options));
+            Tabs.Add(new CpTabViewModel(options));
             //Tabs.Add(new СlTabViewModel());
+
+            SelectedTab = Tabs.First();
         }
 
-        public ObservableCollection<TabViewModel> Tabs { get; private set; }
-        private TabViewModel p_SelectedTab;
+        public ObservableCollection<TabViewModel> Tabs { get; } = new ObservableCollection<TabViewModel>();
+
         public TabViewModel SelectedTab
         {
-            get { return p_SelectedTab; }
-            set
-            {
-                if(p_SelectedTab != value)
-                {
-                    p_SelectedTab = value;
-                    OnPropertyChanged("SelectedTab");
-                }
-            }
+            get { return m_SelectedTab; }
+            set { m_SelectedTab = value; OnPropertyChanged(nameof(SelectedTab)); }
         }
 
     }

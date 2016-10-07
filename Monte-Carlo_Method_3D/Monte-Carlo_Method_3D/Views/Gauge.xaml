@@ -8,11 +8,24 @@
     <DataTemplate x:Key="GaugeTemplate" DataType="{x:Type gauge:GaugeContext}">
         <Grid>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10"/>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <gauge:GaugeGradient Pallete="{Binding Pallete}"/>
-            <Grid Grid.Column="1" Margin="2">
+            <Canvas Grid.Column="0">
+                <TextBlock Text="Шкала вероятности" Foreground="{DynamicResource PrimaryForegroundColor}" RenderTransformOrigin="0.5,0.5" Canvas.Left="-62" Canvas.Top="68" FontSize="15">
+                    <TextBlock.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="90"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+            </Canvas>
+            <gauge:GaugeGradient Pallete="{Binding Pallete}" Width="50" Grid.Column="1"/>
+            <Grid Grid.Column="2" Margin="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="1*"/>

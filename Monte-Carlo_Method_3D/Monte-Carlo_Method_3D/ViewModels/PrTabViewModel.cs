@@ -33,21 +33,13 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private DelegateCommand c_SimulationOptionsCommand;
         private DelegateCommand c_SimulateToCommand;
 
-        public PrTabViewModel(Pallete pallete) : base("Метод вероятностей")
+        public PrTabViewModel(SimulationOptions options) : base("Метод вероятностей")
         {
-            m_Pallete = pallete;
+            m_Pallete = new Pallete();
 
-            Gauge = new GaugeContext(pallete);
+            Gauge = new GaugeContext(m_Pallete);
 
-            //Init m_Simulator
-            m_Simulator = new PrSimulator(5, 5, new IntPoint(2, 2));
-
-            //Init m_Visualizer and visual output
-            m_Visualizer = new PrVisualizer(m_Simulator, pallete);
-
-            //init visual context
-            VisualContext = new PrVisualContext2D(m_Simulator, m_Visualizer);
-            VisualContext.UpdateVisualization();
+            InitComponents(options);
 
             //Init timer
             m_Timer = new DispatcherTimer(DispatcherPriority.ContextIdle) {Interval = TimeSpan.FromMilliseconds(10)};
@@ -107,12 +99,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 if (dialog.DialogResult.GetValueOrDefault(false))
                 {
                     SimulationOptions result = dialog.SimulationOptions;
-                    m_Simulator = new PrSimulator(result.Width, result.Height, result.StartLocation);
-                    m_Visualizer = new PrVisualizer(m_Simulator, pallete);
-                    VisualContext.Simulator = m_Simulator;
-                    VisualContext.Visualizer = m_Visualizer;
-                    VisualContext.UpdateVisualization();
-                    OnPropertyChanged(nameof(SimulationInfo));
+                    InitComponents(result);
                 }
             }, x => !(SimulationInProgress || m_Timer.IsEnabled));
 
@@ -155,8 +142,16 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 }
                 VisualContext.UpdateVisualization();
             };
-
+            VisualTypeSelector.RaiseSelectionChanged();
             VisualTypeSelector.UpdateSelectors();
+        }
+
+        private void InitComponents(SimulationOptions options)
+        {
+            m_Simulator = new PrSimulator(options.Width, options.Height, options.StartLocation);
+            m_Visualizer = new PrVisualizer(m_Simulator, m_Pallete);
+            VisualTypeSelector?.RaiseSelectionChanged();
+            OnPropertyChanged(nameof(SimulationInfo));
         }
 
         private void UpdateCommands()
