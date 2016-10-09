@@ -76,7 +76,8 @@ namespace Monte_Carlo_Method_3D.Visualization
                 {
                     for (int j = 0; j < m_Simulator.Height; j++)
                     {
-                        DrawingUtil.DrawTableCell(drawingContext, i, j, Math.Round(m_Simulator[i, j], 5).ToString("E2"), ForegroundColor);
+                        var str = Math.Round(m_Simulator[i, j], 5).ToString("G3");
+                        DrawingUtil.DrawTableCell(drawingContext, i, j, str, ForegroundColor);
                     }
                 }
             }
