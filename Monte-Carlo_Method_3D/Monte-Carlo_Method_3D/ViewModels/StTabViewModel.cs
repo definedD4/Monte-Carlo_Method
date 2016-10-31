@@ -29,11 +29,11 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private GaugeContext m_Gauge;
 
         //Commands
-        private DelegateCommand m_StepCommand;
-        private SwitchStateCommand m_PlayPauseCommand;
-        private DelegateCommand m_RestartCommand;
-        private DelegateCommand m_SimulationOptionsCommand;
-        private DelegateCommand m_ExportToCsvCommand;
+        private readonly DelegateCommand m_StepCommand;
+        private readonly SwitchStateCommand m_PlayPauseCommand;
+        private readonly DelegateCommand m_RestartCommand;
+        private readonly DelegateCommand m_SimulationOptionsCommand;
+        private readonly DelegateCommand m_ExportToCsvCommand;
 
         public StTabViewModel(SimulationOptions options) : base("Метод статистических испытаний")
         {
@@ -150,7 +150,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         private void InitComponents(SimulationOptions options)
         {
-            m_Simulator = new StSimulator(options.Width, options.Height, options.StartLocation);
+            m_Simulator = new StSimulator(options);
             m_Visualizer = new StVisualizer(m_Simulator, m_Pallete);
             VisualTypeSelector?.RaiseSelectionChanged();
             OnPropertyChanged(nameof(SimulationInfo));

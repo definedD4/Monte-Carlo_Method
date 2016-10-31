@@ -17,13 +17,13 @@ namespace Monte_Carlo_Method_3D.Simulation
 
         public PrSimulationInfo SimulationInfo { get; private set; }
 
-        public PrSimulator(int width, int height, IntPoint startLocation)
+        public PrSimulator(SimulationOptions options)
         {
-            Width = width;
-            Height = height;
-            StartLocation = startLocation;
-            data = new double[width, height];
-            data[startLocation.X, startLocation.Y] = 1;
+            Width = options.Width;
+            Height = options.Height;
+            StartLocation = options.StartLocation;
+            data = new double[Width, Height];
+            data[StartLocation.X, StartLocation.Y] = 1;
             Step = 0;
             TotalSimTime = 0;
             SimulationInfo = new PrSimulationInfo(Step, TotalSimTime, 1, 0, 1);

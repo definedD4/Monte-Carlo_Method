@@ -6,8 +6,7 @@
         xmlns:local="clr-namespace:Monte_Carlo_Method_3D.Views"
         mc:Ignorable="d"
         Title="Визуализация расчета переходных вероятностей при решении задачи Дирихле методом Монте-Карло" Height="640" Width="920"
-        WindowState="Maximized"
-        >
+        WindowState="Maximized">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

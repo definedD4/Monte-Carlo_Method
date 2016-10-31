@@ -10,7 +10,7 @@ namespace Monte_Carlo_Method_3D.Calculation
 
     public class PrCenterSumCalcConstraint : ICalculationConstraint
     {
-        private double m_Limit;
+        private readonly double m_Limit;
 
         public PrCenterSumCalcConstraint(double limit)
         {
@@ -22,11 +22,13 @@ namespace Monte_Carlo_Method_3D.Calculation
             if (!(simulationInfo is PrSimulationInfo)) throw new ArgumentException();
             return (simulationInfo as PrSimulationInfo).CenterSum > m_Limit;
         }
+
+        public override string ToString() => $"Simulate while center sum is greater than: {m_Limit}.";
     }
 
     public class PrSimTimeCalcConstraint : ICalculationConstraint
     {
-        private double m_Limit;
+        private readonly double m_Limit;
 
         public PrSimTimeCalcConstraint(double limit)
         {
@@ -38,11 +40,13 @@ namespace Monte_Carlo_Method_3D.Calculation
             if (!(simulationInfo is PrSimulationInfo)) throw new ArgumentException();
             return (simulationInfo as PrSimulationInfo).TotalSimTime < m_Limit;
         }
+
+        public override string ToString() => $"Simulate for: {m_Limit} ms.";
     }
 
     public class StSimTimeCalcConstraint : ICalculationConstraint
     {
-        private double m_Limit;
+        private readonly double m_Limit;
 
         public StSimTimeCalcConstraint(double limit)
         {
@@ -54,11 +58,13 @@ namespace Monte_Carlo_Method_3D.Calculation
             if (!(simulationInfo is StSimulationInfo)) throw new ArgumentException();
             return (simulationInfo as StSimulationInfo).TotalSimTime < m_Limit;
         }
+
+        public override string ToString() => $"Simulate for: {m_Limit} ms.";
     }
 
     public class StStepsCalcConstraint : ICalculationConstraint
     {
-        private long m_Limit;
+        private readonly long m_Limit;
 
         public StStepsCalcConstraint(long limit)
         {
@@ -70,5 +76,7 @@ namespace Monte_Carlo_Method_3D.Calculation
             if (!(simulationInfo is StSimulationInfo)) throw new ArgumentException();
             return (simulationInfo as StSimulationInfo).TotalSimulations < m_Limit;
         }
+
+        public override string ToString() => $"Simulate for: {m_Limit} steps.";
     }
 }

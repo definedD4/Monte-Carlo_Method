@@ -1,0 +1,27 @@
+﻿<Window x:Class="Monte_Carlo_Method_3D.Dialogs.ShowTableDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Monte_Carlo_Method_3D.Dialogs"
+        mc:Ignorable="d"
+        Title="Просмотр таблицы" Height="300" Width="300">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles/Resources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Border BorderThickness="2" BorderBrush="DarkGray" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid>
+            <Image x:Name="Img" RenderOptions.BitmapScalingMode="NearestNeighbor" Stretch="Uniform"/>
+            <Popup x:Name="PointedValuePopup" AllowsTransparency="True" Placement="Relative" PlacementTarget="{Binding ElementName=dataImage}">
+                <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="{DynamicResource BorderThickness}" 
+                        Background="{DynamicResource PrimaryBackgroundColor}" Padding="4">
+                    <TextBlock x:Name="PointedValueText"/>
+                </Border>
+            </Popup>
+        </Grid>
+    </Border>
+</Window>

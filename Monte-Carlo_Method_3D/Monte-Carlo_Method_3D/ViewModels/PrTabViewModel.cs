@@ -27,11 +27,12 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private bool m_SimulationInProgress = false;
         private long m_SimulateToStep;
 
-        private SwitchStateCommand c_PlayPauseCommand;
-        private DelegateCommand c_StepCommand;
-        private DelegateCommand c_RestartCommand;
-        private DelegateCommand c_SimulationOptionsCommand;
-        private DelegateCommand c_SimulateToCommand;
+        private readonly SwitchStateCommand m_PlayPauseCommand;
+        private readonly DelegateCommand m_StepCommand;
+        private readonly DelegateCommand m_RestartCommand;
+        private readonly DelegateCommand m_SimulationOptionsCommand;
+        private readonly DelegateCommand m_SimulateToCommand;
+        private readonly DelegateCommand m_ExportToCsvCommand;
 
         public PrTabViewModel(SimulationOptions options) : base("Метод вероятностей")
         {
@@ -58,7 +59,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 }
             };
 
-            c_StepCommand = new DelegateCommand(x =>
+            m_StepCommand = new DelegateCommand(x =>
             {
                 SimulationInProgress = true;
 
@@ -69,10 +70,10 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 OnPropertyChanged(nameof(SimulationInfo));
             }, x => !(SimulationInProgress || m_Timer.IsEnabled));
 
-            c_PlayPauseCommand = new SwitchStateCommand("Пауза", "Воспроизвести", false, _ => !(SimulationInProgress && !m_Timer.IsEnabled));
-            c_PlayPauseCommand.StateChanged += (s, e) =>
+            m_PlayPauseCommand = new SwitchStateCommand("Пауза", "Воспроизвести", false, _ => !(SimulationInProgress && !m_Timer.IsEnabled));
+            m_PlayPauseCommand.StateChanged += (s, e) =>
             {
-                if (c_PlayPauseCommand.State)
+                if (m_PlayPauseCommand.State)
                 {
                     m_Timer.Start();
                     UpdateCommands();
@@ -84,14 +85,14 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 }
             };
 
-            c_RestartCommand = new DelegateCommand(x =>
+            m_RestartCommand = new DelegateCommand(x =>
             {
                 m_Simulator.Reset();
                 VisualContext.UpdateVisualization();
                 OnPropertyChanged(nameof(SimulationInfo));
             }, x => !(SimulationInProgress || m_Timer.IsEnabled));
 
-            c_SimulationOptionsCommand = new DelegateCommand(x =>
+            m_SimulationOptionsCommand = new DelegateCommand(x =>
             {
                 SimulationOptionsDialog dialog = new SimulationOptionsDialog(SimulationOptions.FromSimulator(m_Simulator));
                 dialog.ShowDialog();
@@ -103,7 +104,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 }
             }, x => !(SimulationInProgress || m_Timer.IsEnabled));
 
-            c_SimulateToCommand = new DelegateCommand(x =>
+            m_SimulateToCommand = new DelegateCommand(x =>
             {
                 SimulationInProgress = true;
 
@@ -115,7 +116,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 OnPropertyChanged(nameof(SimulationInfo));
             }, x => !(SimulationInProgress || m_Timer.IsEnabled || SimulateToStep <= 0));
 
-            c_ExportToCsvCommand = new DelegateCommand(x =>
+            m_ExportToCsvCommand = new DelegateCommand(x =>
             {
                 SaveFileDialog saveFileDialog = new SaveFileDialog() { Filter = "Файл CSV (*.csv)|*.csv" };
                 if (saveFileDialog.ShowDialog(Application.Current.MainWindow).GetValueOrDefault())
@@ -148,7 +149,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         private void InitComponents(SimulationOptions options)
         {
-            m_Simulator = new PrSimulator(options.Width, options.Height, options.StartLocation);
+            m_Simulator = new PrSimulator(options);
             m_Visualizer = new PrVisualizer(m_Simulator, m_Pallete);
             VisualTypeSelector?.RaiseSelectionChanged();
             OnPropertyChanged(nameof(SimulationInfo));
@@ -156,12 +157,12 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         private void UpdateCommands()
         {
-            c_StepCommand.RaiseCanExecuteChanged();
-            c_PlayPauseCommand.RaiseCanExecuteChanged();
-            c_RestartCommand.RaiseCanExecuteChanged();
-            c_SimulationOptionsCommand.RaiseCanExecuteChanged();
-            c_SimulateToCommand.RaiseCanExecuteChanged();
-            c_ExportToCsvCommand.RaiseCanExecuteChanged();
+            m_StepCommand.RaiseCanExecuteChanged();
+            m_PlayPauseCommand.RaiseCanExecuteChanged();
+            m_RestartCommand.RaiseCanExecuteChanged();
+            m_SimulationOptionsCommand.RaiseCanExecuteChanged();
+            m_SimulateToCommand.RaiseCanExecuteChanged();
+            m_ExportToCsvCommand.RaiseCanExecuteChanged();
         }
 
         public bool SimulationInProgress
@@ -172,18 +173,17 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         public PrSimulationInfo SimulationInfo => m_Simulator.SimulationInfo;
 
-        public ICommand PlayPauseCommand => c_PlayPauseCommand;
-        public ICommand StepCommand => c_StepCommand;
-        public ICommand RestartCommand => c_RestartCommand;
-        public ICommand SimulationOptionsCommand => c_SimulationOptionsCommand;
-        public ICommand SimulateToCommand => c_SimulateToCommand;
-        private DelegateCommand c_ExportToCsvCommand;
-        public ICommand ExportToCsvCommand => c_ExportToCsvCommand;
+        public ICommand PlayPauseCommand => m_PlayPauseCommand;
+        public ICommand StepCommand => m_StepCommand;
+        public ICommand RestartCommand => m_RestartCommand;
+        public ICommand SimulationOptionsCommand => m_SimulationOptionsCommand;
+        public ICommand SimulateToCommand => m_SimulateToCommand;
+        public ICommand ExportToCsvCommand => m_ExportToCsvCommand;
 
         public long SimulateToStep
         {
             get { return m_SimulateToStep; }
-            set { m_SimulateToStep = value; OnPropertyChanged("SimuateToStep"); c_SimulateToCommand.RaiseCanExecuteChanged(); }
+            set { m_SimulateToStep = value; OnPropertyChanged("SimuateToStep"); m_SimulateToCommand.RaiseCanExecuteChanged(); }
         }
 
         public SelectorCommand VisualTypeSelector { get; private set; }

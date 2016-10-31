@@ -152,8 +152,8 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         private void InitComponents(SimulationOptions options)
         {
-            m_PrSimulator = new PrSimulator(options.Width, options.Height, options.StartLocation);
-            m_StSimulator = new StSimulator(options.Width, options.Height, options.StartLocation);
+            m_PrSimulator = new PrSimulator(options);
+            m_StSimulator = new StSimulator(options);
             m_DiffGenerator = new DiffGenerator(m_PrSimulator, m_StSimulator);
 
 

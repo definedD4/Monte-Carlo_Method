@@ -5,7 +5,7 @@ using System.Text;
 using Monte_Carlo_Method_3D.Simulation;
 using Monte_Carlo_Method_3D.Util;
 
-namespace Monte_Carlo_Method_3D.Dialogs
+namespace Monte_Carlo_Method_3D.Simulation
 {
     public class SimulationOptions
     {

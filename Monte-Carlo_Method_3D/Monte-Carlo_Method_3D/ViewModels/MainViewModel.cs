@@ -23,7 +23,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
             Tabs.Add(new PrTabViewModel(options));
             Tabs.Add(new StTabViewModel(options));
             Tabs.Add(new CpTabViewModel(options));
-            //Tabs.Add(new СlTabViewModel());
+            Tabs.Add(new СlTabViewModel());
 
             SelectedTab = Tabs.First();
         }

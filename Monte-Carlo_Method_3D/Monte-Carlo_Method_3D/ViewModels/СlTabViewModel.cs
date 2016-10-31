@@ -1,10 +1,14 @@
-﻿using Monte_Carlo_Method_3D.Calculation;
+﻿using System;
+using System.Windows;
+using System.Windows.Input;
+using Monte_Carlo_Method_3D.Calculation;
+using Monte_Carlo_Method_3D.Util;
 
 namespace Monte_Carlo_Method_3D.ViewModels
 {
     public class СlTabViewModel : TabViewModel
     {
-        private enum TState
+        private enum StateT
         {
             NotStarted,
             Working,
@@ -13,12 +17,31 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         private CalculationMethod m_CalculationMethod;
         private ConstraintChooserViewModel m_ConstraintChooser;
-        private TState m_State;
+        private StateT m_State = StateT.NotStarted;
         private string m_OutputPath;
+
+        private readonly DelegateCommand m_StartCommand;
+        private readonly SwitchStateCommand m_PauseResumeCommand;
+        private readonly DelegateCommand m_StopCommand;
 
         public СlTabViewModel() : base("Розрахунок")
         {
             CalculationMethod = CalculationMethod.Propability;
+
+            m_StartCommand = new DelegateCommand(x =>
+            {
+                ICalculationConstraint constraint;
+                try
+                {
+                    constraint = ConstraintChooser.GetConstraint();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show($"Некоректно введенное ограничение.\nДетали:\n{e.Message}");
+                    return;
+                }
+                MessageBox.Show($"{constraint.ToString()}");
+            }, x => State == StateT.NotStarted);
         }
 
         public CalculationMethod CalculationMethod
@@ -38,12 +61,16 @@ namespace Monte_Carlo_Method_3D.ViewModels
             set { m_ConstraintChooser = value; OnPropertyChanged(nameof(ConstraintChooser)); }
         }
 
-        private TState State
+        private StateT State
         {
             get { return m_State; }
             set
             {
                 m_State = value;
+
+                m_StartCommand.RaiseCanExecuteChanged();
+                m_PauseResumeCommand.RaiseCanExecuteChanged();
+                m_StopCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -54,6 +81,6 @@ namespace Monte_Carlo_Method_3D.ViewModels
             set { m_OutputPath = value;  OnPropertyChanged(nameof(OutputPath)); }
         }
 
-
+        public ICommand StartCommand => m_StartCommand;
     }
 }

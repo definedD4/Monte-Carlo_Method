@@ -19,15 +19,15 @@ namespace Monte_Carlo_Method_3D.Simulation
             Tuple.Create(new IntPoint(1, -1), 1d / 20d)
         };
 
-        private Random m_Random = new Random();
+        private readonly Random m_Random = new Random();
 
         private EdgeData m_Data;
 
-        public StSimulator(int width, int height, IntPoint startLocation)
+        public StSimulator(SimulationOptions options)
         {
-            Width = width;
-            Height = height;
-            StartLocation = startLocation;
+            Width = options.Width;
+            Height = options.Height;
+            StartLocation = options.StartLocation;
 
             m_Data = new EdgeData(Width, Height);
 

@@ -84,7 +84,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Calculation\Calculation.cs" />
-    <Compile Include="Dialogs\SimulationOptions.cs" />
+    <Compile Include="Calculation\PrCalculation.cs" />
+    <Compile Include="Controls\GridDataLoadSlot.xaml.cs">
+      <DependentUpon>GridDataLoadSlot.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\ShowTableDialog.xaml.cs">
+      <DependentUpon>ShowTableDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Simulation\GridData.cs" />
+    <Compile Include="Simulation\SimulationOptions.cs" />
     <Compile Include="Dialogs\SimulationOptionsDialog.xaml.cs">
       <DependentUpon>SimulationOptionsDialog.xaml</DependentUpon>
     </Compile>
@@ -139,6 +147,14 @@
     </Compile>
     <Compile Include="Visualization\Pallete.cs" />
     <Compile Include="Visualization\StVisualizer.cs" />
+    <Page Include="Controls\GridDataLoadSlot.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\ShowTableDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialogs\SimulationOptionsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
