@@ -3,7 +3,8 @@
                     xmlns:local="clr-namespace:Monte_Carlo_Method_3D.Views"
                     xmlns:vm="clr-namespace:Monte_Carlo_Method_3D.ViewModels"
                     xmlns:ut="clr-namespace:Monte_Carlo_Method_3D.Util"
-                    xmlns:cl="clr-namespace:Monte_Carlo_Method_3D.Calculation">
+                    xmlns:cl="clr-namespace:Monte_Carlo_Method_3D.Calculation"
+                    xmlns:c="clr-namespace:Monte_Carlo_Method_3D.Controls">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="ConstraintChooserView.xaml"/>
     </ResourceDictionary.MergedDictionaries>
@@ -13,43 +14,54 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="4"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <GroupBox Header="Параметры вычислений" Margin="4">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <Grid Margin="4" Grid.Row="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Margin="2" Text="Способ симуляции:" Grid.Column="0"/>
-                        <ComboBox Margin="2" ItemsSource="{ut:EnumSelection {x:Type cl:CalculationMethod}}" SelectedValue="{Binding CalculationMethod}" 
-                          DisplayMemberPath="DisplayName" SelectedValuePath="Value" Grid.Column="1"/>
-                    </Grid>
-                    <ContentPresenter Content="{Binding ConstraintChooser}" Grid.Row="1"/>
-                    <Grid Margin="4" Grid.Row="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Margin="2" Text="Способ симуляции:" Grid.Column="0"/>
-                        <ComboBox Margin="2" ItemsSource="{ut:EnumSelection {x:Type cl:CalculationMethod}}" SelectedValue="{Binding CalculationMethod}" 
-                          DisplayMemberPath="DisplayName" SelectedValuePath="Value" Grid.Column="1"/>
-                    </Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Margin="2" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                               Text="Способ симуляции:"/>
+                    <ComboBox Margin="2" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2"
+                              ItemsSource="{ut:EnumSelection {x:Type cl:CalculationMethod}}" SelectedValue="{Binding CalculationMethod}" 
+                              DisplayMemberPath="DisplayName" SelectedValuePath="Value"/>
+                    <ContentPresenter Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"
+                                      Content="{Binding ConstraintChooser}"/>
+                    <TextBlock Margin="2" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4"
+                               Text="Размер сетки:"/>
+                    <TextBlock Margin="2" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="1"
+                               Text="Ширина:"/>
+                    <TextBox Margin="2" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="1"
+                             Text="{Binding GridWidth}"/>
+                    <TextBlock Margin="2" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="1"
+                               Text="Высота:"/>
+                    <TextBox Margin="2" Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="1"
+                             Text="{Binding GridHeight}"/>
+                    <TextBlock Margin="2" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="1"
+                               Text="Граничные значения:"/>
+                    <c:GridDataLoadSlot Margin="2" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2"
+                                        Data="{Binding EdgeData, Mode=TwoWay}"/>
                 </Grid>
             </GroupBox>
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" Content="Старт" Command="{Binding StartCommand}"/>
             </Grid>
+            <ProgressBar Margin="2" Grid.Row="3" Minimum="0" Maximum="100" Value="{Binding Progress, Mode=OneWay}"/>
         </Grid>
     </DataTemplate>
 </ResourceDictionary>

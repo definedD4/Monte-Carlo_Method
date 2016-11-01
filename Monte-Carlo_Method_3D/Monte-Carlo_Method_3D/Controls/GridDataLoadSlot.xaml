@@ -13,13 +13,16 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
-         <Grid.ColumnDefinitions>
-             <ColumnDefinition Width="*"/>
-             <ColumnDefinition Width="Auto"/>
-         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Column="0" Margin="4" x:Name="TbName" Visibility="Collapsed"/>
-        <Button Grid.Column="0" Margin="4" Content="Загрузить" x:Name="BtnLoad" Click="BtnLoad_OnClick"/>
-        <Button Grid.Column="1" Margin="4" Content="Простмотр" x:Name="BtnViewData" IsEnabled="False" Click="BtnViewData_OnClick"/>
-    </Grid>
+    <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="{DynamicResource BorderThickness}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Margin="4" x:Name="TbName"/>
+            <Button Grid.Column="1" Margin="4" Content="Загрузить" x:Name="BtnLoad" Click="BtnLoad_OnClick"/>
+            <Button Grid.Column="2" Margin="4" Content="Простмотр" x:Name="BtnViewData" IsEnabled="False" Click="BtnViewData_OnClick"/>
+        </Grid>
+    </Border>
 </UserControl>

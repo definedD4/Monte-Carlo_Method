@@ -121,7 +121,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 SaveFileDialog saveFileDialog = new SaveFileDialog() { Filter = "Файл CSV (*.csv)|*.csv" };
                 if (saveFileDialog.ShowDialog(Application.Current.MainWindow).GetValueOrDefault())
                 {
-                    new CsvExporter(';').ExportToFile(m_Simulator.GetData(), saveFileDialog.FileName);
+                    CsvUtil.ExportToFile(m_Simulator.GetData(), saveFileDialog.FileName);
                 }
             });
 

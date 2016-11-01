@@ -33,10 +33,10 @@ namespace Monte_Carlo_Method_3D.ViewModels
         }
 
         private static readonly IEnumerable<ConstraintCreator> ConstraintCreators = new[] {
-            new ConstraintCreator((x) => new PrCenterSumCalcConstraint(double.Parse(x)), "По сумме в центре", "Максимальное значение:", CalculationMethod.Propability),
-            new ConstraintCreator((x) => new PrSimTimeCalcConstraint(double.Parse(x)), "По времени симуляции", "Выполнять до:", CalculationMethod.Propability),
-            new ConstraintCreator((x) => new StSimTimeCalcConstraint(double.Parse(x)), "По времени симуляции", "Выполнять до:", CalculationMethod.Statistical),
-            new ConstraintCreator((x) => new StStepsCalcConstraint(long.Parse(x)), "По итерациям", "Максимальное количество итераций:", CalculationMethod.Statistical)
+            new ConstraintCreator((x) => new PrCenterSumCalcConstraint(double.Parse(x)), "По сумме в центре", "Выполнять пока сумма в центре больше:", CalculationMethod.Propability),
+            new ConstraintCreator((x) => new PrSimTimeCalcConstraint(double.Parse(x)), "По времени симуляции", "Время выполнения (мс):", CalculationMethod.Propability),
+            new ConstraintCreator((x) => new StSimTimeCalcConstraint(double.Parse(x)), "По времени симуляции", "Время выполнения (мс):", CalculationMethod.Statistical),
+            new ConstraintCreator((x) => new StStepsCalcConstraint(long.Parse(x)), "По итерациям", "Кол-во итераций:", CalculationMethod.Statistical)
         };
 
         private readonly CalculationMethod m_CalculationMethod;

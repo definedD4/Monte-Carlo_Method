@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Monte_Carlo_Method_3D.Simulation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -33,7 +34,11 @@ namespace Monte_Carlo_Method_3D.Calculation
             };
             m_Worker.DoWork += (sender, args) =>
             {
-                double[,] result = Simulate();
+                GridData result = Simulate();
+                if(result == null)
+                {
+                    args.Cancel = true;
+                }
                 args.Result = result;
             };
             m_Worker.ProgressChanged += (sender, args) =>
@@ -48,7 +53,7 @@ namespace Monte_Carlo_Method_3D.Calculation
             };
         }
 
-        protected abstract double[,] Simulate();
+        protected abstract GridData Simulate();
 
         protected void ReportProgress(int progress)
         {
@@ -57,7 +62,19 @@ namespace Monte_Carlo_Method_3D.Calculation
 
         protected bool CanContinue(object simulationInfo)
         {
-            return m_Constraint.CanContinue(simulationInfo);
+            return !m_Worker.CancellationPending && m_Constraint.CanContinue(simulationInfo);
+        }
+
+        public void Start()
+        {
+            Progress = 0;
+            m_Worker.RunWorkerAsync();
+        }
+
+        public void Cancel()
+        {
+            m_Worker.CancelAsync();
+            Progress = 0;
         }
 
         public int Progress

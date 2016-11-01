@@ -141,7 +141,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                         data[m_Simulator.Width - 1, y] = m_Simulator[m_Simulator.Width - 1, y];
                     }
 
-                    new CsvExporter(';').ExportToFile(data, saveFileDialog.FileName);
+                     CsvUtil.ExportToFile(data, saveFileDialog.FileName);
                 }
             });
 

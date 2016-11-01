@@ -13,6 +13,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Monte_Carlo_Method_3D.Dialogs;
 using Monte_Carlo_Method_3D.Simulation;
+using Microsoft.Win32;
+using Monte_Carlo_Method_3D.Util;
 
 namespace Monte_Carlo_Method_3D.Controls
 {
@@ -36,14 +38,11 @@ namespace Monte_Carlo_Method_3D.Controls
             if (@this.Data != null)
             {
                 @this.TbName.Text = $"Таблица: {@this.Data.Width} на {@this.Data.Height}";
-                @this.TbName.Visibility = Visibility.Visible;
-                @this.BtnLoad.Visibility = Visibility.Collapsed;
                 @this.BtnViewData.IsEnabled = true;
             }
             else
             {
-                @this.TbName.Visibility = Visibility.Collapsed;
-                @this.BtnLoad.Visibility = Visibility.Visible;
+                @this.TbName.Text = "";
                 @this.BtnViewData.IsEnabled = false;
             }
         }
@@ -55,7 +54,11 @@ namespace Monte_Carlo_Method_3D.Controls
 
         private void BtnLoad_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            OpenFileDialog ofd = new OpenFileDialog() { Filter = "Файл CSV (*.csv)|*.csv" };
+            if (ofd.ShowDialog(Application.Current.MainWindow).GetValueOrDefault())
+            {
+                Data = CsvUtil.ImportFromFile(ofd.FileName);
+            }
         }
 
         private void BtnViewData_OnClick(object sender, RoutedEventArgs e)

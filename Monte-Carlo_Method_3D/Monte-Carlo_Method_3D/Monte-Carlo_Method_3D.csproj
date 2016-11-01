@@ -111,7 +111,7 @@
     <Compile Include="Simulation\StParticlePath.cs" />
     <Compile Include="Simulation\StSimulationInfo.cs" />
     <Compile Include="Simulation\StSimulator.cs" />
-    <Compile Include="Util\CsvExporter.cs" />
+    <Compile Include="Util\CsvUtil.cs" />
     <Compile Include="Util\DelegateCommand.cs" />
     <Compile Include="Util\DrawingUtil.cs" />
     <Compile Include="Util\EdgeData.cs" />
