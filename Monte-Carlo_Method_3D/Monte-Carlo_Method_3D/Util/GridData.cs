@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Monte_Carlo_Method_3D.Simulation
+namespace Monte_Carlo_Method_3D.Util
 {
     public class GridData
     {
@@ -25,5 +25,10 @@ namespace Monte_Carlo_Method_3D.Simulation
         }
 
         public double this[int x, int y] => m_Data[x, y];
+
+        public double[,] Get()
+        {
+            return m_Data;
+        }
     }
 }

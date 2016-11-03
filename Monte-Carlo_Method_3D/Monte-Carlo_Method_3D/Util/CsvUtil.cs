@@ -1,5 +1,4 @@
-﻿using Monte_Carlo_Method_3D.Simulation;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,6 +22,11 @@ namespace Monte_Carlo_Method_3D.Util
                 yield return str.ToString();
             }
         } 
+
+        public static void ExportToFile(GridData data, string path, char delim = ';')
+        {
+            ExportToFile(data.Get(), path, delim);
+        }
 
         public static void ExportToFile(double[,] data, string path, char delim = ';')
         {

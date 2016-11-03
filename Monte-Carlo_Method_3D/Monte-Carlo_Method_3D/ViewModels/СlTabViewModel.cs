@@ -21,9 +21,10 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private int m_GridWidth;
         private int m_GridHeight;
         private GridData m_EdgeData;
+        private GridData m_Result;
 
         private readonly DelegateCommand m_StartCommand;
-        private readonly DelegateCommand m_StopCommand;
+        private readonly DelegateCommand m_CancelCommand;
 
         private Calculation.Calculation m_Calculation;
 
@@ -53,8 +54,8 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 m_Calculation.Start();
                 m_Calculation.DoneCalculation += (s, e) =>
                 {
-                    //TODO: set result
                     State = StateT.NotStarted;
+                    Result = m_Calculation.Result;
                 };
                 m_Calculation.PropertyChanged += (s, e) =>
                 {
@@ -65,7 +66,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 };
             }, x => State == StateT.NotStarted);
 
-            m_StopCommand = new DelegateCommand(x =>
+            m_CancelCommand = new DelegateCommand(x =>
             {
                 m_Calculation.Cancel();
             }, x => State == StateT.Working);
@@ -96,7 +97,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 m_State = value;
 
                 m_StartCommand.RaiseCanExecuteChanged();
-                m_StopCommand.RaiseCanExecuteChanged();
+                m_CancelCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -120,6 +121,13 @@ namespace Monte_Carlo_Method_3D.ViewModels
             set { m_EdgeData = value; OnPropertyChanged(nameof(EdgeData)); }
         }
 
+        public GridData Result
+        {
+            get { return m_Result; }
+            set { m_Result = value;  OnPropertyChanged(nameof(Result)); }
+        }
+
         public ICommand StartCommand => m_StartCommand;
+        public ICommand CamcelCommand => m_CancelCommand;
     }
 }

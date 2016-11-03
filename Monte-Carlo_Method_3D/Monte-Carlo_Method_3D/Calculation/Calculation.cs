@@ -1,4 +1,5 @@
 ﻿using Monte_Carlo_Method_3D.Simulation;
+using Monte_Carlo_Method_3D.Util;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,7 +22,7 @@ namespace Monte_Carlo_Method_3D.Calculation
         private readonly BackgroundWorker m_Worker;
 
         private int m_Progress;
-        private double[,] m_Result;
+        private GridData m_Result;
 
         public Calculation(ICalculationConstraint constraint)
         {
@@ -47,7 +48,7 @@ namespace Monte_Carlo_Method_3D.Calculation
             };
             m_Worker.RunWorkerCompleted += (sender, args) =>
             {
-                Result = (double[,]) args.Result;
+                Result = (GridData)args.Result;
 
                 DoneCalculation?.Invoke(this, EventArgs.Empty);
             };
@@ -62,7 +63,12 @@ namespace Monte_Carlo_Method_3D.Calculation
 
         protected bool CanContinue(object simulationInfo)
         {
-            return !m_Worker.CancellationPending && m_Constraint.CanContinue(simulationInfo);
+            return m_Constraint.CanContinue(simulationInfo);
+        }
+
+        protected bool CancelRequested()
+        {
+            return m_Worker.CancellationPending;
         }
 
         public void Start()
@@ -83,7 +89,7 @@ namespace Monte_Carlo_Method_3D.Calculation
             set { m_Progress = value;  OnPropertyChanged(nameof(Progress));}
         }
 
-        public double[,] Result
+        public GridData Result
         {
             get { return m_Result; }
             set { m_Result = value; OnPropertyChanged(nameof(Result)); }
