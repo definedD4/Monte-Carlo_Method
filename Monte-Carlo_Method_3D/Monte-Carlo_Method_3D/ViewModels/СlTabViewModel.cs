@@ -49,7 +49,18 @@ namespace Monte_Carlo_Method_3D.ViewModels
                     MessageBox.Show($"Размеры сетки и таблицы граничных значений не совпадают.");
                     return;
                 }
-                m_Calculation = new PrCalculation(constraint, GridWidth, GridHeight, EdgeData);
+
+                switch (m_CalculationMethod)
+                {
+                    case CalculationMethod.Propability:
+                        m_Calculation = new PrCalculation(constraint, GridWidth, GridHeight, EdgeData);
+                    break;
+                    case CalculationMethod.Statistical:
+                        m_Calculation = new StCalculation(constraint, GridWidth, GridHeight, EdgeData);
+                    break;
+                }
+
+
                 State = StateT.Working;
                 m_Calculation.Start();
                 m_Calculation.DoneCalculation += (s, e) =>
@@ -128,6 +139,6 @@ namespace Monte_Carlo_Method_3D.ViewModels
         }
 
         public ICommand StartCommand => m_StartCommand;
-        public ICommand CamcelCommand => m_CancelCommand;
+        public ICommand CancelCommand => m_CancelCommand;
     }
 }

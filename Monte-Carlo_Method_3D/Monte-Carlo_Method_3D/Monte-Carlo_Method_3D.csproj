@@ -84,6 +84,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Calculation\Calculation.cs" />
+    <Compile Include="Calculation\StCalculation.cs" />
     <Compile Include="Calculation\PrCalculation.cs" />
     <Compile Include="Controls\GridDataLoadSlot.xaml.cs">
       <DependentUpon>GridDataLoadSlot.xaml</DependentUpon>

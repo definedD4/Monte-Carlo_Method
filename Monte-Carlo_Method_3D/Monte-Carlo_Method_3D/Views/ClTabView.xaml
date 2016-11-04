@@ -7,71 +7,78 @@
                     xmlns:c="clr-namespace:Monte_Carlo_Method_3D.Controls">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="ConstraintChooserView.xaml"/>
+        <ResourceDictionary Source="../Styles/Resources.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     <DataTemplate DataType="{x:Type vm:СlTabViewModel}">
-        <Grid>
+        <Grid Margin="8">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="4"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <GroupBox Header="Параметры вычислений" Margin="4">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Margin="2" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
-                               Text="Способ симуляции:"/>
-                    <ComboBox Margin="2" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2"
-                              ItemsSource="{ut:EnumSelection {x:Type cl:CalculationMethod}}" SelectedValue="{Binding CalculationMethod}" 
-                              DisplayMemberPath="DisplayName" SelectedValuePath="Value"/>
-                    <ContentPresenter Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"
-                                      Content="{Binding ConstraintChooser}"/>
-                    <TextBlock Margin="2" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4"
-                               Text="Размер сетки:"/>
-                    <TextBlock Margin="2" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="1"
-                               Text="Ширина:"/>
-                    <TextBox Margin="2" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="1"
-                             Text="{Binding GridWidth}"/>
-                    <TextBlock Margin="2" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="1"
-                               Text="Высота:"/>
-                    <TextBox Margin="2" Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="1"
-                             Text="{Binding GridHeight}"/>
-                    <TextBlock Margin="2" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="1"
-                               Text="Граничные значения:"/>
-                    <c:GridDataLoadSlot Margin="2" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="2"
-                                        Data="{Binding EdgeData, Mode=TwoWay}"/>
-                </Grid>
-            </GroupBox>
-            <Grid Grid.Row="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Button Margin="4"  Grid.Column="0" Content="Старт" Command="{Binding StartCommand}"/>
-                <Button Margin="4"  Grid.Column="1" Content="Отмена" Command="{Binding CancelCommand}"/>
-            </Grid>
-            <ProgressBar Margin="4" Grid.Row="3" Height="35" Minimum="0" Maximum="100" Value="{Binding Progress, Mode=OneWay}"/>
-            <Grid Grid.Row="4">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="Результат" Margin="4" Grid.Column="0"/>
-                <c:GridDataSaveSlot Data="{Binding Result}" Margin="4" Grid.Column="1"/>
-            </Grid>
+            <Border BorderBrush="{DynamicResource BorderColor}" 
+                    BorderThickness="{DynamicResource BorderThickness}" Background="{DynamicResource PrimaryBackgroundColor}">
+                <GroupBox Header="Параметры вычислений" Margin="4">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="8"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Margin="2" Grid.Column="0" Text="Способ симуляции:"/>
+                                <ComboBox Margin="2" Grid.Column="1" ItemsSource="{ut:EnumSelection {x:Type cl:CalculationMethod}}"
+                                          SelectedValue="{Binding CalculationMethod}" DisplayMemberPath="DisplayName" SelectedValuePath="Value"/>
+                            </Grid>
+                            <ContentPresenter Content="{Binding ConstraintChooser}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <GroupBox Header="Размер сетки:" Style="{x:Null}" Margin="4">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Margin="2" Grid.Row="0" Grid.Column="0" Text="Ширина:"/>
+                                    <TextBox Margin="2" Grid.Row="0" Grid.Column="1" Text="{Binding GridWidth}"/>
+                                    <TextBlock Margin="2" Grid.Row="1" Grid.Column="0" Text="Высота:"/>
+                                    <TextBox Margin="2" Grid.Row="1" Grid.Column="1" Text="{Binding GridHeight}"/>
+                                </Grid>
+                            </GroupBox>
+                            <TextBlock Margin="2" Text="Граничные значения:"/>
+                            <c:GridDataLoadSlot Margin="2" Data="{Binding EdgeData, Mode=TwoWay}"/>
+                        </StackPanel>
+                    </Grid>
+                </GroupBox>
+            </Border>
+            <Border Grid.Row="2" BorderBrush="{DynamicResource BorderColor}" 
+                    BorderThickness="{DynamicResource BorderThickness}" Background="{DynamicResource PrimaryBackgroundColor}">
+                <StackPanel>
+                    <ProgressBar Margin="4"  Height="35" Minimum="0" Maximum="100" Value="{Binding Progress, Mode=OneWay}"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="8"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Margin="4"  Grid.Column="0" Content="Старт" Command="{Binding StartCommand}" VerticalAlignment="Center"/>
+                        <Button Margin="4"  Grid.Column="1" Content="Отмена" Command="{Binding CancelCommand}" VerticalAlignment="Center"/>
+                        <TextBlock Text="Результат:" Margin="4" Grid.Column="3"/>
+                        <c:GridDataSaveSlot Data="{Binding Result}" Margin="4" Grid.Column="4"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
         </Grid>
     </DataTemplate>
 </ResourceDictionary>
