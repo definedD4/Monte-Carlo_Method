@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Monte_Carlo_Method_3D.Calculation;
@@ -20,6 +22,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private StateT m_State = StateT.NotStarted;
         private int m_GridWidth;
         private int m_GridHeight;
+        private string m_CalculationMask;
         private GridData m_EdgeData;
         private GridData m_Result;
 
@@ -50,13 +53,25 @@ namespace Monte_Carlo_Method_3D.ViewModels
                     return;
                 }
 
+                List<IntPoint> calcMask = new List<IntPoint>();
+
+                if (!string.IsNullOrWhiteSpace(CalculationMask))
+                {
+                    calcMask.AddRange(CalculationMask.Split(';').Select(
+                        i =>
+                        {
+                            var coords = i.Trim().Split(',').Select(j => int.Parse(j.Trim())).ToArray();
+                            return new IntPoint(coords[0], coords[1]);
+                        }));
+                }
+
                 switch (m_CalculationMethod)
                 {
                     case CalculationMethod.Propability:
-                        m_Calculation = new PrCalculation(constraint, GridWidth, GridHeight, EdgeData);
+                        m_Calculation = new PrCalculation(constraint, GridWidth, GridHeight, EdgeData, calcMask);
                     break;
                     case CalculationMethod.Statistical:
-                        m_Calculation = new StCalculation(constraint, GridWidth, GridHeight, EdgeData);
+                        m_Calculation = new StCalculation(constraint, GridWidth, GridHeight, EdgeData, calcMask);
                     break;
                 }
 
@@ -124,6 +139,12 @@ namespace Monte_Carlo_Method_3D.ViewModels
         {
             get { return m_GridHeight; }
             set { m_GridHeight = value; OnPropertyChanged(nameof(GridHeight)); }
+        }
+
+        public string CalculationMask
+        {
+            get { return m_CalculationMask; }
+            set { m_CalculationMask = value; OnPropertyChanged(nameof(CalculationMask)); }
         }
 
         public GridData EdgeData

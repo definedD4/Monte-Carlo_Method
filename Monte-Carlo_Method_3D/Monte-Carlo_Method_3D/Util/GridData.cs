@@ -25,6 +25,7 @@ namespace Monte_Carlo_Method_3D.Util
         }
 
         public double this[int x, int y] => m_Data[x, y];
+        public double this[IntPoint p] => m_Data[p.X, p.Y];
 
         public double[,] Get()
         {

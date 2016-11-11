@@ -36,6 +36,8 @@
                                           SelectedValue="{Binding CalculationMethod}" DisplayMemberPath="DisplayName" SelectedValuePath="Value"/>
                             </Grid>
                             <ContentPresenter Content="{Binding ConstraintChooser}"/>
+                            <TextBlock Text="Узлы для вычисления:" Margin="2"/>
+                            <TextBox Text="{Binding CalculationMask}" Margin="2"/>
                         </StackPanel>
                         <StackPanel Grid.Column="2">
                             <GroupBox Header="Размер сетки:" Style="{x:Null}" Margin="4">

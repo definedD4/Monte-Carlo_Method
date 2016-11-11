@@ -20,13 +20,15 @@ namespace Monte_Carlo_Method_3D.Calculation
     {
         private readonly ICalculationConstraint m_Constraint;
         private readonly BackgroundWorker m_Worker;
+        private readonly IEnumerable<IntPoint> m_CalculationMask; 
 
         private int m_Progress;
         private GridData m_Result;
 
-        public Calculation(ICalculationConstraint constraint)
+        public Calculation(ICalculationConstraint constraint, IEnumerable<IntPoint> calculationMask)
         {
             m_Constraint = constraint;
+            m_CalculationMask = calculationMask;
 
             m_Worker = new BackgroundWorker
             {
@@ -35,7 +37,7 @@ namespace Monte_Carlo_Method_3D.Calculation
             };
             m_Worker.DoWork += (sender, args) =>
             {
-                GridData result = Simulate();
+                GridData result = Simulate(m_CalculationMask);
                 if(result == null)
                 {
                     args.Cancel = true;
@@ -54,7 +56,7 @@ namespace Monte_Carlo_Method_3D.Calculation
             };
         }
 
-        protected abstract GridData Simulate();
+        protected abstract GridData Simulate(IEnumerable<IntPoint> mask);
 
         protected void ReportProgress(int progress)
         {
