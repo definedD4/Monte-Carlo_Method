@@ -35,7 +35,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private readonly DelegateCommand m_SimulationOptionsCommand;
         private readonly DelegateCommand m_ExportToCsvCommand;
 
-        public StTabViewModel(SimulationOptions options) : base("Метод статистических испытаний")
+        public StTabViewModel(SimulationOptions options) : base("МСВ")
         {
             m_Pallete = new Pallete();
 
@@ -55,7 +55,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 OnPropertyChanged(nameof(SimulationInfo));
             }, _ => !(SimulationInProgress || m_Timer.IsEnabled));
 
-            m_PlayPauseCommand = new SwitchStateCommand("Пауза", "Воспроизвести", false, _ => !(SimulationInProgress && !m_Timer.IsEnabled));
+            m_PlayPauseCommand = new SwitchStateCommand("Пауза", "Програти", false, _ => !(SimulationInProgress && !m_Timer.IsEnabled));
             m_PlayPauseCommand.StateChanged += (s, e) =>
             {
                 if (m_PlayPauseCommand.State)

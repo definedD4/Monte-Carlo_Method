@@ -13,7 +13,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Canvas Grid.Column="0">
-                <TextBlock Text="Шкала вероятности" Foreground="{DynamicResource PrimaryForegroundColor}" RenderTransformOrigin="0.5,0.5" Canvas.Left="-62" Canvas.Top="68" FontSize="15">
+                <TextBlock Text="Шкала ймовірності" Foreground="{DynamicResource PrimaryForegroundColor}" RenderTransformOrigin="0.5,0.5" Canvas.Left="-62" Canvas.Top="68" FontSize="15">
                     <TextBlock.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform/>

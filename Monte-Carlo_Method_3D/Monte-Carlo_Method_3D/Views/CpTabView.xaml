@@ -23,9 +23,9 @@
             <ToolBar Grid.Row="0">
                 <Button Content="Перезапуск" Command="{Binding RestartCommand}"/>
                 <Button DataContext="{Binding PlayPauseCommand}" Content="{Binding Label}" Command="{Binding }"/>
-                <Button Content="Следующий шаг" Command="{Binding SimulateStepCommand}"/>
+                <Button Content="Наступний крок" Command="{Binding SimulateStepCommand}"/>
                 <Separator/>
-                <Button Content="Настройки симуляции" Command="{Binding SimulationOptionsCommand}"/>
+                <Button Content="Параметри симуляції" Command="{Binding SimulationOptionsCommand}"/>
             </ToolBar>
             <Border Background="{DynamicResource SecondaryBackgroundColor}" Grid.Row="1" Margin="0" Padding="10" MinWidth="259" MinHeight="169">
                 <Grid Grid.Column="2">
@@ -54,7 +54,7 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Метод априорних вероятностей" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" Grid.Row="0"/>
+                            <TextBlock Text="ІПРАЙ" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" Grid.Row="0"/>
                             <ContentControl Content="{Binding PrVisualContext}" ContentTemplateSelector="{DynamicResource VisualContextTemplateSelector}" Grid.Row="1"/>
                         </Grid>
                     </Border>
@@ -65,7 +65,7 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Метод статистических испытаний" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" Grid.Row="0"/>
+                            <TextBlock Text="МСВ" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" Grid.Row="0"/>
                             <ContentControl Content="{Binding StVisualContext}" ContentTemplateSelector="{DynamicResource VisualContextTemplateSelector}" Grid.Row="1"/>
                         </Grid>
                     </Border>
@@ -76,17 +76,17 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Сравнение (разность результатов)" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" Grid.Row="0"/>
+                            <TextBlock Text="Порівнянння (різниця результатів)" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" Grid.Row="0"/>
                             <ContentControl Content="{Binding DiffVisualContext}" ContentTemplateSelector="{DynamicResource VisualContextTemplateSelector}" Grid.Row="1"/>
                         </Grid>
                     </Border>
                     <Border Grid.Column="6" Grid.RowSpan="3" Grid.Row="0" BorderBrush="{DynamicResource BorderColor}" BorderThickness="{DynamicResource BorderThickness}" 
                             Background="{DynamicResource PrimaryBackgroundColor}" Padding="4" Width="250">
                         <StackPanel>
-                            <GroupBox Header="Вероятностный метод:">
+                            <GroupBox Header="ІПРАЙ:">
                                 <ContentControl Content="{Binding PrSimulationInfo}"/>
                             </GroupBox>
-                            <GroupBox Header="Статистический метод:">
+                            <GroupBox Header="МСВ:">
                                 <ContentControl Content="{Binding StSimulationInfo}"/>
                             </GroupBox>
                         </StackPanel>

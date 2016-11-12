@@ -16,7 +16,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="Остановка симуляции:" Margin="2" Grid.Column="0"/>
+                <TextBlock Grid.Row="0" Text="Зупинити симуляцію:" Margin="2" Grid.Column="0"/>
                 <ComboBox Grid.Row="0" ItemsSource="{Binding Creators}" SelectedValue="{Binding CurrentConstraintCreator}" Margin="2" Grid.Column="1"/>
                 <TextBlock Grid.Row="1" Text="{Binding ArgName}" Margin="2" Grid.Column="0" HorizontalAlignment="Stretch"/>
                 <TextBox Grid.Row="1" Text="{Binding CreatorArg}" Margin="2" Grid.Column="1" HorizontalAlignment="Stretch"/>

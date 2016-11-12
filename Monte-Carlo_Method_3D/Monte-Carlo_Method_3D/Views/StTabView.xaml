@@ -23,12 +23,12 @@
             <ToolBar Grid.Row="0">
                 <Button Content="Перезапуск" Command="{Binding RestartCommand}"/>
                 <Button DataContext="{Binding PlayPauseCommand}" Content="{Binding Label}" Command="{Binding }"/>
-                <Button Content="Следующий шаг" Command="{Binding StepCommand}"/>
+                <Button Content="Наступний крок" Command="{Binding StepCommand}"/>
                 <!--<Button Content="Симулировать до: " Command="{Binding SimulateToCommand}"/>
                 <TextBox Text="{Binding SimulateToStep, UpdateSourceTrigger=PropertyChanged}"/>-->
                 <Separator/>
-                <Button Content="Настройки симуляции" Command="{Binding SimulationOptionsCommand}"/>
-                <Button Content="Экспортировать в файл CSV" Command="{Binding ExportToCsvCommand}"/>
+                <Button Content="Параметри симуляції" Command="{Binding SimulationOptionsCommand}"/>
+                <Button Content="Експортувати у формат CSV" Command="{Binding ExportToCsvCommand}"/>
             </ToolBar>
             <Border Background="{DynamicResource SecondaryBackgroundColor}" Grid.Row="1" Margin="0" Padding="10" MinWidth="259" MinHeight="169">
                 <Grid>
@@ -51,13 +51,13 @@
                     <Border Grid.Column="2" BorderBrush="{DynamicResource BorderColor}" BorderThickness="{DynamicResource BorderThickness}" 
                             Background="{DynamicResource PrimaryBackgroundColor}" Padding="4" Width="250">
                         <StackPanel>
-                            <GroupBox Header="Визуализация:">
+                            <GroupBox Header="Візуалізація:">
                                 <StackPanel Orientation="Horizontal">
                                     <Button Style="{DynamicResource SelectorButtonStyle}" Content="2D"      Command="{Binding VisualTypeSelector}" CommandParameter="2D" Margin="1,0"/>
                                     <Button Style="{DynamicResource SelectorButtonStyle}" Content="Таблица" Command="{Binding VisualTypeSelector}" CommandParameter="Table" Margin="1,0"/>
                                 </StackPanel>
                             </GroupBox>
-                            <GroupBox Header="Информация о симуляции:">
+                            <GroupBox Header="Інформація про симуляцію:">
                                 <ContentControl Content="{Binding SimulationInfo}"/>
                             </GroupBox>
                         </StackPanel>

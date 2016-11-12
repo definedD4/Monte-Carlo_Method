@@ -18,7 +18,7 @@
             </Grid.RowDefinitions>
             <Border BorderBrush="{DynamicResource BorderColor}" 
                     BorderThickness="{DynamicResource BorderThickness}" Background="{DynamicResource PrimaryBackgroundColor}">
-                <GroupBox Header="Параметры вычислений" Margin="4">
+                <GroupBox Header="Параметри розрахунку:" Margin="4">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -31,16 +31,16 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Margin="2" Grid.Column="0" Text="Способ симуляции:"/>
+                                <TextBlock Margin="2" Grid.Column="0" Text="Спосіб симуляції:"/>
                                 <ComboBox Margin="2" Grid.Column="1" ItemsSource="{ut:EnumSelection {x:Type cl:CalculationMethod}}"
                                           SelectedValue="{Binding CalculationMethod}" DisplayMemberPath="DisplayName" SelectedValuePath="Value"/>
                             </Grid>
                             <ContentPresenter Content="{Binding ConstraintChooser}"/>
-                            <TextBlock Text="Узлы для вычисления:" Margin="2"/>
+                            <TextBlock Text="Вузли для розразунку:" Margin="2"/>
                             <TextBox Text="{Binding CalculationMask}" Margin="2"/>
                         </StackPanel>
                         <StackPanel Grid.Column="2">
-                            <GroupBox Header="Размер сетки:" Style="{x:Null}" Margin="4">
+                            <GroupBox Header="Розмір сітки:" Style="{x:Null}" Margin="4">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
@@ -52,11 +52,11 @@
                                     </Grid.RowDefinitions>
                                     <TextBlock Margin="2" Grid.Row="0" Grid.Column="0" Text="Ширина:"/>
                                     <TextBox Margin="2" Grid.Row="0" Grid.Column="1" Text="{Binding GridWidth}"/>
-                                    <TextBlock Margin="2" Grid.Row="1" Grid.Column="0" Text="Высота:"/>
+                                    <TextBlock Margin="2" Grid.Row="1" Grid.Column="0" Text="Висота:"/>
                                     <TextBox Margin="2" Grid.Row="1" Grid.Column="1" Text="{Binding GridHeight}"/>
                                 </Grid>
                             </GroupBox>
-                            <TextBlock Margin="2" Text="Граничные значения:"/>
+                            <TextBlock Margin="2" Text="Значення на межі сітки:"/>
                             <c:GridDataLoadSlot Margin="2" Data="{Binding EdgeData, Mode=TwoWay}"/>
                         </StackPanel>
                     </Grid>
@@ -74,8 +74,8 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Button Margin="4"  Grid.Column="0" Content="Старт" Command="{Binding StartCommand}" VerticalAlignment="Center"/>
-                        <Button Margin="4"  Grid.Column="1" Content="Отмена" Command="{Binding CancelCommand}" VerticalAlignment="Center"/>
+                        <Button Margin="4"  Grid.Column="0" Content="Запустити" Command="{Binding StartCommand}" VerticalAlignment="Center"/>
+                        <Button Margin="4"  Grid.Column="1" Content="Скасувати" Command="{Binding CancelCommand}" VerticalAlignment="Center"/>
                         <TextBlock Text="Результат:" Margin="4" Grid.Column="3"/>
                         <c:GridDataSaveSlot Data="{Binding Result}" Margin="4" Grid.Column="4"/>
                     </Grid>

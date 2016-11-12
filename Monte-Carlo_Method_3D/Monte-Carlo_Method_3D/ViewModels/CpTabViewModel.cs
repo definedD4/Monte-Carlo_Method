@@ -35,7 +35,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private readonly DelegateCommand m_SimulationOptionsCommand;
         private readonly DelegateCommand m_SimulateStepCommand;
 
-        public CpTabViewModel(SimulationOptions options) : base("Сравнение")
+        public CpTabViewModel(SimulationOptions options) : base("Порівняння")
         {
             m_Pallete = new Pallete();
 
@@ -66,7 +66,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 }
             };
 
-            m_PlayPauseCommand = new SwitchStateCommand("Пауза", "Воспроизвести", false, _ => !(SimulationInProgress && !m_Timer.IsEnabled));
+            m_PlayPauseCommand = new SwitchStateCommand("Пауза", "Програвання", false, _ => !(SimulationInProgress && !m_Timer.IsEnabled));
             m_PlayPauseCommand.StateChanged += (s, e) =>
             {
                 if (m_PlayPauseCommand.State)

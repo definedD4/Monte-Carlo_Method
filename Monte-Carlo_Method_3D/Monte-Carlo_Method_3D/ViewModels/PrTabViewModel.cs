@@ -34,7 +34,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private readonly DelegateCommand m_SimulateToCommand;
         private readonly DelegateCommand m_ExportToCsvCommand;
 
-        public PrTabViewModel(SimulationOptions options) : base("Метод вероятностей")
+        public PrTabViewModel(SimulationOptions options) : base("ІПРАЙ")
         {
             m_Pallete = new Pallete();
 
@@ -70,7 +70,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 OnPropertyChanged(nameof(SimulationInfo));
             }, x => !(SimulationInProgress || m_Timer.IsEnabled));
 
-            m_PlayPauseCommand = new SwitchStateCommand("Пауза", "Воспроизвести", false, _ => !(SimulationInProgress && !m_Timer.IsEnabled));
+            m_PlayPauseCommand = new SwitchStateCommand("Пауза", "Програти", false, _ => !(SimulationInProgress && !m_Timer.IsEnabled));
             m_PlayPauseCommand.StateChanged += (s, e) =>
             {
                 if (m_PlayPauseCommand.State)

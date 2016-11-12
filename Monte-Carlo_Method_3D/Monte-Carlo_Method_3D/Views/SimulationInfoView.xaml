@@ -13,19 +13,19 @@
                 </Style>
             </StackPanel.Resources>
             <WrapPanel Margin="2">
-                <TextBlock Text="Шаг:" Margin="1"/>
+                <TextBlock Text="Крок:" Margin="1"/>
                 <TextBlock Text="{Binding Step}" Margin="1"/>
             </WrapPanel>
             <WrapPanel Margin="2">
-                <TextBlock Text="Сумма в центре:" Margin="1"/>
+                <TextBlock Text="Сума у середині:" Margin="1"/>
                 <TextBlock Text="{Binding CenterSum, StringFormat={}{0:E10}}" Margin="1"/>
             </WrapPanel>
             <WrapPanel Margin="2">
-                <TextBlock Text="Сумма на границе:" Margin="1"/>
+                <TextBlock Text="Сума на межі:" Margin="1"/>
                 <TextBlock Text="{Binding EdgeSum, StringFormat={}{0:E10}}" Margin="1"/>
             </WrapPanel>
             <WrapPanel Margin="2">
-                <TextBlock Text="Полное время симуляции:" Margin="1"/>
+                <TextBlock Text="Загальний час симуляції:" Margin="1"/>
                 <TextBlock Text="{Binding TotalSimTime, StringFormat={}{0:N4}}" Margin="1"/>
                 <TextBlock Text="мс" Margin="1"/>
             </WrapPanel>
@@ -40,15 +40,15 @@
                 </Style>
             </StackPanel.Resources>
             <WrapPanel Margin="2">
-                <TextBlock Text="Симуляций проведено:" Margin="1"/>
+                <TextBlock Text="Симуляцій проведено:" Margin="1"/>
                 <TextBlock Text="{Binding TotalSimulationsFormated}" Margin="1"/>
             </WrapPanel>
             <WrapPanel Margin="2">
-                <TextBlock Text="Средняя продолжительность пути:" Margin="1"/>
+                <TextBlock Text="Середня тривалість блукання (вузлів):" Margin="1"/>
                 <TextBlock Text="{Binding AverageTravelPathFormated}" Margin="1"/>
             </WrapPanel>
             <WrapPanel Margin="2">
-                <TextBlock Text="Полное время симуляции:" Margin="1"/>
+                <TextBlock Text="Загальний час симуляції:" Margin="1"/>
                 <TextBlock Text="{Binding TotalSimTime, StringFormat={}{0:N4}}" Margin="1"/>
                 <TextBlock Text="мс" Margin="1"/>
             </WrapPanel>

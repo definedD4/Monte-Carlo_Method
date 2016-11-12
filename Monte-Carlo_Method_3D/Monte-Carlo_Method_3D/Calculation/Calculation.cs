@@ -10,9 +10,9 @@ namespace Monte_Carlo_Method_3D.Calculation
 {
     public enum CalculationMethod
     {
-        [Description("Метод априорних вероятностей")]
+        [Description("ІПРАЙ")]
         Propability,
-        [Description("Метод статистических испытаний")]
+        [Description("МСВ")]
         Statistical
     }
 
