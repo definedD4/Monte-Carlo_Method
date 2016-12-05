@@ -32,6 +32,7 @@ namespace Monte_Carlo_Method_3D.Visualization
         public Color ForegroundColor { get; set; } = Colors.Black;
         public Color PathColor { get; set; } = Colors.Black;
         public Color StartPointColor { get; set; } = Colors.Black;
+        public Color GridColor { get; set; } = Colors.DarkGray;
 
         public bool DrawPath { get; set; } = true;
         public bool DrawStartPoint { get; set; } = true;
@@ -71,10 +72,13 @@ namespace Monte_Carlo_Method_3D.Visualization
             {
                 drawingContext.DrawImage(texture, new Rect(new Size(Width, Height)));
 
+                var gridPen = new Pen(new SolidColorBrush(GridColor), 0.01D);
+                DrawingUtil.DrawGrid(drawingContext, gridPen, Width, Height);
+
                 if (DrawPath && m_Simulator.LastPath != null)
                 {
-                    var pen = new Pen(new SolidColorBrush(PathColor), 0.1D);
-                    pen.Freeze();
+                    var pathPen = new Pen(new SolidColorBrush(PathColor), 0.1D);
+                    pathPen.Freeze();
 
                     var geometry = new StreamGeometry();
                     using (StreamGeometryContext ctx = geometry.Open())
@@ -85,7 +89,7 @@ namespace Monte_Carlo_Method_3D.Visualization
                     }
                     geometry.Freeze();
 
-                    drawingContext.DrawGeometry(null, pen, geometry);
+                    drawingContext.DrawGeometry(null, pathPen, geometry);
                 }
 
                 IntPoint startLoc = m_Simulator.StartLocation;
@@ -101,6 +105,10 @@ namespace Monte_Carlo_Method_3D.Visualization
             using (DrawingContext drawingContext = visual.RenderOpen())
             {
                 drawingContext.DrawRectangle(new SolidColorBrush(BackgroundColor), null, new Rect(new Size(Width, Height)));
+                
+                var gridPen = new Pen(new SolidColorBrush(GridColor), 0.01D);
+                DrawingUtil.DrawGrid(drawingContext, gridPen, Width, Height);
+
                 for (int x = 0; x < Width; x++)
                 {
                     DrawingUtil.DrawTableCell(drawingContext, x,          0, Math.Round(m_Simulator[x,          0], 5).ToString("G3"), ForegroundColor);

@@ -31,14 +31,28 @@ namespace Monte_Carlo_Method_3D.Visualization
 
         public Color BackgroundColor { get; set; } = Colors.White;
         public Color ForegroundColor { get; set; } = Colors.Black;
+        public Color GridColor { get; set; } = Colors.DarkGray;
 
         public GeometryModel3D GenerateModel()
         {
             m_Mesh.UpdateMesh(m_Simulator);
-            return new GeometryModel3D(m_Mesh.Mesh, new DiffuseMaterial(new ImageBrush(GenerateColorTexture())));
+            return new GeometryModel3D(m_Mesh.Mesh, new DiffuseMaterial(new ImageBrush(GenerateModelTexture())));
         }
 
         public ImageSource GenerateColorTexture()
+        {
+            var image = GenerateModelTexture();
+            var visual = new DrawingVisual();
+            using (DrawingContext drawingContext = visual.RenderOpen())
+            {
+                drawingContext.DrawImage(image, new Rect(0, 0, Width, Height));
+                var gridPen = new Pen(new SolidColorBrush(GridColor), 0.01D);
+                DrawingUtil.DrawGrid(drawingContext, gridPen, Width, Height);
+            }
+            return new DrawingImage(visual.Drawing);
+        }
+
+        private ImageSource GenerateModelTexture()
         {
             WriteableBitmap bitmap = new WriteableBitmap(Width, Height, Dpi, Dpi, PixelFormats.Bgr24, null);
             int bytesPerPixel = bitmap.Format.BitsPerPixel / 8;
@@ -72,6 +86,10 @@ namespace Monte_Carlo_Method_3D.Visualization
             using (DrawingContext drawingContext = visual.RenderOpen())
             {
                 drawingContext.DrawRectangle(new SolidColorBrush(BackgroundColor), null, new Rect(new Size(Width, Height)));
+
+                var gridPen = new Pen(new SolidColorBrush(GridColor), 0.01D);
+                DrawingUtil.DrawGrid(drawingContext, gridPen, Width, Height);
+
                 for (int i = 0; i < m_Simulator.Width; i++)
                 {
                     for (int j = 0; j < m_Simulator.Height; j++)

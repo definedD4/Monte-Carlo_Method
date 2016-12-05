@@ -117,7 +117,6 @@
     <Compile Include="Simulation\StSimulator.cs" />
     <Compile Include="Util\CsvUtil.cs" />
     <Compile Include="Util\DelegateCommand.cs" />
-    <Compile Include="Util\DrawingUtil.cs" />
     <Compile Include="Util\EdgeData.cs" />
     <Compile Include="Util\EnumUtil.cs" />
     <Compile Include="Util\InterfaceTemplateSelector.cs" />
@@ -132,6 +131,7 @@
     <Compile Include="ViewModels\TabViewModel.cs" />
     <Compile Include="ViewModels\СlTabViewModel.cs" />
     <Compile Include="Visualization\DiffVisualizer.cs" />
+    <Compile Include="Visualization\DrawingUtil.cs" />
     <Compile Include="Visualization\GraphMesh.cs" />
     <Compile Include="Visualization\PrVisualizer.cs" />
     <Compile Include="Util\IntPoint.cs" />

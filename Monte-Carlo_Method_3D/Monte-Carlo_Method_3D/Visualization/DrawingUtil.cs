@@ -44,5 +44,18 @@ namespace Monte_Carlo_Method_3D.Util
             var image = new DrawingImage(visual.Drawing);
             return image;
         }
+
+        public static void DrawGrid(DrawingContext drawingContext, Pen gridPen, int width, int height)
+        {
+            for (int i = 1; i < height; i++)
+            {
+                drawingContext.DrawLine(gridPen, new Point(0, i), new Point(width, i));
+            }
+
+            for (int j = 0; j < width; j++)
+            {
+                drawingContext.DrawLine(gridPen, new Point(j, 0), new Point(j, height));
+            }
+        }
     }
 }

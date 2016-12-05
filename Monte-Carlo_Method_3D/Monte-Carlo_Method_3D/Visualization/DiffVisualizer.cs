@@ -23,6 +23,7 @@ namespace Monte_Carlo_Method_3D.Visualization
 
         public Color BackgroundColor { get; set; } = Colors.White;
         public Color ForegroundColor { get; set; } = Colors.Black;
+        public Color GridColor { get; set; } = Colors.DarkGray;
 
         public ImageSource GenerateTableTexture()
         {
@@ -30,6 +31,10 @@ namespace Monte_Carlo_Method_3D.Visualization
             using (DrawingContext drawingContext = visual.RenderOpen())
             {
                 drawingContext.DrawRectangle(new SolidColorBrush(BackgroundColor), null, new Rect(new Size(Width, Height)));
+
+                var gridPen = new Pen(new SolidColorBrush(GridColor), 0.01D);
+                DrawingUtil.DrawGrid(drawingContext, gridPen, Width, Height);
+
                 for (int x = 0; x < Width; x++)
                 {
                     DrawingUtil.DrawTableCell(drawingContext, x, 0, Math.Round(m_Generator[x, 0], 5).ToString("E2"), ForegroundColor);
