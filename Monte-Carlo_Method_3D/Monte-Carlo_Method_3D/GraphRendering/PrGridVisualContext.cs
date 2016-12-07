@@ -21,7 +21,7 @@ namespace Monte_Carlo_Method_3D.GraphRendering
         {
             int x = (int)Math.Truncate(position.X * Visualizer.Width / controlSize.Width);
             int y = (int)Math.Truncate(position.Y * Visualizer.Height / controlSize.Height);
-            return Simulator != null ? Simulator[x, y] : double.NaN;
+            return (Simulator != null && Simulator.CanIndex(x, y)) ? Simulator[x, y] : double.NaN;
         }
     }
 }

@@ -49,7 +49,7 @@ namespace Monte_Carlo_Method_3D.Simulation
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
 
-            List<IntPoint> path = new List<IntPoint>();
+            List<IntPoint> path = new List<IntPoint>(2*(int)Math.Sqrt(Width*Width+Height*Height));
             for (long i = 0; i < steps; i++)
             {
                 IntPoint pos = StartLocation;

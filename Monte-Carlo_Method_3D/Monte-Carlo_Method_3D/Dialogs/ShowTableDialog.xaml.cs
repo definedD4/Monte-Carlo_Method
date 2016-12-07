@@ -27,6 +27,7 @@ namespace Monte_Carlo_Method_3D.Dialogs
 
         private readonly Color BackgroundColor = Colors.White;
         private readonly Color ForegroundColor = Colors.Black;
+        private readonly Pen GridPen = new Pen(Brushes.DarkGray, 0.01D);
 
         private readonly GridData m_Data;
 
@@ -36,7 +37,7 @@ namespace Monte_Carlo_Method_3D.Dialogs
 
             InitializeComponent();
 
-            Img.Source = DrawingUtil.DrawTable(data, BackgroundColor, ForegroundColor);
+            Img.Source = DrawingUtil.DrawTable(data, BackgroundColor, ForegroundColor, GridPen);
 
             Img.MouseMove += (s, e) =>
             {

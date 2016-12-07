@@ -29,6 +29,8 @@ namespace Monte_Carlo_Method_3D.Simulation
             SimulationInfo = new PrSimulationInfo(Step, TotalSimTime, 1, 0, 1);
         }
 
+        public bool CanIndex(int x, int y) => new IntPoint(x, y).InBounds(0, Width - 1, 0, Height - 1);
+
         public double this[int x, int y] => data[x, y];
 
         public void SimulateSteps(long steps = 1)

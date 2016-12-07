@@ -47,11 +47,16 @@ namespace Monte_Carlo_Method_3D.ViewModels
                     MessageBox.Show($"Некоректно введенное ограничение.\nДетали:\n{e.Message}");
                     return;
                 }
-                if(GridWidth != EdgeData.Width || GridHeight != EdgeData.Height)
+                if (EdgeData == null)
+                {
+                    MessageBox.Show($"Не заданы значения на граничных узлах.");
+                    return;
+                }
+                if (GridWidth != EdgeData.Width || GridHeight != EdgeData.Height)
                 {
                     MessageBox.Show($"Размеры сетки и таблицы граничных значений не совпадают.");
                     return;
-                }
+                }               
 
                 List<IntPoint> calcMask = new List<IntPoint>();
 

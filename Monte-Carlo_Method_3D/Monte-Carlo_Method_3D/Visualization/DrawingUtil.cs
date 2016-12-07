@@ -26,12 +26,15 @@ namespace Monte_Carlo_Method_3D.Util
                             new Point(x + 0.2f, y + 0.2f));
         }
 
-        public static ImageSource DrawTable(GridData data, Color background, Color foreground)
+        public static ImageSource DrawTable(GridData data, Color background, Color foreground, Pen gridPen)
         {
             var visual = new DrawingVisual();
             using (DrawingContext drawingContext = visual.RenderOpen())
             {
                 drawingContext.DrawRectangle(new SolidColorBrush(background), null, new Rect(new Size(data.Width, data.Height)));
+
+                DrawGrid(drawingContext, gridPen, data.Width, data.Height);
+
                 for (int i = 0; i < data.Width; i++)
                 {
                     for (int j = 0; j < data.Height; j++)

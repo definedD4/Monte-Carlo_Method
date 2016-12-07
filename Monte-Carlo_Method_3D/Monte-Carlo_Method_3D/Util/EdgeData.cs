@@ -33,7 +33,7 @@ namespace Monte_Carlo_Method_3D.Util
                 {
                     return m_Data[x, y];
                 }
-                throw new IndexOutOfRangeException();
+                return double.NaN;
             }
             set
             {
