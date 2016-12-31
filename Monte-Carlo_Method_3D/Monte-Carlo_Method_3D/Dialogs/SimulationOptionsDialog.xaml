@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Monte_Carlo_Method_3D.Dialogs"
         mc:Ignorable="d"
-        Title="Настройки симуляции" SizeToContent="WidthAndHeight">
+        Title="Настройки симуляции" SizeToContent="WidthAndHeight" WindowStyle="ToolWindow">
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Center"/>

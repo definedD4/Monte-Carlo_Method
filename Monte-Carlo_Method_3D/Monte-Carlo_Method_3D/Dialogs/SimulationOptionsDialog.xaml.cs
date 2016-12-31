@@ -109,17 +109,8 @@ namespace Monte_Carlo_Method_3D.Dialogs
             return true;
         }
 
-        public SimulationOptions SimulationOptions
-        {
-            get
-            {
-                if (DialogResult.GetValueOrDefault(false))
-                {
-                    return new SimulationOptions(WidthSetting, HeightSetting, new IntPoint(StartXSetting - 1, StartYSetting - 1));
-                }
-                throw new InvalidOperationException(); 
-            }
-        }
+        public SimulationOptions SimulationOptions => new SimulationOptions(WidthSetting, HeightSetting,
+            new IntPoint(StartXSetting - 1, StartYSetting - 1));
 
         public event PropertyChangedEventHandler PropertyChanged;
 

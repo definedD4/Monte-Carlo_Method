@@ -92,6 +92,9 @@
     <Compile Include="Controls\GridDataSaveSlot.xaml.cs">
       <DependentUpon>GridDataSaveSlot.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ZoomAndPanImage.xaml.cs">
+      <DependentUpon>ZoomAndPanImage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\ShowTableDialog.xaml.cs">
       <DependentUpon>ShowTableDialog.xaml</DependentUpon>
     </Compile>
@@ -156,6 +159,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\GridDataSaveSlot.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ZoomAndPanImage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

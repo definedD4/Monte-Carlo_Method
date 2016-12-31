@@ -243,3 +243,18 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/TESTING/TestDataOrganizer.exe
+/TESTING/prCalculated_cs-e-8.csv
+/TESTING/prCalculated_cs-e-7.csv
+/TESTING/organize.bat
+/TESTING/Monte-Carlo_Method_3D.exe
+/TESTING/Generate.bat
+/TESTING/EdgeDataGenerator.exe
+/TESTING/comp_st_45x45_100ms.csv
+/TESTING/comp_st_45x45.csv
+/TESTING/comp_rs_45x45_100ms.csv
+/TESTING/comp_rs_45x45.csv
+/TESTING/comp_pr_45x45_100ms.csv
+/TESTING/comp_pr_45x45.csv
+/TESTING/comp_ab_45x45.csv
+/TESTING
