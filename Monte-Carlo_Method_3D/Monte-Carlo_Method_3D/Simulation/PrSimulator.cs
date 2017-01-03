@@ -7,7 +7,9 @@ namespace Monte_Carlo_Method_3D.Simulation
 {
     public class PrSimulator
     {
-        private double[,] data;
+        private const double DiagonalMovePropability = 1 / 20d;
+        private const double HorizontalVerticalMovePropability = 1 / 5d;
+        private double[,] m_Data;
 
         public int Width { get; }
         public int Height { get; }
@@ -22,8 +24,8 @@ namespace Monte_Carlo_Method_3D.Simulation
             Width = options.Width;
             Height = options.Height;
             StartLocation = options.StartLocation;
-            data = new double[Width, Height];
-            data[StartLocation.X, StartLocation.Y] = 1;
+            m_Data = new double[Width, Height];
+            m_Data[StartLocation.X, StartLocation.Y] = 1;
             Step = 0;
             TotalSimTime = 0;
             SimulationInfo = new PrSimulationInfo(Step, TotalSimTime, 1, 0, 1);
@@ -31,7 +33,7 @@ namespace Monte_Carlo_Method_3D.Simulation
 
         public bool CanIndex(int x, int y) => new IntPoint(x, y).InBounds(0, Width - 1, 0, Height - 1);
 
-        public double this[int x, int y] => data[x, y];
+        public double this[int x, int y] => m_Data[x, y];
 
         public void SimulateSteps(long steps = 1)
         {
@@ -43,30 +45,30 @@ namespace Monte_Carlo_Method_3D.Simulation
                 {
                     for (int y = 1; y < Height - 1; y++)
                     {
-                        newData[x + 1, y] += data[x, y]/5;
-                        newData[x + 1, y + 1] += data[x, y]/20;
-                        newData[x, y + 1] += data[x, y]/5;
-                        newData[x - 1, y + 1] += data[x, y]/20;
-                        newData[x - 1, y] += data[x, y]/5;
-                        newData[x - 1, y - 1] += data[x, y]/20;
-                        newData[x, y - 1] += data[x, y]/5;
-                        newData[x + 1, y - 1] += data[x, y]/20;
+                        newData[x + 1, y] += m_Data[x, y] * HorizontalVerticalMovePropability;
+                        newData[x + 1, y + 1] += m_Data[x, y] * DiagonalMovePropability;
+                        newData[x, y + 1] += m_Data[x, y] * HorizontalVerticalMovePropability;
+                        newData[x - 1, y + 1] += m_Data[x, y] * DiagonalMovePropability;
+                        newData[x - 1, y] += m_Data[x, y] * HorizontalVerticalMovePropability;
+                        newData[x - 1, y - 1] += m_Data[x, y] * DiagonalMovePropability;
+                        newData[x, y - 1] += m_Data[x, y] * HorizontalVerticalMovePropability;
+                        newData[x + 1, y - 1] += m_Data[x, y] * DiagonalMovePropability;
                     }
                 }
 
                 for (int x = 0; x < Width; x++)
                 {
-                    newData[x, 0] += data[x, 0];
-                    newData[x, Height - 1] += data[x, Height - 1];
+                    newData[x, 0] += m_Data[x, 0];
+                    newData[x, Height - 1] += m_Data[x, Height - 1];
                 }
 
                 for (int y = 1; y < Height - 1; y++)
                 {
-                    newData[0, y] += data[0, y];
-                    newData[Width - 1, y] += data[Width - 1, y];
+                    newData[0, y] += m_Data[0, y];
+                    newData[Width - 1, y] += m_Data[Width - 1, y];
                 }
 
-                data = newData;
+                m_Data = newData;
                 Step++;
             }
             stopwatch.Stop();
@@ -77,10 +79,10 @@ namespace Monte_Carlo_Method_3D.Simulation
 
         public void Reset()
         {
-            data = new double[Width, Height];
+            m_Data = new double[Width, Height];
             Step = 0;
             TotalSimTime = 0;
-            data[StartLocation.X, StartLocation.Y] = 1;
+            m_Data[StartLocation.X, StartLocation.Y] = 1;
 
             SimulationInfo = new PrSimulationInfo(Step, TotalSimTime, GetCenterSum(), GetEdgeSum(), GetTotalSum());
         }
@@ -92,7 +94,7 @@ namespace Monte_Carlo_Method_3D.Simulation
             {
                 for (int y = 1; y < Height - 1; y++)
                 {
-                    centerSum += data[x, y];
+                    centerSum += m_Data[x, y];
                 }
             }
             return centerSum;
@@ -103,13 +105,13 @@ namespace Monte_Carlo_Method_3D.Simulation
             double edgeSum = 0;
             for (int x = 1; x < Width - 1; x++)
             {
-                edgeSum += data[x, 0];
-                edgeSum += data[x, Height - 1];
+                edgeSum += m_Data[x, 0];
+                edgeSum += m_Data[x, Height - 1];
             }
             for (int y = 0; y < Height; y++)
             {
-                edgeSum += data[0, y];
-                edgeSum += data[Width - 1, y];
+                edgeSum += m_Data[0, y];
+                edgeSum += m_Data[Width - 1, y];
             }
             return edgeSum;
         }
@@ -121,12 +123,12 @@ namespace Monte_Carlo_Method_3D.Simulation
             {
                 for (int y = 0; y < Height; y++)
                 {
-                    sum += data[x, y];
+                    sum += m_Data[x, y];
                 }
             }
             return sum;
         }
 
-        public double[,] GetData() => data;
+        public double[,] GetData() => m_Data;
     }
 }

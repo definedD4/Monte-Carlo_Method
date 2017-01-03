@@ -22,7 +22,7 @@
             </Grid.ColumnDefinitions>
             <TextBlock Margin="4" x:Name="TbName" Grid.Column="0"/>
             <Button Margin="4" x:Name="BtnSave" Content="Зберігти" Click="BtnSave_Click"  Grid.Column="1"/>
-            <Button Margin="4" x:Name="BtnView" Content="Просмотр" Click="BtnView_Click" Grid.Column="2"/>
+            <Button Margin="4" x:Name="BtnView" Content="Переглянути" Click="BtnView_Click" Grid.Column="2"/>
 
         </Grid>
     </Border>

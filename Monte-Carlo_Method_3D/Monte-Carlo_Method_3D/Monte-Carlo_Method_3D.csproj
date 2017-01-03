@@ -137,7 +137,7 @@
     <Compile Include="Visualization\DrawingUtil.cs" />
     <Compile Include="Visualization\GraphMesh.cs" />
     <Compile Include="Visualization\PrVisualizer.cs" />
-    <Compile Include="Util\IntPoint.cs" />
+    <Compile Include="Util\GridIndex.cs" />
     <Compile Include="Util\SelectorCommand.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
