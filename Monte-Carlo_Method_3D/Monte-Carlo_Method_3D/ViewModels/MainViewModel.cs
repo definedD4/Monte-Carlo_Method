@@ -18,7 +18,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         public MainViewModel()
         {
-            SimulationOptions options = new SimulationOptions(9, 9, new IntPoint(4, 4));
+            SimulationOptions options = new SimulationOptions(new GridSize(9, 9), new GridIndex(4, 4));
 
             Tabs.Add(new PrTabViewModel(options));
             Tabs.Add(new StTabViewModel(options));

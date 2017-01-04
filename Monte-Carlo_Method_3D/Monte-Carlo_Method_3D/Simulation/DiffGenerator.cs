@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Monte_Carlo_Method_3D.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,21 +13,27 @@ namespace Monte_Carlo_Method_3D.Simulation
 
         public DiffGenerator(PrSimulator prSimulator, StSimulator stSimulator)
         {
-            if(prSimulator.Width != stSimulator.Width || prSimulator.Height != stSimulator.Height)
+            if(prSimulator.Size != stSimulator.Size)
                 throw new ArgumentException("Simulators must be equal size.");
 
             m_PrSimulator = prSimulator;
             m_StSimulator = stSimulator;
+
+            Size = m_PrSimulator.Size;
         }
 
-        public int Width => m_PrSimulator.Width;
-        public int Height => m_PrSimulator.Height;
+        public GridSize Size { get; }
 
-        public double this[int x, int y] => m_PrSimulator[x, y] - m_StSimulator[x, y];
-
-        public bool CanIndex(int x, int y)
+        public EdgeData GetData()
         {
-            return x == 0 || x == Width - 1 || y == 0 || y == Width - 1;
+            var prData = m_PrSimulator.GetData();
+            var stData = m_StSimulator.GetData();
+            var data = EdgeData.AllocateLike(stData);
+            foreach(var i in stData.Bounds.EnumerateEdge())
+            {
+                data[i] = stData[i] - prData[i];
+            }
+            return data;
         }
     }
 }

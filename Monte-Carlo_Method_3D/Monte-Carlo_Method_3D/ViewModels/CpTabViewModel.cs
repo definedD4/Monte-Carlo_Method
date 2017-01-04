@@ -157,9 +157,9 @@ namespace Monte_Carlo_Method_3D.ViewModels
             m_DiffGenerator = new DiffGenerator(m_PrSimulator, m_StSimulator);
 
 
-            m_PrVisualizer = new PrVisualizer(m_PrSimulator, m_Pallete);
-            m_StVisualizer = new StVisualizer(m_StSimulator, m_Pallete);
-            m_DiffVisualizer = new DiffVisualizer(m_DiffGenerator);
+            m_PrVisualizer = new PrVisualizer(m_PrSimulator.Size, m_Pallete);
+            m_StVisualizer = new StVisualizer(m_StSimulator.Size, m_StSimulator.StartLocation, m_Pallete);
+            m_DiffVisualizer = new DiffVisualizer(m_DiffGenerator.Size);
 
             PrVisualContext = new PrTableVisualContext(m_PrSimulator, m_PrVisualizer);
             StVisualContext = new StTableVisualContext(m_StSimulator, m_StVisualizer);

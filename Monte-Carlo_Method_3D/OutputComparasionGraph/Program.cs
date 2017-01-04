@@ -15,8 +15,8 @@ namespace OutputComparasionGraph
         {
             double simTime = 1000d;
 
-            PrSimulator pr = new PrSimulator(new SimulationOptions(5, 5, new IntPoint(2, 2)));
-            StSimulator st = new StSimulator(new SimulationOptions(5, 5, new IntPoint(2, 2)));
+            PrSimulator pr = new PrSimulator(new SimulationOptions(5, 5, new GridIndex(2, 2)));
+            StSimulator st = new StSimulator(new SimulationOptions(5, 5, new GridIndex(2, 2)));
 
             List<Tuple<double, double>> prp = new List<Tuple<double, double>>();
             List<Tuple<double, double>> stp = new List<Tuple<double, double>>();

@@ -15,14 +15,14 @@ namespace Monte_Carlo_Method_3D.Calculation
         private readonly int m_Height;
         private readonly GridData m_EdgeData;
 
-        public StCalculation(ICalculationConstraint constraint, int width, int height, GridData edgeData, IEnumerable<IntPoint> calculationMask) : base(constraint, calculationMask)
+        public StCalculation(ICalculationConstraint constraint, int width, int height, GridData edgeData, IEnumerable<GridIndex> calculationMask) : base(constraint, calculationMask)
         {
             m_Width = width;
             m_Height = height;
             m_EdgeData = edgeData;
         }
 
-        protected override GridData Simulate(IEnumerable<IntPoint> _mask)
+        protected override GridData Simulate(IEnumerable<GridIndex> _mask)
         {
             var mask = _mask.ToList();
             if (mask.Count == 0)
@@ -31,7 +31,7 @@ namespace Monte_Carlo_Method_3D.Calculation
                 {
                     for (int y = 1; y < m_Height - 1; y++)
                     {
-                        mask.Add(new IntPoint(x, y));
+                        mask.Add(new GridIndex(x, y));
                     }
                 }
             }
@@ -44,19 +44,19 @@ namespace Monte_Carlo_Method_3D.Calculation
             mask.ForEach(
                 p =>
                 {
-                    res[p.X, p.Y] = CalcCell(p);
+                    res[p.I, p.J] = CalcCell(p);
 
                     doneCells++;
                     ReportProgress((int)((double)doneCells / totalCells * 100));
                 });
 
 
-            return new GridData(res);
+            return GridData.FromArray(res);
         }
 
-        private double CalcCell(IntPoint coords)
+        private double CalcCell(GridIndex coords)
         {
-            var sim = new StSimulator(new SimulationOptions(m_Width, m_Height, coords));
+            var sim = new StSimulator(new SimulationOptions(new GridSize(m_Height, m_Width), coords));
             while (CanContinue(sim.SimulationInfo))
             {
                 if (CancelRequested())
@@ -66,16 +66,17 @@ namespace Monte_Carlo_Method_3D.Calculation
                 sim.SimulateSteps(10);
             }
 
+            var data = sim.GetData();
             double sum = 0;
             for (int x_ = 0; x_ < m_Width; x_++)
             {
-                sum += sim[x_, 0] * m_EdgeData[x_, 0];
-                sum += sim[x_, m_Height - 1] * m_EdgeData[x_, m_Height - 1];
+                sum += data[x_, 0] * m_EdgeData[x_, 0];
+                sum += data[x_, m_Height - 1] * m_EdgeData[x_, m_Height - 1];
             }
             for (int y_ = 1; y_ < m_Height - 1; y_++)
             {
-                sum += sim[0, y_] * m_EdgeData[0, y_];
-                sum += sim[m_Width - 1, y_] * m_EdgeData[m_Width - 1, y_];
+                sum += data[0, y_] * m_EdgeData[0, y_];
+                sum += data[m_Width - 1, y_] * m_EdgeData[m_Width - 1, y_];
             }
             return sum;
         }

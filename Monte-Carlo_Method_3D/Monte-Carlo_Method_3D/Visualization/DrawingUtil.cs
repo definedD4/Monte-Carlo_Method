@@ -31,33 +31,30 @@ namespace Monte_Carlo_Method_3D.Util
             var visual = new DrawingVisual();
             using (DrawingContext drawingContext = visual.RenderOpen())
             {
-                drawingContext.DrawRectangle(new SolidColorBrush(background), null, new Rect(new Size(data.Width, data.Height)));
+                drawingContext.DrawRectangle(new SolidColorBrush(background), null, new Rect(new Size(data.Size.Columns, data.Size.Rows)));
 
-                DrawGrid(drawingContext, gridPen, data.Width, data.Height);
+                DrawGrid(drawingContext, gridPen, data.Size.Columns, data.Size.Rows);
 
-                for (int i = 0; i < data.Width; i++)
+                foreach (var idx in data.Bounds.EnumerateRegion())
                 {
-                    for (int j = 0; j < data.Height; j++)
-                    {
-                        var str = Math.Round(data[i, j], 5).ToString("G3");
-                        DrawTableCell(drawingContext, i, j, str, foreground);
-                    }
+                    var str = Math.Round(data[idx], 5).ToString("G3");
+                    DrawTableCell(drawingContext, idx.J, idx.I, str, foreground);
                 }
             }
             var image = new DrawingImage(visual.Drawing);
             return image;
         }
 
-        public static void DrawGrid(DrawingContext drawingContext, Pen gridPen, int width, int height)
+        public static void DrawGrid(DrawingContext drawingContext, Pen gridPen, int columns, int rows)
         {
-            for (int i = 1; i < height; i++)
+            for (int i = 1; i < rows; i++)
             {
-                drawingContext.DrawLine(gridPen, new Point(0, i), new Point(width, i));
+                drawingContext.DrawLine(gridPen, new Point(0, i), new Point(columns, i));
             }
 
-            for (int j = 0; j < width; j++)
+            for (int j = 0; j < columns; j++)
             {
-                drawingContext.DrawLine(gridPen, new Point(j, 0), new Point(j, height));
+                drawingContext.DrawLine(gridPen, new Point(j, 0), new Point(j, rows));
             }
         }
     }

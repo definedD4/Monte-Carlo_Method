@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows;
 using Monte_Carlo_Method_3D.Simulation;
 using Monte_Carlo_Method_3D.Visualization;
+using Monte_Carlo_Method_3D.Util;
 
 namespace Monte_Carlo_Method_3D.GraphRendering
 {
@@ -17,11 +18,21 @@ namespace Monte_Carlo_Method_3D.GraphRendering
 
         }
 
-        public double GetValueAtImageCoordinates(Point position, Size controlSize)
+        public double GetValueAtImageCoordinates(Point relativePos)
         {
-            int x = (int)Math.Truncate(position.X * Visualizer.Width / controlSize.Width);
-            int y = (int)Math.Truncate(position.Y * Visualizer.Height / controlSize.Height);
-            return (Simulator != null && Simulator.CanIndex(x, y)) ? Simulator[x, y] : double.NaN;
+            GridIndex idx = new GridIndex(
+                (int)Math.Truncate(relativePos.X * Visualizer.Width),
+                (int)Math.Truncate(relativePos.Y * Visualizer.Height)
+            );
+            var data = Simulator.GetData();
+            return data.CanIndex(idx) ? data[idx] : double.NaN;
         }
+
+        public override void UpdateVisualization()
+        {
+            DataChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        public event EventHandler<EventArgs> DataChanged;
     }
 }

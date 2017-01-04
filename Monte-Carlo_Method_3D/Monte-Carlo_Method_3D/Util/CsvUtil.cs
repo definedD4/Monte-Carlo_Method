@@ -8,27 +8,23 @@ namespace Monte_Carlo_Method_3D.Util
 {
     public static class CsvUtil
     {
-        public static IEnumerable<string> ExportToLines(double[,] data, char delim = ';')
+        public static IEnumerable<string> ExportToLines(GridData data, char delim = ';')
         {
-            for (int y = 0; y < data.GetLength(1); y++)
+            for (int j = 0; j < data.Size.Columns; j++)
             {
                 StringBuilder str = new StringBuilder();
-                for (int x = 0; x < data.GetLength(0); x++)
+                for (int i = 0; i < data.Size.Rows; i++)
                 {
-                    str.Append(data[x, y]);
-                    if (x != data.GetLength(0) - 1)
+                    str.Append(data[new GridIndex(i, j)]);
+                    if (j != data.Size.Columns - 1)
                         str.Append(delim);
                 }
                 yield return str.ToString();
             }
         } 
 
-        public static void ExportToFile(GridData data, string path, char delim = ';')
-        {
-            ExportToFile(data.Get(), path, delim);
-        }
 
-        public static void ExportToFile(double[,] data, string path, char delim = ';')
+        public static void ExportToFile(GridData data, string path, char delim = ';')
         {
             File.WriteAllLines(path, ExportToLines(data, delim), Encoding.UTF8);
         }
@@ -40,20 +36,20 @@ namespace Monte_Carlo_Method_3D.Util
                     w => double.Parse(w.Trim())
                     ).ToArray()
                 ).ToArray();
-            int width = res.First().Length;
-            int height = res.Length;
+            int rows = res.First().Length;
+            int columns = res.Length;
 
-            double[,] data = new double[width, height];
+            double[,] data = new double[rows, columns];
 
-            for(int i = 0; i < width; i++)
+            for(int i = 0; i < rows; i++)
             {
-                for(int j = 0; j < height; j++)
+                for(int j = 0; j < columns; j++)
                 {
                     data[j, i] = res[i][j];
                 }
             }
 
-            return new GridData(data);
+            return GridData.FromArray(data);
         }
     }
 }

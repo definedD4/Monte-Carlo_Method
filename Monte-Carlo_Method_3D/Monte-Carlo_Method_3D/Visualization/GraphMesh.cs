@@ -37,9 +37,9 @@ namespace Monte_Carlo_Method_3D.Visualization
                                (double)y / (Height - 1) - 0.5);
         }
 
-        public IntPoint GetIndex(Point3D point)
+        public GridIndex GetIndex(Point3D point)
         {
-            return new IntPoint((int)((point.X + 0.5) * (Width - 1)), (int)((point.Z + 0.5) * (Height - 1)));
+            return new GridIndex((int)((point.X + 0.5) * (Width - 1)), (int)((point.Z + 0.5) * (Height - 1)));
         }
 
         private void InitMesh()
@@ -69,17 +69,17 @@ namespace Monte_Carlo_Method_3D.Visualization
             }
         }
 
-        public void UpdateMesh(PrSimulator simulator)
+        public void UpdateMesh(GridData data)
         {
-            if (simulator.Width != Width || simulator.Height != Height)
-                throw new ArgumentException("Simulator dimensions don't match up.");
+            if (data.Size != new GridSize(Height, Width))
+                throw new ArgumentException("Data dimensions don't match up.");
 
             for(int i = 0; i < Mesh.Positions.Count; i++)
             {
                 Point3D p = Mesh.Positions[i];
-                IntPoint index = GetIndex(p);
+                GridIndex index = GetIndex(p);
 
-                double val = simulator[index.X, index.Y];
+                double val = data[index];
                 p.Y = Math.Sqrt(val);
 
                 Mesh.Positions[i] = p;

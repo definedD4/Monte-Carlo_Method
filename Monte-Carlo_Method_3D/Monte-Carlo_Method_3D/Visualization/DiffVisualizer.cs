@@ -10,22 +10,23 @@ using Monte_Carlo_Method_3D.Util;
 namespace Monte_Carlo_Method_3D.Visualization
 {
     public class DiffVisualizer
-    {
-        private DiffGenerator m_Generator;
-
-        public DiffVisualizer(DiffGenerator generator)
+    { 
+        public DiffVisualizer(GridSize size)
         {
-            m_Generator = generator;
+            Size = size;
+            Width = Size.Columns;
+            Height = Size.Rows;
         }
 
-        public int Width => m_Generator.Width;
-        public int Height => m_Generator.Height;
+        public GridSize Size { get; }
+        public int Width { get; }
+        public int Height { get; }
 
         public Color BackgroundColor { get; set; } = Colors.White;
         public Color ForegroundColor { get; set; } = Colors.Black;
         public Color GridColor { get; set; } = Colors.DarkGray;
 
-        public ImageSource GenerateTableTexture()
+        public ImageSource GenerateTableTexture(EdgeData data)
         {
             var visual = new DrawingVisual();
             using (DrawingContext drawingContext = visual.RenderOpen())
@@ -35,15 +36,9 @@ namespace Monte_Carlo_Method_3D.Visualization
                 var gridPen = new Pen(new SolidColorBrush(GridColor), 0.01D);
                 DrawingUtil.DrawGrid(drawingContext, gridPen, Width, Height);
 
-                for (int x = 0; x < Width; x++)
+                foreach (var idx in data.Bounds.EnumerateEdge())
                 {
-                    DrawingUtil.DrawTableCell(drawingContext, x, 0, Math.Round(m_Generator[x, 0], 5).ToString("E2"), ForegroundColor);
-                    DrawingUtil.DrawTableCell(drawingContext, x, Height - 1, Math.Round(m_Generator[x, Height - 1], 5).ToString("E2"), ForegroundColor);
-                }
-                for (int y = 0; y < Height; y++)
-                {
-                    DrawingUtil.DrawTableCell(drawingContext, 0, y, Math.Round(m_Generator[0, y], 5).ToString("E2"), ForegroundColor);
-                    DrawingUtil.DrawTableCell(drawingContext, Width - 1, y, Math.Round(m_Generator[Width - 1, y], 5).ToString("E2"), ForegroundColor);
+                    DrawingUtil.DrawTableCell(drawingContext, idx.J, idx.I, Math.Round(data[idx], 5).ToString("E2"), ForegroundColor);
                 }
             }
             var image = new DrawingImage(visual.Drawing);

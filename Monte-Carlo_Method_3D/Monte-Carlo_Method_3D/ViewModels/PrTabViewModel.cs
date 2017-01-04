@@ -150,7 +150,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private void InitComponents(SimulationOptions options)
         {
             m_Simulator = new PrSimulator(options);
-            m_Visualizer = new PrVisualizer(m_Simulator, m_Pallete);
+            m_Visualizer = new PrVisualizer(m_Simulator.Size, m_Pallete);
             VisualTypeSelector?.RaiseSelectionChanged();
             OnPropertyChanged(nameof(SimulationInfo));
         }

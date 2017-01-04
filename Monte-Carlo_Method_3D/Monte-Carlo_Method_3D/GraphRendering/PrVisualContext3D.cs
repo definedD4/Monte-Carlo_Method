@@ -25,8 +25,7 @@ namespace Monte_Carlo_Method_3D.GraphRendering
 
         public override void UpdateVisualization()
         {
-            Model = Visualizer.GenerateModel();
-            OnPropertyChanged("Model");
+            Model = Visualizer.GenerateModel(Simulator.GetData());
         }
 
         public double ModelScale => Math.Min(100d / Math.Max(Visualizer.Width, Visualizer.Height), 1d);

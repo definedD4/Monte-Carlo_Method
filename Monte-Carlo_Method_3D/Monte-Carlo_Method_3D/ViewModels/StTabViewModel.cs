@@ -127,21 +127,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 SaveFileDialog saveFileDialog = new SaveFileDialog() { Filter = "Файл CSV (*.csv)|*.csv" };
                 if (saveFileDialog.ShowDialog(Application.Current.MainWindow).GetValueOrDefault())
                 {
-                    double[,] data = new double[m_Simulator.Width, m_Simulator.Height];
-
-                    for(int x = 0; x < m_Simulator.Width; x++)
-                    {
-                        data[x, 0] = m_Simulator[x, 0];
-                        data[x, m_Simulator.Height - 1] = m_Simulator[x, m_Simulator.Height - 1];
-                    }
-
-                    for (int y = 1; y < m_Simulator.Height - 1; y++)
-                    {
-                        data[0, y] = m_Simulator[0, y];
-                        data[m_Simulator.Width - 1, y] = m_Simulator[m_Simulator.Width - 1, y];
-                    }
-
-                     CsvUtil.ExportToFile(data, saveFileDialog.FileName);
+                     CsvUtil.ExportToFile(m_Simulator.GetData().AsGridData(), saveFileDialog.FileName);
                 }
             });
 
@@ -151,7 +137,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private void InitComponents(SimulationOptions options)
         {
             m_Simulator = new StSimulator(options);
-            m_Visualizer = new StVisualizer(m_Simulator, m_Pallete);
+            m_Visualizer = new StVisualizer(m_Simulator.Size, m_Simulator.StartLocation, m_Pallete);
             VisualTypeSelector?.RaiseSelectionChanged();
             OnPropertyChanged(nameof(SimulationInfo));
         }

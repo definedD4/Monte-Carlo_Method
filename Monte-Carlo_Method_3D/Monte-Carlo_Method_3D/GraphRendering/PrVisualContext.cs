@@ -13,6 +13,12 @@ namespace Monte_Carlo_Method_3D.GraphRendering
         
         public PrVisualContext(PrSimulator simulator, PrVisualizer visualizer)
         {
+            if (simulator == null)
+                throw new ArgumentException();
+
+            if (visualizer == null)
+                throw new ArgumentException();
+
             Simulator = simulator;
             Visualizer = visualizer;
         }

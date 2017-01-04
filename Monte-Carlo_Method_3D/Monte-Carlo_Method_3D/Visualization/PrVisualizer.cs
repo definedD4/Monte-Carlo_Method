@@ -15,33 +15,41 @@ namespace Monte_Carlo_Method_3D.Visualization
         private const int Dpi = 96;
 
         private readonly Pallete m_Pallete;
-        private readonly PrSimulator m_Simulator;
         private GraphMesh m_Mesh;
 
-        public PrVisualizer(PrSimulator simulator, Pallete pallete)
+        public PrVisualizer(GridSize size, Pallete pallete)
         {
-            m_Simulator = simulator;
+            Size = size;
+            Width = Size.Columns;
+            Height = Size.Rows;
             m_Pallete = pallete;
 
             m_Mesh = new GraphMesh(Width, Height);     
         }
 
-        public int Width => m_Simulator.Width;
-        public int Height => m_Simulator.Height;
+        public GridSize Size { get; }
+        public int Width { get; }
+        public int Height { get; }
 
         public Color BackgroundColor { get; set; } = Colors.White;
         public Color ForegroundColor { get; set; } = Colors.Black;
         public Color GridColor { get; set; } = Colors.DarkGray;
 
-        public GeometryModel3D GenerateModel()
+        public GeometryModel3D GenerateModel(GridData data)
         {
-            m_Mesh.UpdateMesh(m_Simulator);
-            return new GeometryModel3D(m_Mesh.Mesh, new DiffuseMaterial(new ImageBrush(GenerateModelTexture())));
+            if (data.Size != Size)
+                throw new ArgumentException("Data has wrong dimensions.");
+
+            m_Mesh.UpdateMesh(data);
+            return new GeometryModel3D(m_Mesh.Mesh, new DiffuseMaterial(new ImageBrush(GenerateModelTexture(data))));
         }
 
-        public ImageSource GenerateColorTexture()
+        public ImageSource GenerateColorTexture(GridData data)
         {
-            var image = GenerateModelTexture();
+            if (data.Size != Size)
+                throw new ArgumentException("Data has wrong dimensions.");
+
+            var image = GenerateModelTexture(data);
             var visual = new DrawingVisual();
             using (DrawingContext drawingContext = visual.RenderOpen())
             {
@@ -52,7 +60,7 @@ namespace Monte_Carlo_Method_3D.Visualization
             return new DrawingImage(visual.Drawing);
         }
 
-        private ImageSource GenerateModelTexture()
+        private ImageSource GenerateModelTexture(GridData data)
         {
             WriteableBitmap bitmap = new WriteableBitmap(Width, Height, Dpi, Dpi, PixelFormats.Bgr24, null);
             int bytesPerPixel = bitmap.Format.BitsPerPixel / 8;
@@ -63,14 +71,10 @@ namespace Monte_Carlo_Method_3D.Visualization
             {
                 byte* bytes = (byte*)bitmap.BackBuffer.ToPointer();
 
-                for (int x = 0; x < m_Simulator.Width; x++)
+                foreach (var idx in data.Bounds.EnumerateRegion())
                 {
-                    for (int y = 0; y < m_Simulator.Height; y++)
-                    {
-                        Color color = m_Pallete.GetColor(m_Simulator[x, y]);
-
-                        DrawingUtil.DrawColorCell(bytes, x, y, color, bytesPerPixel, stride);
-                    }
+                    Color color = m_Pallete.GetColor(data[idx]);
+                    DrawingUtil.DrawColorCell(bytes, idx.J, idx.I, color, bytesPerPixel, stride);
                 }
                 bitmap.AddDirtyRect(new Int32Rect(0, 0, bitmap.PixelWidth, bitmap.PixelHeight));
                 bitmap.Unlock();
@@ -80,8 +84,11 @@ namespace Monte_Carlo_Method_3D.Visualization
             return bitmap;
         }
 
-        public ImageSource GenerateTableTexture()
+        public ImageSource GenerateTableTexture(GridData data)
         {
+            if (data.Size != Size)
+                throw new ArgumentException("Data has wrong dimensions.");
+
             var visual = new DrawingVisual();
             using (DrawingContext drawingContext = visual.RenderOpen())
             {
@@ -90,13 +97,10 @@ namespace Monte_Carlo_Method_3D.Visualization
                 var gridPen = new Pen(new SolidColorBrush(GridColor), 0.01D);
                 DrawingUtil.DrawGrid(drawingContext, gridPen, Width, Height);
 
-                for (int i = 0; i < m_Simulator.Width; i++)
+                foreach (var idx in data.Bounds.EnumerateRegion())
                 {
-                    for (int j = 0; j < m_Simulator.Height; j++)
-                    {
-                        var str = Math.Round(m_Simulator[i, j], 5).ToString("G3");
-                        DrawingUtil.DrawTableCell(drawingContext, i, j, str, ForegroundColor);
-                    }
+                    var str = Math.Round(data[idx], 5).ToString("G3");
+                        DrawingUtil.DrawTableCell(drawingContext, idx.J, idx.I, str, ForegroundColor);
                 }
             }
             var image = new DrawingImage(visual.Drawing);

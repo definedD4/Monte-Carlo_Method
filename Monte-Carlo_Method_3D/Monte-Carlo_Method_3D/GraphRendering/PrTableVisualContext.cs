@@ -26,8 +26,8 @@ namespace Monte_Carlo_Method_3D.GraphRendering
 
         public override void UpdateVisualization()
         {
-            Texture = Visualizer.GenerateTableTexture();
-            OnPropertyChanged("Texture");
+            Texture = Visualizer.GenerateTableTexture(Simulator.GetData());
+            base.UpdateVisualization();
         }
     }
 }

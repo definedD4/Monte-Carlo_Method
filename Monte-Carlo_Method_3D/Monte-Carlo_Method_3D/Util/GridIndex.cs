@@ -1,29 +1,27 @@
 ﻿namespace Monte_Carlo_Method_3D.Util
 {
-    public struct IntPoint
+    public struct GridIndex
     {
-        public IntPoint(int x, int y)
+        public static GridIndex Zero => new GridIndex(0, 0);
+
+        public GridIndex(int i, int j)
         {
-            X = x;
-            Y = y;
+            I = i;
+            J = j;
         }
 
-        public int X { get; }
-        public int Y { get; }
+        public int I { get; }
+        public int J { get; }
 
-        public static IntPoint operator +(IntPoint left, IntPoint right)
-        {
-            return new IntPoint(left.X + right.X, left.Y + right.Y);
-        }
+        public static GridIndex operator +(GridIndex left, GridIndex right) => new GridIndex(left.I + right.I, left.J + right.J);
 
-        public bool InBoundsStrict(int xStart, int xEnd, int yStart, int yEnd)
-        {
-            return X > xStart && X < xEnd && Y > yStart && Y < yEnd;
-        }
-
-        public bool InBounds(int xStart, int xEnd, int yStart, int yEnd)
-        {
-            return X >= xStart && X <= xEnd && Y >= yStart && Y <= yEnd;
-        }
+        public GridIndex Right() =>       new GridIndex(I    , J + 1);
+        public GridIndex TopRight() =>    new GridIndex(I - 1, J + 1);
+        public GridIndex Top() =>         new GridIndex(I - 1, J    );
+        public GridIndex TopLeft() =>     new GridIndex(I - 1, J - 1);
+        public GridIndex Left() =>        new GridIndex(I    , J - 1);
+        public GridIndex BottomLeft() =>  new GridIndex(I + 1, J - 1);
+        public GridIndex Bottom() =>      new GridIndex(I + 1, J    );
+        public GridIndex BottomRight() => new GridIndex(I + 1, J + 1);
     }
 }

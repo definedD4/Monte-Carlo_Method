@@ -20,12 +20,12 @@ namespace Monte_Carlo_Method_3D.Calculation
     {
         private readonly ICalculationConstraint m_Constraint;
         private readonly BackgroundWorker m_Worker;
-        private readonly IEnumerable<IntPoint> m_CalculationMask; 
+        private readonly IEnumerable<GridIndex> m_CalculationMask; 
 
         private int m_Progress;
         private GridData m_Result;
 
-        public Calculation(ICalculationConstraint constraint, IEnumerable<IntPoint> calculationMask)
+        public Calculation(ICalculationConstraint constraint, IEnumerable<GridIndex> calculationMask)
         {
             m_Constraint = constraint;
             m_CalculationMask = calculationMask;
@@ -56,7 +56,7 @@ namespace Monte_Carlo_Method_3D.Calculation
             };
         }
 
-        protected abstract GridData Simulate(IEnumerable<IntPoint> mask);
+        protected abstract GridData Simulate(IEnumerable<GridIndex> mask);
 
         protected void ReportProgress(int progress)
         {

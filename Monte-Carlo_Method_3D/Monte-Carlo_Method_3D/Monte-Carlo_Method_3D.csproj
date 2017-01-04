@@ -122,6 +122,8 @@
     <Compile Include="Util\DelegateCommand.cs" />
     <Compile Include="Util\EdgeData.cs" />
     <Compile Include="Util\EnumUtil.cs" />
+    <Compile Include="Util\GridRegion.cs" />
+    <Compile Include="Util\GridSize.cs" />
     <Compile Include="Util\InterfaceTemplateSelector.cs" />
     <Compile Include="Util\PointedValueBehavior.cs" />
     <Compile Include="Util\Rotation3DBehavior.cs" />

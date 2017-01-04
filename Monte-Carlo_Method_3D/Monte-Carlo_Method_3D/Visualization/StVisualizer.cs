@@ -17,16 +17,20 @@ namespace Monte_Carlo_Method_3D.Visualization
         private const int Dpi = 96;
 
         private Pallete m_Pallete;
-        private StSimulator m_Simulator;
+        private GridIndex m_StartLocation;
 
-        public StVisualizer(StSimulator simulator, Pallete pallete)
+        public StVisualizer(GridSize size, GridIndex startLocation, Pallete pallete)
         {
-            m_Simulator = simulator;
+            Size = size;
+            Width = Size.Columns;
+            Height = Size.Rows;
+            m_StartLocation = startLocation;
             m_Pallete = pallete;          
         }
 
-        public int Width => m_Simulator.Width;
-        public int Height => m_Simulator.Height;
+        public GridSize Size { get; }
+        public int Width { get; }
+        public int Height { get; }
 
         public Color BackgroundColor { get; set; } = Colors.White;
         public Color ForegroundColor { get; set; } = Colors.Black;
@@ -37,7 +41,7 @@ namespace Monte_Carlo_Method_3D.Visualization
         public bool DrawPath { get; set; } = true;
         public bool DrawStartPoint { get; set; } = true;
 
-        public ImageSource GenerateColorTexture()
+        public ImageSource GenerateColorTexture(EdgeData data, StParticlePath path)
         {
             WriteableBitmap texture = new WriteableBitmap(Width, Height, Dpi, Dpi, PixelFormats.Bgr24, null);
             int bytesPerPixel = texture.Format.BitsPerPixel / 8;
@@ -48,20 +52,16 @@ namespace Monte_Carlo_Method_3D.Visualization
             {
                 byte* bytes = (byte*)texture.BackBuffer.ToPointer();
 
-                for(int x = 0; x < Width; x++)
+                foreach (var idx in data.Bounds.EnumerateEdge())
                 {
-                    for(int y = 0; y < Height; y++)
-                    {
-                        if(m_Simulator.CanIndex(x, y))
-                        {
-                            DrawingUtil.DrawColorCell(bytes, x, y, m_Pallete.GetColor(m_Simulator[x, y]), bytesPerPixel, stride);
-                        }
-                        else
-                        {
-                            DrawingUtil.DrawColorCell(bytes, x, y, BackgroundColor, bytesPerPixel, stride);
-                        }
-                    }
+                    DrawingUtil.DrawColorCell(bytes, idx.J, idx.I, m_Pallete.GetColor(data[idx]), bytesPerPixel, stride);
                 }
+
+                foreach (var idx in data.Inaccessable.EnumerateRegion())
+                {
+                    DrawingUtil.DrawColorCell(bytes, idx.J, idx.I, BackgroundColor, bytesPerPixel, stride);
+                }
+
                 texture.AddDirtyRect(new Int32Rect(0, 0, texture.PixelWidth, texture.PixelHeight));
                 texture.Unlock();
             }
@@ -75,7 +75,7 @@ namespace Monte_Carlo_Method_3D.Visualization
                 var gridPen = new Pen(new SolidColorBrush(GridColor), 0.01D);
                 DrawingUtil.DrawGrid(drawingContext, gridPen, Width, Height);
 
-                if (DrawPath && m_Simulator.LastPath != null)
+                if (DrawPath && path != null)
                 {
                     var pathPen = new Pen(new SolidColorBrush(PathColor), 0.1D);
                     pathPen.Freeze();
@@ -83,7 +83,7 @@ namespace Monte_Carlo_Method_3D.Visualization
                     var geometry = new StreamGeometry();
                     using (StreamGeometryContext ctx = geometry.Open())
                     {
-                        var points = m_Simulator.LastPath.Points.Select(p => new Point(p.X + 0.5, p.Y + 0.5));
+                        var points = path.Points.Select(p => new Point(p.I + 0.5, p.J + 0.5));
                         ctx.BeginFigure(points.First(), true, false);
                         ctx.PolyLineTo(points.Skip(1).ToList(), true, true);
                     }
@@ -92,14 +92,14 @@ namespace Monte_Carlo_Method_3D.Visualization
                     drawingContext.DrawGeometry(null, pathPen, geometry);
                 }
 
-                IntPoint startLoc = m_Simulator.StartLocation;
+                GridIndex startLoc = m_StartLocation;
                 if(DrawStartPoint)
-                    drawingContext.DrawEllipse(new SolidColorBrush(StartPointColor), null, new Point(startLoc.X + 0.5, startLoc.Y + 0.5), 0.3, 0.3);
+                    drawingContext.DrawEllipse(new SolidColorBrush(StartPointColor), null, new Point(startLoc.I + 0.5, startLoc.J + 0.5), 0.3, 0.3);
             }
             return new DrawingImage(visual.Drawing);
         }
 
-        public ImageSource GenerateTableTexture()
+        public ImageSource GenerateTableTexture(EdgeData data)
         {
             var visual = new DrawingVisual();
             using (DrawingContext drawingContext = visual.RenderOpen())
@@ -109,15 +109,9 @@ namespace Monte_Carlo_Method_3D.Visualization
                 var gridPen = new Pen(new SolidColorBrush(GridColor), 0.01D);
                 DrawingUtil.DrawGrid(drawingContext, gridPen, Width, Height);
 
-                for (int x = 0; x < Width; x++)
+                foreach (var idx in data.Bounds.EnumerateEdge())
                 {
-                    DrawingUtil.DrawTableCell(drawingContext, x,          0, Math.Round(m_Simulator[x,          0], 5).ToString("G3"), ForegroundColor);
-                    DrawingUtil.DrawTableCell(drawingContext, x, Height - 1, Math.Round(m_Simulator[x, Height - 1], 5).ToString("G3"), ForegroundColor);
-                }
-                for (int y = 0; y < Height; y++)
-                {
-                    DrawingUtil.DrawTableCell(drawingContext,         0, y, Math.Round(m_Simulator[        0, y], 5).ToString("G3"), ForegroundColor);
-                    DrawingUtil.DrawTableCell(drawingContext, Width - 1, y, Math.Round(m_Simulator[Width - 1, y], 5).ToString("G3"), ForegroundColor);
+                    DrawingUtil.DrawTableCell(drawingContext, idx.J, idx.I, Math.Round(data[idx], 5).ToString("G3"), ForegroundColor);
                 }
             }
             var image = new DrawingImage(visual.Drawing);

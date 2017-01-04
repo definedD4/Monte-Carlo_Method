@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Interactivity;
 
 namespace Monte_Carlo_Method_3D.Util
@@ -13,6 +14,30 @@ namespace Monte_Carlo_Method_3D.Util
     {
         protected override void OnAttached()
         {
+            AssociatedObject.DataContextChanged += (s, e) =>
+            {
+                var context = AssociatedObject.DataContext as IGridContext;
+
+                if (context == null)
+                    return;
+
+                context.DataChanged += (_s, _e) =>
+                {
+                    var popup = AssociatedObject.FindName("pointedValuePopup") as Popup;
+                    var text = AssociatedObject.FindName("pointedValueText") as TextBlock;
+
+                    if (popup == null || text == null)
+                        return;
+
+                    if (popup.IsOpen)
+                    {
+                        var pos = Mouse.GetPosition(AssociatedObject);
+                        var size = new System.Windows.Size(AssociatedObject.ActualWidth, AssociatedObject.ActualHeight);
+                        text.Text = context.GetValueAtImageCoordinates(new System.Windows.Point(pos.X / size.Width, pos.Y / size.Height)).ToString("E4");
+                    }
+                };
+            };           
+
             AssociatedObject.MouseMove += (s, e) =>
             {
                 var popup = AssociatedObject.FindName("pointedValuePopup") as Popup;
@@ -28,9 +53,9 @@ namespace Monte_Carlo_Method_3D.Util
 
                 popup.HorizontalOffset = pos.X + 20;
                 popup.VerticalOffset = pos.Y;
-    
-                text.Text = context.GetValueAtImageCoordinates(e.GetPosition(AssociatedObject),
-                    new System.Windows.Size(AssociatedObject.ActualWidth, AssociatedObject.ActualHeight)).ToString("E4");
+
+                var size = new System.Windows.Size(AssociatedObject.ActualWidth, AssociatedObject.ActualHeight);
+                text.Text = context.GetValueAtImageCoordinates(new System.Windows.Point(pos.X / size.Width, pos.Y / size.Height)).ToString("E4");
             };
 
             AssociatedObject.MouseLeave += (s, e) =>

@@ -7,39 +7,47 @@ namespace Monte_Carlo_Method_3D.Util
 {
     public class EdgeData
     {
-        private double[,] m_Data;
+        private readonly double[,] m_Data;    
 
-        public int Width { get; }
-        public int Height { get; }
+        public GridSize Size { get; }
+        public GridRegion Bounds { get; }
+        public GridRegion Inaccessable { get; }
 
-        public EdgeData(int width, int height)
+        public static EdgeData FromArray(double[,] data) => new EdgeData(new GridSize(data.GetLength(0), data.GetLength(1)), data);
+        public static EdgeData AllocateNew(GridSize size) => new EdgeData(size, new double[size.Rows, size.Columns]);
+        public static EdgeData AllocateLike(EdgeData other) => EdgeData.AllocateNew(other.Size);
+
+        private EdgeData(GridSize size, double[,] data)
         {
-            Width = width;
-            Height = height;
+            if (data.GetLength(0) != size.Rows || data.GetLength(1) != size.Columns)
+                throw new ArgumentException("Dimensions don't match.");
 
-            m_Data = new double[Width, Height];
+            Size = size;
+            m_Data = data;
+            Bounds = new GridRegion(GridIndex.Zero, Size);
+            Inaccessable = Bounds.Shrink(1);
         }
 
-        public bool CanIndex(int x, int y)
-        {
-            return x == 0 || x == Width - 1 || y == 0 || y == Width - 1;
-        }
+        public bool CanIndex(GridIndex index) => Bounds.IsInside(index) && !Inaccessable.IsInside(index);
 
-        public double this[int x, int y]
+        public double this[GridIndex i]
         {
             get
             {
-                if(CanIndex(x, y))
+                if(CanIndex(i))
                 {
-                    return m_Data[x, y];
+                    return m_Data[i.I, i.J];
                 }
-                return double.NaN;
+                else
+                {
+                    throw new IndexOutOfRangeException();
+                }
             }
             set
             {
-                if(CanIndex(x, y))
+                if(CanIndex(i))
                 {
-                    m_Data[x, y] = value;
+                    m_Data[i.I, i.J] = value;
                 }
                 else
                 {
@@ -47,5 +55,13 @@ namespace Monte_Carlo_Method_3D.Util
                 }
             }
         }
+
+        public double this[int i, int j]
+        {
+            get { return this[new GridIndex(i, j)]; }
+            set { this[new GridIndex(i, j)] = value; }
+        }
+
+        public GridData AsGridData() => GridData.FromArray(m_Data);
     }
 }

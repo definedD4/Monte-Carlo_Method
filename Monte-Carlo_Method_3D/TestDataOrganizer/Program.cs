@@ -23,7 +23,7 @@ namespace TestDataOrganizer
                         i =>
                         {
                             var coords = i.Trim().Split(',').Select(j => int.Parse(j.Trim())).ToArray();
-                            return new IntPoint(coords[0], coords[1]);
+                            return new GridIndex(coords[0], coords[1]);
                         }).ToList();
 
             double[,] res = new double[mask.Count, 5];

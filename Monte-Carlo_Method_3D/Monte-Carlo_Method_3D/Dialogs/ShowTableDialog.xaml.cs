@@ -43,10 +43,10 @@ namespace Monte_Carlo_Method_3D.Dialogs
             {
                 var pos = e.GetPosition(Img);
 
-                int x = (int)Math.Truncate(pos.X * data.Width / Img.ActualWidth);
-                int y = (int)Math.Truncate(pos.Y * data.Height / Img.ActualHeight);
+                int x = (int)Math.Truncate(pos.X * data.Size.Columns / Img.ActualWidth);
+                int y = (int)Math.Truncate(pos.Y * data.Size.Rows / Img.ActualHeight);
 
-                if(x < 0 || x >= m_Data.Width || y < 0 || y >= m_Data.Height)
+                if(x < 0 || x >= m_Data.Size.Columns || y < 0 || y >= m_Data.Size.Rows)
                     return;
 
                 if (!PointedValuePopup.IsOpen) { PointedValuePopup.IsOpen = true; }

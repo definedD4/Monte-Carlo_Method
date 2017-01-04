@@ -12,8 +12,8 @@ namespace OutputComparasionGraph
     {
         static void Main(string[] args)
         {
-            PrSimulator pr = new PrSimulator(new SimulationOptions(11, 11, new IntPoint(5, 5)));
-            StSimulator st = new StSimulator(new SimulationOptions(11, 11, new IntPoint(5, 5)));
+            PrSimulator pr = new PrSimulator(new SimulationOptions(11, 11, new GridIndex(5, 5)));
+            StSimulator st = new StSimulator(new SimulationOptions(11, 11, new GridIndex(5, 5)));
 
             Func<double, double, double> u = (x, y) => Math.Log(Math.Sqrt((x / 10 + 3)* (x / 10 + 3) + (y / 10 + 3)* (y / 10 + 3)));
 

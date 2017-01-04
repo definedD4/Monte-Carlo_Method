@@ -52,13 +52,13 @@ namespace Monte_Carlo_Method_3D.ViewModels
                     MessageBox.Show($"Не заданы значения на граничных узлах.");
                     return;
                 }
-                if (GridWidth != EdgeData.Width || GridHeight != EdgeData.Height)
+                if (EdgeData.Size != new GridSize(m_GridHeight, m_GridWidth))
                 {
                     MessageBox.Show($"Размеры сетки и таблицы граничных значений не совпадают.");
                     return;
                 }               
 
-                List<IntPoint> calcMask = new List<IntPoint>();
+                List<GridIndex> calcMask = new List<GridIndex>();
 
                 if (!string.IsNullOrWhiteSpace(CalculationMask))
                 {
@@ -66,7 +66,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                         i =>
                         {
                             var coords = i.Trim().Split(',').Select(j => int.Parse(j.Trim())).ToArray();
-                            return new IntPoint(coords[0], coords[1]);
+                            return new GridIndex(coords[0], coords[1]);
                         }));
                 }
 

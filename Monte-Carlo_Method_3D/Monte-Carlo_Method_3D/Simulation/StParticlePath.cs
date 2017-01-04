@@ -8,11 +8,11 @@ namespace Monte_Carlo_Method_3D.Simulation
 {
     public class StParticlePath
     {
-        public StParticlePath(IList<IntPoint> points)
+        public StParticlePath(IList<GridIndex> points)
         {
             Points = points;
         }
 
-        public IList<IntPoint> Points { get; private set; }
+        public IList<GridIndex> Points { get; private set; }
     }
 }

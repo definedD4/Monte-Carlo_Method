@@ -53,7 +53,7 @@ namespace Monte_Carlo_Method_3D.Controls
             {
                 @this.BtnView.IsEnabled = true;
                 @this.BtnSave.IsEnabled = true;
-                @this.TbName.Text = $"Таблица: {@this.Data.Width} на {@this.Data.Height}";
+                @this.TbName.Text = $"Таблица: {@this.Data.Size.Rows} на {@this.Data.Size.Columns}";
             }
         }
 

@@ -37,7 +37,7 @@ namespace Monte_Carlo_Method_3D.Controls
             GridDataLoadSlot @this = dependencyObject as GridDataLoadSlot;
             if (@this.Data != null)
             {
-                @this.TbName.Text = $"Таблица: {@this.Data.Width} на {@this.Data.Height}";
+                @this.TbName.Text = $"Таблица: {@this.Data.Size.Rows} на {@this.Data.Size.Columns}";
                 @this.BtnViewData.IsEnabled = true;
             }
             else

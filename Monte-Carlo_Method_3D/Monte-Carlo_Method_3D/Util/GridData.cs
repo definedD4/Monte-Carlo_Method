@@ -9,23 +9,56 @@ namespace Monte_Carlo_Method_3D.Util
     {
         private readonly double[,] m_Data;
 
-        public int Width { get; private set; }
-        public int Height { get; private set; }
+        public GridSize Size { get; }
+        public GridRegion Bounds { get; }
 
-        public GridData(double[,] data) : this(data.GetLength(0), data.GetLength(1), data) { }
+        public static GridData FromArray(double[,] data) => new GridData(new GridSize(data.GetLength(0), data.GetLength(1)), data);
+        public static GridData AllocateNew(GridSize size) => new GridData(size, new double[size.Rows, size.Columns]);
+        public static GridData AllocateLike(GridData other) => GridData.AllocateNew(other.Size);
 
-        public GridData(int width, int height, double[,] data)
+        private GridData(GridSize size, double[,] data)
         {
-            if(data.GetLength(0) != width || data.GetLength(1) != height)
+            if(data.GetLength(0) != size.Rows || data.GetLength(1) != size.Columns)
                 throw new ArgumentException("Dimensions don't match.");
 
-            Width = width;
-            Height = height;
+            Size = size;
             m_Data = data;
+            Bounds = new GridRegion(GridIndex.Zero, Size);
         }
 
-        public double this[int x, int y] => m_Data[x, y];
-        public double this[IntPoint p] => m_Data[p.X, p.Y];
+        public bool CanIndex(GridIndex index) => Bounds.IsInside(index);
+
+        public double this[GridIndex i]
+        {
+            get
+            {
+                if (CanIndex(i))
+                {
+                    return m_Data[i.I, i.J];
+                }
+                else
+                {
+                    throw new IndexOutOfRangeException();
+                }
+            }
+            set
+            {
+                if (CanIndex(i))
+                {
+                    m_Data[i.I, i.J] = value;
+                }
+                else
+                {
+                    throw new IndexOutOfRangeException();
+                }
+            }
+        }
+
+        public double this[int i, int j]
+        {
+            get { return this[new GridIndex(i, j)]; }
+            set { this[new GridIndex(i, j)] = value; }
+        }
 
         public double[,] Get()
         {
