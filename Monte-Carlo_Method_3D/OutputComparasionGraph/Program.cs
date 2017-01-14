@@ -15,8 +15,11 @@ namespace OutputComparasionGraph
         {
             double simTime = 1000d;
 
-            PrSimulator pr = new PrSimulator(new SimulationOptions(5, 5, new GridIndex(2, 2)));
-            StSimulator st = new StSimulator(new SimulationOptions(5, 5, new GridIndex(2, 2)));
+            var size = new GridSize(5, 5);
+            var start = new GridIndex(2, 2);
+
+            PrSimulator pr = new PrSimulator(new SimulationOptions(size, start));
+            StSimulator st = new StSimulator(new SimulationOptions(size, start));
 
             List<Tuple<double, double>> prp = new List<Tuple<double, double>>();
             List<Tuple<double, double>> stp = new List<Tuple<double, double>>();
@@ -28,14 +31,14 @@ namespace OutputComparasionGraph
             {
                 pr.SimulateSteps();
                 if (prt == -1d) prt = pr.TotalSimTime;
-                prp.Add(Tuple.Create(pr.TotalSimTime - prt, pr[2, 0]));
+                prp.Add(Tuple.Create(pr.TotalSimTime - prt, pr.GetData()[2, 0]));
             }
 
             while (st.TotalSimTime < simTime)
             {
                 st.SimulateSteps();
                 if (stt == -1d) stt = st.TotalSimTime;
-                stp.Add(Tuple.Create(st.TotalSimTime - stt, st[2, 0]));
+                stp.Add(Tuple.Create(st.TotalSimTime - stt, st.GetData()[2, 0]));
             }
 
             File.WriteAllLines("comp_pr.csv", prp.Select(x => $"{x.Item1};{x.Item2}"), Encoding.UTF8);
