@@ -92,6 +92,9 @@
     <Compile Include="Controls\GridDataSaveSlot.xaml.cs">
       <DependentUpon>GridDataSaveSlot.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PrevNextTabControl.xaml.cs">
+      <DependentUpon>PrevNextTabControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ZoomAndPanImage.xaml.cs">
       <DependentUpon>ZoomAndPanImage.xaml</DependentUpon>
     </Compile>
@@ -162,6 +165,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\GridDataSaveSlot.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PrevNextTabControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
