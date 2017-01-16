@@ -37,6 +37,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
             m_StartCommand = new DelegateCommand(x =>
             {
+                // Preparing for simulation
                 ICalculationConstraint constraint;
                 try
                 {
@@ -58,6 +59,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                     return;
                 }               
 
+                // Parsing mask
                 List<GridIndex> calcMask = new List<GridIndex>();
 
                 if (!string.IsNullOrWhiteSpace(CalculationMask))
@@ -70,6 +72,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                         }));
                 }
 
+                // Selecting calculation method
                 switch (m_CalculationMethod)
                 {
                     case CalculationMethod.Propability:
@@ -78,9 +81,11 @@ namespace Monte_Carlo_Method_3D.ViewModels
                     case CalculationMethod.Statistical:
                         m_Calculation = new StCalculation(constraint, GridWidth, GridHeight, EdgeData, calcMask);
                     break;
+                    default:
+                        throw new InvalidOperationException($"Invalid calculation method selected: {m_CalculationMethod}.");
                 }
 
-
+                // Start calculation
                 State = StateT.Working;
                 m_Calculation.Start();
                 m_Calculation.DoneCalculation += (s, e) =>
@@ -95,6 +100,9 @@ namespace Monte_Carlo_Method_3D.ViewModels
                         OnPropertyChanged(nameof(Progress));
                     }
                 };
+
+                // Reset progress bar
+                OnPropertyChanged(nameof(Progress));
             }, x => State == StateT.NotStarted);
 
             m_CancelCommand = new DelegateCommand(x =>
@@ -155,7 +163,15 @@ namespace Monte_Carlo_Method_3D.ViewModels
         public GridData EdgeData
         {
             get { return m_EdgeData; }
-            set { m_EdgeData = value; OnPropertyChanged(nameof(EdgeData)); }
+            set
+            {
+                m_EdgeData = value;
+                OnPropertyChanged(nameof(EdgeData));
+
+                // Set size text fields to size of loaded grid
+                GridWidth = EdgeData.Size.Columns;
+                GridHeight = EdgeData.Size.Rows;
+            }
         }
 
         public GridData Result

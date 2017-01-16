@@ -10,6 +10,12 @@ namespace Monte_Carlo_Method_3D.Util
     {
         public GridRegion(GridIndex pos, GridSize size)
         {
+            if(pos == null)
+                throw new ArgumentException("pos can't be null.");
+
+            if (size == null)
+                throw new ArgumentException("size can't be null.");
+
             Pos = pos;
             Size = size;
         }
@@ -55,6 +61,35 @@ namespace Monte_Carlo_Method_3D.Util
                 yield return new GridIndex(Pos.I, j);
                 yield return new GridIndex(Pos.I + Size.Rows - 1, j);
             }
+        }
+
+        public bool Equals(GridRegion other)
+        {
+            return Pos.Equals(other.Pos) && Size.Equals(other.Size);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            return obj is GridRegion && Equals((GridRegion) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (Pos.GetHashCode() * 397) ^ Size.GetHashCode();
+            }
+        }
+
+        public static bool operator ==(GridRegion left, GridRegion right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(GridRegion left, GridRegion right)
+        {
+            return !left.Equals(right);
         }
     }
 }

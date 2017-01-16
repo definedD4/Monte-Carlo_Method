@@ -10,15 +10,17 @@ namespace Monte_Carlo_Method_3D.Visualization
 {
     public class GraphMesh
     {
-        public GraphMesh(int width, int height)
+        public GraphMesh(GridSize size)
         {
-            Width = width;
-            Height = height;
+            Size = size;
+            Width = Size.Columns;
+            Height = Size.Rows;
 
             Mesh = new MeshGeometry3D();
             InitMesh();
         } 
 
+        public GridSize Size { get; }
         public int Width { get; }
         public int Height { get; }
         public MeshGeometry3D Mesh { get; private set; }
@@ -71,7 +73,7 @@ namespace Monte_Carlo_Method_3D.Visualization
 
         public void UpdateMesh(GridData data)
         {
-            if (data.Size != new GridSize(Height, Width))
+            if (data.Size != Size)
                 throw new ArgumentException("Data dimensions don't match up.");
 
             for(int i = 0; i < Mesh.Positions.Count; i++)

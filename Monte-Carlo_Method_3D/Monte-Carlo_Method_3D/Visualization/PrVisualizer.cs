@@ -15,7 +15,7 @@ namespace Monte_Carlo_Method_3D.Visualization
         private const int Dpi = 96;
 
         private readonly Pallete m_Pallete;
-        private GraphMesh m_Mesh;
+        private readonly GraphMesh m_Mesh;
 
         public PrVisualizer(GridSize size, Pallete pallete)
         {
@@ -24,7 +24,7 @@ namespace Monte_Carlo_Method_3D.Visualization
             Height = Size.Rows;
             m_Pallete = pallete;
 
-            m_Mesh = new GraphMesh(Width, Height);     
+            m_Mesh = new GraphMesh(Size);     
         }
 
         public GridSize Size { get; }

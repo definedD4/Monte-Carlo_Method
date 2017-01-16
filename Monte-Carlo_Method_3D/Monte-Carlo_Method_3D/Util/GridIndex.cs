@@ -23,5 +23,39 @@
         public GridIndex BottomLeft() =>  new GridIndex(I + 1, J - 1);
         public GridIndex Bottom() =>      new GridIndex(I + 1, J    );
         public GridIndex BottomRight() => new GridIndex(I + 1, J + 1);
+
+        public bool Equals(GridIndex other)
+        {
+            return I == other.I && J == other.J;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            return obj is GridIndex && Equals((GridIndex) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (I * 397) ^ J;
+            }
+        }
+
+        public static bool operator ==(GridIndex left, GridIndex right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(GridIndex left, GridIndex right)
+        {
+            return !left.Equals(right);
+        }
+
+        public override string ToString()
+        {
+            return $"({I}, {J})";
+        }
     }
 }
