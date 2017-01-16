@@ -99,8 +99,7 @@ namespace Monte_Carlo_Method_3D.Visualization
 
                 foreach (var idx in data.Bounds.EnumerateRegion())
                 {
-                    var str = Math.Round(data[idx], 5).ToString("G3");
-                        DrawingUtil.DrawTableCell(drawingContext, idx.J, idx.I, str, ForegroundColor);
+                    DrawingUtil.DrawTableCell(drawingContext, idx.J, idx.I, FormattingUtil.FormatShort(data[idx]), ForegroundColor);
                 }
             }
             var image = new DrawingImage(visual.Drawing);

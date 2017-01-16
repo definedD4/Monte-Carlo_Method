@@ -8,6 +8,8 @@ namespace Monte_Carlo_Method_3D.Util
 {
     public struct GridRegion
     {
+        public static GridRegion FromSize(GridSize size) => new GridRegion(GridIndex.Zero, size );
+
         public GridRegion(GridIndex pos, GridSize size)
         {
             if(pos == null)

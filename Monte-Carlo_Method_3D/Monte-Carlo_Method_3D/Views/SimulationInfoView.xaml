@@ -1,10 +1,14 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Monte_Carlo_Method_3D.Views"
-                    xmlns:sim="clr-namespace:Monte_Carlo_Method_3D.Simulation">
+                    xmlns:sim="clr-namespace:Monte_Carlo_Method_3D.Simulation"
+                    xmlns:util="clr-namespace:Monte_Carlo_Method_3D.Util">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="../Styles/Resources.xaml"/>
     </ResourceDictionary.MergedDictionaries>
+    
+    <util:LongFormatConverter x:Key="LongFormatConverter"/>
+    
     <DataTemplate DataType="{x:Type sim:PrSimulationInfo}">
         <StackPanel Margin="4" Grid.Row="1" Background="{DynamicResource PrimaryBackgroundColor}">
             <StackPanel.Resources>
@@ -18,11 +22,11 @@
             </WrapPanel>
             <WrapPanel Margin="2">
                 <TextBlock Text="Сума у середині:" Margin="1"/>
-                <TextBlock Text="{Binding CenterSum, StringFormat={}{0:E10}}" Margin="1"/>
+                <TextBlock Text="{Binding CenterSum, Converter={StaticResource LongFormatConverter}}" Margin="1"/>
             </WrapPanel>
             <WrapPanel Margin="2">
                 <TextBlock Text="Сума на межі:" Margin="1"/>
-                <TextBlock Text="{Binding EdgeSum, StringFormat={}{0:E10}}" Margin="1"/>
+                <TextBlock Text="{Binding EdgeSum, Converter={StaticResource LongFormatConverter}}" Margin="1"/>
             </WrapPanel>
             <WrapPanel Margin="2">
                 <TextBlock Text="Загальний час симуляції:" Margin="1"/>

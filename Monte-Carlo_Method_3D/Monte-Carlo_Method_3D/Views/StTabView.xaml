@@ -49,7 +49,7 @@
                         </Grid>
                     </Border>
                     <Border Grid.Column="2" BorderBrush="{DynamicResource BorderColor}" BorderThickness="{DynamicResource BorderThickness}" 
-                            Background="{DynamicResource PrimaryBackgroundColor}" Padding="4" Width="250">
+                            Background="{DynamicResource PrimaryBackgroundColor}" Padding="4" Width="300">
                         <StackPanel>
                             <GroupBox Header="Візуалізація:">
                                 <StackPanel Orientation="Horizontal">

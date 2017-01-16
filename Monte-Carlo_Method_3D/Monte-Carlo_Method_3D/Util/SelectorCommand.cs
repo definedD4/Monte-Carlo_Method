@@ -5,6 +5,8 @@ namespace Monte_Carlo_Method_3D.Util
 {
     public class SelectorCommand : ICommand
     {
+        private string m_SelectedValue;
+
         public SelectorCommand(string defaultValue)
         {
             SelectedValue = defaultValue;
@@ -30,18 +32,17 @@ namespace Monte_Carlo_Method_3D.Util
             return SelectedValue != value;
         }
 
-        private string selectedValue;
         public string SelectedValue
         {
             get
             {
-                return selectedValue;
+                return m_SelectedValue;
             }
             set
             {
-                if(selectedValue != value)
+                if(m_SelectedValue != value)
                 {
-                    selectedValue = value;
+                    m_SelectedValue = value;
 
                     CanExecuteChanged?.Invoke(this, EventArgs.Empty);
                     SelectionChanged?.Invoke(this, EventArgs.Empty);

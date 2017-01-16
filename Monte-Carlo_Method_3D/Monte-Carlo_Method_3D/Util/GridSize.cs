@@ -1,6 +1,6 @@
 namespace Monte_Carlo_Method_3D.Util
 {
-    public class GridSize
+    public struct GridSize
     {
         public int Rows { get; }
         public int Columns { get; }
@@ -11,7 +11,7 @@ namespace Monte_Carlo_Method_3D.Util
             Columns = columns;
         }
 
-        protected bool Equals(GridSize other)
+        public bool Equals(GridSize other)
         {
             return Rows == other.Rows && Columns == other.Columns;
         }
@@ -19,9 +19,7 @@ namespace Monte_Carlo_Method_3D.Util
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((GridSize) obj);
+            return obj is GridSize && Equals((GridSize) obj);
         }
 
         public override int GetHashCode()

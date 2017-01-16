@@ -38,7 +38,7 @@ namespace Monte_Carlo_Method_3D.Visualization
 
                 foreach (var idx in data.Bounds.EnumerateEdge())
                 {
-                    DrawingUtil.DrawTableCell(drawingContext, idx.J, idx.I, Math.Round(data[idx], 5).ToString("E2"), ForegroundColor);
+                    DrawingUtil.DrawTableCell(drawingContext, idx.J, idx.I, FormattingUtil.FormatShort(data[idx]), ForegroundColor);
                 }
             }
             var image = new DrawingImage(visual.Drawing);
