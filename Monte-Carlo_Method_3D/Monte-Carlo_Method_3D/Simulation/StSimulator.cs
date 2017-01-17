@@ -73,17 +73,21 @@ namespace Monte_Carlo_Method_3D.Simulation
                 AverageTravelPath = (AverageTravelPath * TotalSimulations + travelPath) / ++TotalSimulations;
             }
             stopwatch.Stop();
-
-            m_ProccesedData = EdgeData.AllocateLike(m_Data);
-            foreach (var i in m_ProccesedData.Bounds.EnumerateEdge())
-            {
-                m_ProccesedData[i] = m_Data[i] / TotalSimulations;
-            }
+            ProcessData();
 
             TotalSimTime += stopwatch.Elapsed.TotalMilliseconds;
 
             SimulationInfo = new StSimulationInfo(TotalSimulations, AverageTravelPath, TotalSimTime);
             LastPath = new StParticlePath(path);
+        }
+
+        private void ProcessData()
+        {
+            m_ProccesedData = EdgeData.AllocateLike(m_Data);
+            foreach (var i in m_ProccesedData.Bounds.EnumerateEdge())
+            {
+                m_ProccesedData[i] = m_Data[i] / TotalSimulations;
+            }
         }
 
         private GridIndex SelectRandomDirection()
@@ -107,6 +111,7 @@ namespace Monte_Carlo_Method_3D.Simulation
         public void Reset()
         {
             m_Data = EdgeData.AllocateLike(m_Data);
+            ProcessData();
             TotalSimulations = 0;
             AverageTravelPath = 0;
             TotalSimTime = 0;

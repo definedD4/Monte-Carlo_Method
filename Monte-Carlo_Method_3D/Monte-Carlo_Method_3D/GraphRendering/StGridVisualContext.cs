@@ -16,8 +16,8 @@ namespace Monte_Carlo_Method_3D.GraphRendering
         public double GetValueAtImageCoordinates(Point relativePos)
         {
             GridIndex idx = new GridIndex(
-                (int)Math.Truncate(relativePos.X * Visualizer.Width),
-                (int)Math.Truncate(relativePos.Y * Visualizer.Height)
+                (int)Math.Truncate(relativePos.Y * Visualizer.Height),
+                (int)Math.Truncate(relativePos.X * Visualizer.Width)
             );
             var data = Simulator.GetData();
             return data.CanIndex(idx) ? data[idx] : double.NaN;

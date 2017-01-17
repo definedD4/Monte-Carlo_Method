@@ -43,6 +43,7 @@ namespace Monte_Carlo_Method_3D.Visualization
 
         public ImageSource GenerateColorTexture(EdgeData data, StParticlePath path)
         {
+            // Generate texture
             WriteableBitmap texture = new WriteableBitmap(Width, Height, Dpi, Dpi, PixelFormats.Bgr24, null);
             int bytesPerPixel = texture.Format.BitsPerPixel / 8;
             int stride = texture.BackBufferStride;
@@ -83,7 +84,7 @@ namespace Monte_Carlo_Method_3D.Visualization
                     var geometry = new StreamGeometry();
                     using (StreamGeometryContext ctx = geometry.Open())
                     {
-                        var points = path.Points.Select(p => new Point(p.I + 0.5, p.J + 0.5));
+                        var points = path.Points.Select(p => new Point(p.J + 0.5, p.I + 0.5));
                         ctx.BeginFigure(points.First(), true, false);
                         ctx.PolyLineTo(points.Skip(1).ToList(), true, true);
                     }
@@ -94,7 +95,7 @@ namespace Monte_Carlo_Method_3D.Visualization
 
                 GridIndex startLoc = m_StartLocation;
                 if(DrawStartPoint)
-                    drawingContext.DrawEllipse(new SolidColorBrush(StartPointColor), null, new Point(startLoc.I + 0.5, startLoc.J + 0.5), 0.3, 0.3);
+                    drawingContext.DrawEllipse(new SolidColorBrush(StartPointColor), null, new Point(startLoc.J + 0.5, startLoc.I + 0.5), 0.3, 0.3);
             }
             return new DrawingImage(visual.Drawing);
         }

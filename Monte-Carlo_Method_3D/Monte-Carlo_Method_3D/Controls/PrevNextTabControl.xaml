@@ -10,7 +10,7 @@
         <Style x:Key="PrevBtnStyle" TargetType="Button">
             <Setter Property="Template"><Setter.Value>
                 <ControlTemplate TargetType="Button">
-                        <Border BorderThickness="0, 0, 1, 0" BorderBrush="DarkGray" Background="{TemplateBinding Background}">
+                        <Border BorderThickness="0, 0, 1, 0" BorderBrush="DarkGray" Background="{TemplateBinding Background}" Width="40">
                             <Path Width="20" Height="60" Data="M 16 5 L 4 30 L 16 55" Stroke="Black" 
                   StrokeEndLineCap="Round" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeThickness="3"/>
                         </Border>
@@ -31,7 +31,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border BorderThickness="1, 0, 0, 0" BorderBrush="DarkGray" Background="{TemplateBinding Background}">
+                        <Border BorderThickness="1, 0, 0, 0" BorderBrush="DarkGray" Background="{TemplateBinding Background}" Width="40">
                             <Path Width="20" Height="60" Data="M 4 5 L 16 30 L 4 55" Stroke="Black" 
                   StrokeEndLineCap="Round" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeThickness="3"/>
                         </Border>
