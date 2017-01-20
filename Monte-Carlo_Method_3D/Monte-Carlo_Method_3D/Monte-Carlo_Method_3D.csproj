@@ -101,6 +101,7 @@
     <Compile Include="Dialogs\ShowTableDialog.xaml.cs">
       <DependentUpon>ShowTableDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Exceptions\TableLoadException.cs" />
     <Compile Include="Util\FormattingUtil.cs" />
     <Compile Include="Util\GridSize.cs" />
     <Compile Include="Util\GridData.cs" />

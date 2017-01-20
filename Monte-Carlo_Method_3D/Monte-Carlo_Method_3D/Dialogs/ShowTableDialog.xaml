@@ -14,9 +14,19 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid>
-        <controls:ZoomAndPanImage x:Name="Img" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-        <Popup x:Name="PointedValuePopup" AllowsTransparency="True" Placement="Relative" PlacementTarget="{Binding ElementName=dataImage}">
+    <Grid Background="{StaticResource SecondaryBackgroundColor}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Border Background="{StaticResource PrimaryBackgroundColor}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock x:Name="TitleTb" Margin="4"/>
+            </StackPanel>
+        </Border>
+        <controls:ZoomAndPanImage x:Name="Img" RenderOptions.BitmapScalingMode="NearestNeighbor" Grid.Row="1"/>
+        <Popup x:Name="PointedValuePopup" AllowsTransparency="True" 
+               Placement="Relative" PlacementTarget="{Binding ElementName=dataImage}" Grid.Row="1">
             <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="{DynamicResource BorderThickness}" 
                         Background="{DynamicResource PrimaryBackgroundColor}" Padding="4">
                 <TextBlock x:Name="PointedValueText"/>

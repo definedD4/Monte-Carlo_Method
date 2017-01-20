@@ -23,7 +23,7 @@ namespace Monte_Carlo_Method_3D.Visualization
             {
                 return ZeroColor;
             }
-            double val = Math.Sqrt(Math.Sqrt(Math.Sqrt(Math.Sqrt(value)))) * 0.625 + 0.325;
+            double val = Math.Pow(value, 1d/16) * 0.625 + 0.325;
             double h = ((1d - val) * 360);
             int i = (int)(h / 60);
             double a = (h % 60) * 5 / 3;

@@ -47,12 +47,12 @@ namespace Monte_Carlo_Method_3D.Util
 
         public static void DrawGrid(DrawingContext drawingContext, Pen gridPen, int columns, int rows)
         {
-            for (int i = 1; i < rows; i++)
+            for (int i = 0; i <= rows; i++)
             {
                 drawingContext.DrawLine(gridPen, new Point(0, i), new Point(columns, i));
             }
 
-            for (int j = 0; j < columns; j++)
+            for (int j = 0; j <= columns; j++)
             {
                 drawingContext.DrawLine(gridPen, new Point(j, 0), new Point(j, rows));
             }

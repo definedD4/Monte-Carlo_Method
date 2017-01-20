@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Monte_Carlo_Method_3D.Exceptions;
 
 namespace Monte_Carlo_Method_3D.Util
 {
@@ -31,24 +32,31 @@ namespace Monte_Carlo_Method_3D.Util
 
         public static GridData ImportFromFile(string path, char delim = ';')
         {
-            var res = File.ReadAllLines(path).Select(
-                l => l.Split(delim).Select(
-                    w => double.Parse(w.Trim())
+            double[,] data;
+            try
+            {
+                var res = File.ReadAllLines(path).Select(
+                    l => l.Split(delim).Select(
+                        w => double.Parse(w.Trim())
                     ).ToArray()
                 ).ToArray();
-            int rows = res.First().Length;
-            int columns = res.Length;
+                int rows = res.First().Length;
+                int columns = res.Length;
 
-            double[,] data = new double[rows, columns];
+                data = new double[rows, columns];
 
-            for(int i = 0; i < rows; i++)
-            {
-                for(int j = 0; j < columns; j++)
+                for (int i = 0; i < rows; i++)
                 {
-                    data[j, i] = res[i][j];
+                    for (int j = 0; j < columns; j++)
+                    {
+                        data[j, i] = res[i][j];
+                    }
                 }
             }
-
+            catch (Exception e)
+            {
+                throw new TableLoadException("An error occured while loading table.", e);
+            }
             return GridData.FromArray(data);
         }
     }

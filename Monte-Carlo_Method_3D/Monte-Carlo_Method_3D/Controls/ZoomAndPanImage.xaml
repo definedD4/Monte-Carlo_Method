@@ -6,17 +6,19 @@
              xmlns:local="clr-namespace:Monte_Carlo_Method_3D.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" x:Name="Control">
-    <Border x:Name="Border">
+    <Border x:Name="Border" ClipToBounds="True">
         <Image x:Name="ImageContainer" ClipToBounds="True" RenderTransformOrigin="0.5, 0.5"
                Source="{Binding ElementName=Control, Path=Source}"
                MouseWheel="ImageContainer_OnMouseWheel" MouseMove="ImageContainer_OnMouseMove"
                MouseLeftButtonDown="ImageContainer_OnMouseLeftButtonDown" MouseLeftButtonUp="ImageContainer_OnMouseLeftButtonUp">
-            <Image.RenderTransform><TransformGroup>
-                <ScaleTransform ScaleX="{Binding ElementName=Control, Path=Zoom}"
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="{Binding ElementName=Control, Path=Zoom}"
                                 ScaleY="{Binding ElementName=Control, Path=Zoom}"/>
-                <TranslateTransform X="{Binding ElementName=Control, Path=PanX}"
+                    <TranslateTransform X="{Binding ElementName=Control, Path=PanX}"
                                     Y="{Binding ElementName=Control, Path=PanY}"/>
-            </TransformGroup></Image.RenderTransform>
+                </TransformGroup>
+            </Image.RenderTransform>
         </Image>
     </Border>
 </UserControl>

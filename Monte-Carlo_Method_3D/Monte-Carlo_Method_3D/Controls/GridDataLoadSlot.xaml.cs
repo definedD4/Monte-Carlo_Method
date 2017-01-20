@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using Monte_Carlo_Method_3D.Dialogs;
 using Monte_Carlo_Method_3D.Simulation;
 using Microsoft.Win32;
+using Monte_Carlo_Method_3D.Exceptions;
 using Monte_Carlo_Method_3D.Util;
 
 namespace Monte_Carlo_Method_3D.Controls
@@ -57,7 +58,17 @@ namespace Monte_Carlo_Method_3D.Controls
             OpenFileDialog ofd = new OpenFileDialog() { Filter = "Файл CSV (*.csv)|*.csv" };
             if (ofd.ShowDialog(Application.Current.MainWindow).GetValueOrDefault())
             {
-                Data = CsvUtil.ImportFromFile(ofd.FileName);
+                try
+                {
+                    Data = CsvUtil.ImportFromFile(ofd.FileName);
+                }
+                catch (TableLoadException exception)
+                {
+                    MessageBox.Show(Application.Current.MainWindow,
+                        "При завантаженні таблиці виникла помилка. Перевірте цілісність даних.\n" +
+                        "Деталі:\n" +
+                        $"{exception.InnerException?.Message}");
+                }
             }
         }
 

@@ -61,6 +61,8 @@ namespace Monte_Carlo_Method_3D.Dialogs
             {
                 PointedValuePopup.IsOpen = false;
             };
+
+            TitleTb.Text = $"Таблица: {m_Data.Size.Rows} на {m_Data.Size.Columns}";
         }
     }
 }
