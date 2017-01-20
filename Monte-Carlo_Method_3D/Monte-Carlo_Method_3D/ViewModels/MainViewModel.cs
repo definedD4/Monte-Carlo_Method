@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Monte_Carlo_Method_3D.DataModel;
 
 namespace Monte_Carlo_Method_3D.ViewModels
 {

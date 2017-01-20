@@ -141,6 +141,10 @@
     <Compile Include="ViewModels\StTabViewModel.cs" />
     <Compile Include="ViewModels\TabViewModel.cs" />
     <Compile Include="ViewModels\СlTabViewModel.cs" />
+    <Compile Include="VisualizationModel\Model3DVisualization.cs" />
+    <Compile Include="VisualizationModel\EdgeTableVisualization.cs" />
+    <Compile Include="VisualizationModel\GridTableVisualization.cs" />
+    <Compile Include="VisualizationModel\Interfaces.cs" />
     <Compile Include="Visualization\DiffVisualizer.cs" />
     <Compile Include="Visualization\DrawingUtil.cs" />
     <Compile Include="Visualization\GraphMesh.cs" />

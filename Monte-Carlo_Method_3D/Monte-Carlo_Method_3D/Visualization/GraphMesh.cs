@@ -75,7 +75,7 @@ namespace Monte_Carlo_Method_3D.Visualization
         public void UpdateMesh(GridData data)
         {
             if (data.Size != Size)
-                throw new ArgumentException("Data dimensions don't match up.");
+                throw new ArgumentException("Data dimensions don't match up.", nameof(data));
 
             for(int i = 0; i < Mesh.Positions.Count; i++)
             {
