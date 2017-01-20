@@ -98,13 +98,16 @@
     <Compile Include="Controls\ZoomAndPanImage.xaml.cs">
       <DependentUpon>ZoomAndPanImage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataModel\EdgeData.cs" />
+    <Compile Include="DataModel\GridData.cs" />
+    <Compile Include="DataModel\GridIndex.cs" />
+    <Compile Include="DataModel\GridRegion.cs" />
+    <Compile Include="DataModel\GridSize.cs" />
     <Compile Include="Dialogs\ShowTableDialog.xaml.cs">
       <DependentUpon>ShowTableDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Exceptions\TableLoadException.cs" />
     <Compile Include="Util\FormattingUtil.cs" />
-    <Compile Include="Util\GridSize.cs" />
-    <Compile Include="Util\GridData.cs" />
     <Compile Include="Simulation\SimulationOptions.cs" />
     <Compile Include="Dialogs\SimulationOptionsDialog.xaml.cs">
       <DependentUpon>SimulationOptionsDialog.xaml</DependentUpon>
@@ -126,9 +129,7 @@
     <Compile Include="Simulation\StSimulator.cs" />
     <Compile Include="Util\CsvUtil.cs" />
     <Compile Include="Util\DelegateCommand.cs" />
-    <Compile Include="Util\EdgeData.cs" />
     <Compile Include="Util\EnumUtil.cs" />
-    <Compile Include="Util\GridRegion.cs" />
     <Compile Include="Util\InterfaceTemplateSelector.cs" />
     <Compile Include="Util\PointedValueBehavior.cs" />
     <Compile Include="Util\Rotation3DBehavior.cs" />
@@ -144,7 +145,6 @@
     <Compile Include="Visualization\DrawingUtil.cs" />
     <Compile Include="Visualization\GraphMesh.cs" />
     <Compile Include="Visualization\PrVisualizer.cs" />
-    <Compile Include="Util\GridIndex.cs" />
     <Compile Include="Util\SelectorCommand.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />

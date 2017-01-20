@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
+using Monte_Carlo_Method_3D.DataModel;
 
 namespace Monte_Carlo_Method_3D.Visualization
 {

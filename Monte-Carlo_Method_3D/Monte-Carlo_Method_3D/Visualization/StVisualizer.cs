@@ -9,6 +9,7 @@ using System.Windows.Media.Imaging;
 using Monte_Carlo_Method_3D.Simulation;
 using Monte_Carlo_Method_3D.Util;
 using System.Diagnostics;
+using Monte_Carlo_Method_3D.DataModel;
 
 namespace Monte_Carlo_Method_3D.Visualization
 {

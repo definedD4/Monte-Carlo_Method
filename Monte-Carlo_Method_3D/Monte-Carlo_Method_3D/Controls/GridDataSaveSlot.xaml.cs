@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Monte_Carlo_Method_3D.DataModel;
 
 namespace Monte_Carlo_Method_3D.Controls
 {

@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using Monte_Carlo_Method_3D.Dialogs;
 using Monte_Carlo_Method_3D.Simulation;
 using Microsoft.Win32;
+using Monte_Carlo_Method_3D.DataModel;
 using Monte_Carlo_Method_3D.Exceptions;
 using Monte_Carlo_Method_3D.Util;
 

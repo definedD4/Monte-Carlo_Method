@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Media;
+using Monte_Carlo_Method_3D.DataModel;
 using Monte_Carlo_Method_3D.Simulation;
 using Monte_Carlo_Method_3D.Util;
 

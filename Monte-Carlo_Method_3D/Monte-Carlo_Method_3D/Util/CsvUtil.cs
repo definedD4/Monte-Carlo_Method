@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Monte_Carlo_Method_3D.DataModel;
 using Monte_Carlo_Method_3D.Exceptions;
 
 namespace Monte_Carlo_Method_3D.Util

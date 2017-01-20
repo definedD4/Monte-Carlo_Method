@@ -1,4 +1,4 @@
-﻿namespace Monte_Carlo_Method_3D.Util
+﻿namespace Monte_Carlo_Method_3D.DataModel
 {
     public struct GridIndex
     {

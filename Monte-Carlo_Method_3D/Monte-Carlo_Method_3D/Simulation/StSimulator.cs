@@ -3,6 +3,7 @@ using System.Security.Policy;
 using Monte_Carlo_Method_3D.Util;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Monte_Carlo_Method_3D.DataModel;
 
 namespace Monte_Carlo_Method_3D.Simulation
 {

@@ -5,6 +5,7 @@ using System.Text;
 using Monte_Carlo_Method_3D.Dialogs;
 using Monte_Carlo_Method_3D.Simulation;
 using System.Threading;
+using Monte_Carlo_Method_3D.DataModel;
 using Monte_Carlo_Method_3D.Util;
 
 namespace Monte_Carlo_Method_3D.Calculation
