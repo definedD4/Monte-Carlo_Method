@@ -15,10 +15,8 @@
                 <ResourceDictionary Source="StTabView.xaml"/>
                 <ResourceDictionary Source="CpTabView.xaml"/>
                 <ResourceDictionary Source="ClTabView.xaml"/>
-                <ResourceDictionary Source="Gauge.xaml"/>
 
-                <ResourceDictionary Source="../Styles/Resources.xaml"/>
-                <ResourceDictionary Source="../Styles/TabControlStyle.xaml"/>
+                <ResourceDictionary Source="../Styles/All.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>

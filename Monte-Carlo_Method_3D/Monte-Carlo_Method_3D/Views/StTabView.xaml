@@ -1,12 +1,12 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Monte_Carlo_Method_3D.Views"
-                    xmlns:vm="clr-namespace:Monte_Carlo_Method_3D.ViewModels">
+                    xmlns:vm="clr-namespace:Monte_Carlo_Method_3D.ViewModels"
+                    xmlns:controls="clr-namespace:Monte_Carlo_Method_3D.Controls">
     <DataTemplate DataType="{x:Type vm:StTabViewModel}">
         <DataTemplate.Resources>
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>
-                    <ResourceDictionary Source="Gauge.xaml"/>
                     <ResourceDictionary Source="SimulationInfoView.xaml"/>
 
                     <ResourceDictionary Source="../Styles/All.xaml"/>
@@ -46,7 +46,17 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <ContentControl Content="{Binding Gauge}" ContentTemplate="{StaticResource GaugeTemplate}" Margin="8" Grid.Column="0"/>
+
+                            <Grid Grid.Column="0" Margin="8">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="Шкала ймовірності" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" Margin="4"/>
+                                <controls:Gauge Pallete="{Binding Pallete}" Width="100" Grid.Row="1"/>
+                            </Grid>
+
                             <ContentControl Grid.Column="1" Content="{Binding VisualContext}" ContentTemplateSelector="{DynamicResource VisualContextTemplateSelector}"/>
                         </Grid>
                     </Border>

@@ -8,9 +8,9 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace Monte_Carlo_Method_3D.Gauge
+namespace Monte_Carlo_Method_3D.Controls
 {
-    public class GaugeGradient : FrameworkElement
+    public class Gauge : FrameworkElement
     {
         public Pallete Pallete
         {
@@ -19,7 +19,7 @@ namespace Monte_Carlo_Method_3D.Gauge
         }
 
         public static readonly DependencyProperty PalleteProperty =
-            DependencyProperty.Register("Pallete", typeof(Pallete), typeof(GaugeGradient), new PropertyMetadata(null));
+            DependencyProperty.Register("Pallete", typeof(Pallete), typeof(Gauge), new PropertyMetadata(null));
 
         protected override void OnRender(DrawingContext drawingContext)
         {

@@ -112,8 +112,7 @@
     <Compile Include="Dialogs\SimulationOptionsDialog.xaml.cs">
       <DependentUpon>SimulationOptionsDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Gauge\GaugeContext.cs" />
-    <Compile Include="Gauge\GaugeGradient.cs" />
+    <Compile Include="Controls\Gauge.cs" />
     <Compile Include="GraphRendering\DiffVisualContext.cs" />
     <Compile Include="GraphRendering\Interfaces.cs" />
     <Compile Include="GraphRendering\PrGridVisualContext.cs" />
@@ -223,10 +222,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CpTabView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Gauge.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

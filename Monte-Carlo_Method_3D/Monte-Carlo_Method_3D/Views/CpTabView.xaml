@@ -8,7 +8,6 @@
         <DataTemplate.Resources>
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>
-                    <ResourceDictionary Source="Gauge.xaml"/>
                     <ResourceDictionary Source="SimulationInfoView.xaml"/>
 
                     <ResourceDictionary Source="../Styles/All.xaml"/>
@@ -35,21 +34,13 @@
             <Border Background="{DynamicResource SecondaryBackgroundColor}" Grid.Row="1" Margin="0" Padding="10" MinWidth="259" MinHeight="169">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="4"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="4"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    
-                    <!--#region Gauge-->
-                    <Border Grid.Column="0" Style="{DynamicResource ContainerBorderStyle}">
-                        <ContentControl Content="{Binding Gauge}" ContentTemplate="{StaticResource GaugeTemplate}" Margin="8"/>
-                    </Border>
-                    <!--#endregion-->
-                    
+
                     <!--#region Table-->
-                    <Border Grid.Column="2" Style="{DynamicResource ContainerBorderStyle}">
+                    <Border Grid.Column="0" Style="{DynamicResource ContainerBorderStyle}">
                         <controls:PrevNextTabControl>
                             <controls:PrevNextTabControl.ItemSource>
                                 <controls:Items>
@@ -84,7 +75,7 @@
                     <!--#endregion-->
                     
                     <!--#region Side panel-->
-                    <Border Grid.Column="4" Width="250" Style="{DynamicResource ContainerBorderStyle}">
+                    <Border Grid.Column="2" Width="250" Style="{DynamicResource ContainerBorderStyle}">
                         <StackPanel>
                             <GroupBox Header="ІПРАЙ:" Style="{DynamicResource FlatGroupBoxStyle}">
                                 <ContentControl Content="{Binding PrSimulationInfo}"/>

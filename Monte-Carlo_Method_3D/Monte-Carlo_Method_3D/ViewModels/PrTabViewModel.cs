@@ -1,13 +1,9 @@
 ﻿using Monte_Carlo_Method_3D.Dialogs;
-using Monte_Carlo_Method_3D.Gauge;
 using Monte_Carlo_Method_3D.GraphRendering;
 using Monte_Carlo_Method_3D.Simulation;
 using Monte_Carlo_Method_3D.Util;
 using Monte_Carlo_Method_3D.Visualization;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -18,7 +14,8 @@ namespace Monte_Carlo_Method_3D.ViewModels
     public class PrTabViewModel : TabViewModel
     {
         private readonly Player m_Player;
-        private readonly Pallete m_Pallete;
+
+        public Pallete Pallete { get; }
 
         private PrSimulator m_Simulator;
         private PrVisualizer m_Visualizer;
@@ -32,9 +29,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         public PrTabViewModel(SimulationOptions options) : base("ІПРАЙ")
         {
-            m_Pallete = new Pallete();
-
-            Gauge = new GaugeContext(m_Pallete);
+            Pallete = new Pallete();
 
             InitComponents(options);
 
@@ -125,7 +120,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private void InitComponents(SimulationOptions options)
         {
             m_Simulator = new PrSimulator(options);
-            m_Visualizer = new PrVisualizer(m_Simulator.Size, m_Pallete);
+            m_Visualizer = new PrVisualizer(m_Simulator.Size, Pallete);
             VisualTypeSelector?.RaiseSelectionChanged();
             OnPropertyChanged(nameof(SimulationInfo));
         }
@@ -160,7 +155,5 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 }
             }
         }
-
-        public GaugeContext Gauge { get; }
     }
 }
