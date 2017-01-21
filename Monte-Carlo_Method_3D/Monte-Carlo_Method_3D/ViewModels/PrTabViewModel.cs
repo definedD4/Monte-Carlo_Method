@@ -17,21 +17,17 @@ namespace Monte_Carlo_Method_3D.ViewModels
 {
     public class PrTabViewModel : TabViewModel
     {
+        private readonly Player m_Player;
+        private readonly Pallete m_Pallete;
+
         private PrSimulator m_Simulator;
         private PrVisualizer m_Visualizer;
-        private Pallete m_Pallete;
-        private DispatcherTimer m_Timer;
         private PrVisualContext m_VisualContext;
-        private GaugeContext m_Gauge;
-
-        private bool m_SimulationInProgress = false;
-        private long m_SimulateToStep;
 
         private readonly SwitchStateCommand m_PlayPauseCommand;
         private readonly DelegateCommand m_StepCommand;
         private readonly DelegateCommand m_RestartCommand;
         private readonly DelegateCommand m_SimulationOptionsCommand;
-        private readonly DelegateCommand m_SimulateToCommand;
         private readonly DelegateCommand m_ExportToCsvCommand;
 
         public PrTabViewModel(SimulationOptions options) : base("ІПРАЙ")
@@ -42,45 +38,36 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
             InitComponents(options);
 
-            //Init timer
-            m_Timer = new DispatcherTimer(DispatcherPriority.ContextIdle) {Interval = TimeSpan.FromMilliseconds(10)};
-            m_Timer.Tick += (s, e) =>
+            // Init player
+            m_Player = new Player(() =>
             {
-                if (!SimulationInProgress)
-                {
-                    SimulationInProgress = true;
-
-                    m_Simulator.SimulateSteps(5);
-                    VisualContext.UpdateVisualization();
-
-                    SimulationInProgress = false;
-
-                    OnPropertyChanged(nameof(SimulationInfo));
-                }
-            };
+                m_Simulator.SimulateSteps();
+                VisualContext.UpdateVisualization();
+            }, () =>
+            {
+                m_Simulator.SimulateSteps(5);
+                VisualContext.UpdateVisualization();
+            }, () =>
+            {
+                OnPropertyChanged(nameof(SimulationInfo));
+            }, TimeSpan.FromMilliseconds(10), DispatcherPriority.ContextIdle);
 
             m_StepCommand = new DelegateCommand(x =>
             {
-                SimulationInProgress = true;
+                m_Player.StepOnce();
+            }, x => !m_Player.RunningOrPlaying);
 
-                m_Simulator.SimulateSteps();
-                VisualContext.UpdateVisualization();
-
-                SimulationInProgress = false;
-                OnPropertyChanged(nameof(SimulationInfo));
-            }, x => !(SimulationInProgress || m_Timer.IsEnabled));
-
-            m_PlayPauseCommand = new SwitchStateCommand("Пауза", "Програти", false, _ => !(SimulationInProgress && !m_Timer.IsEnabled));
+            m_PlayPauseCommand = new SwitchStateCommand("Пауза", "Програти", false, _ => !m_Player.SingleStepRunning);
             m_PlayPauseCommand.StateChanged += (s, e) =>
             {
                 if (m_PlayPauseCommand.State)
                 {
-                    m_Timer.Start();
+                    m_Player.Start();
                     UpdateCommands();
                 }
                 else
                 {
-                    m_Timer.Stop();
+                    m_Player.Stop();
                     UpdateCommands();
                 }
             };
@@ -90,7 +77,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 m_Simulator.Reset();
                 VisualContext.UpdateVisualization();
                 OnPropertyChanged(nameof(SimulationInfo));
-            }, x => !(SimulationInProgress || m_Timer.IsEnabled));
+            }, x => !m_Player.RunningOrPlaying);
 
             m_SimulationOptionsCommand = new DelegateCommand(x =>
             {
@@ -102,19 +89,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                     SimulationOptions result = dialog.SimulationOptions;
                     InitComponents(result);
                 }
-            }, x => !(SimulationInProgress || m_Timer.IsEnabled));
-
-            m_SimulateToCommand = new DelegateCommand(x =>
-            {
-                SimulationInProgress = true;
-
-                m_Simulator.SimulateSteps(Math.Max(SimulateToStep - m_Simulator.Step, 0L));
-
-                VisualContext.UpdateVisualization();
-
-                SimulationInProgress = false;
-                OnPropertyChanged(nameof(SimulationInfo));
-            }, x => !(SimulationInProgress || m_Timer.IsEnabled || SimulateToStep <= 0));
+            }, x => !m_Player.RunningOrPlaying);
 
             m_ExportToCsvCommand = new DelegateCommand(x =>
             {
@@ -161,14 +136,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
             m_PlayPauseCommand.RaiseCanExecuteChanged();
             m_RestartCommand.RaiseCanExecuteChanged();
             m_SimulationOptionsCommand.RaiseCanExecuteChanged();
-            m_SimulateToCommand.RaiseCanExecuteChanged();
             m_ExportToCsvCommand.RaiseCanExecuteChanged();
-        }
-
-        public bool SimulationInProgress
-        {
-            get { return m_SimulationInProgress; }
-            private set { m_SimulationInProgress = value; OnPropertyChanged(nameof(SimulationInProgress)); UpdateCommands(); }
         }
 
         public PrSimulationInfo SimulationInfo => m_Simulator.SimulationInfo;
@@ -177,14 +145,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
         public ICommand StepCommand => m_StepCommand;
         public ICommand RestartCommand => m_RestartCommand;
         public ICommand SimulationOptionsCommand => m_SimulationOptionsCommand;
-        public ICommand SimulateToCommand => m_SimulateToCommand;
         public ICommand ExportToCsvCommand => m_ExportToCsvCommand;
-
-        public long SimulateToStep
-        {
-            get { return m_SimulateToStep; }
-            set { m_SimulateToStep = value; OnPropertyChanged("SimuateToStep"); m_SimulateToCommand.RaiseCanExecuteChanged(); }
-        }
 
         public SelectorCommand VisualTypeSelector { get; private set; }
 
@@ -200,10 +161,6 @@ namespace Monte_Carlo_Method_3D.ViewModels
             }
         }
 
-        public GaugeContext Gauge
-        {
-            get { return m_Gauge; }
-            set { m_Gauge = value;  OnPropertyChanged(nameof(Gauge)); }
-        }
+        public GaugeContext Gauge { get; }
     }
 }

@@ -11,9 +11,7 @@
                     <ResourceDictionary Source="Gauge.xaml"/>
                     <ResourceDictionary Source="SimulationInfoView.xaml"/>
 
-                    <ResourceDictionary Source="../Styles/Resources.xaml"/>
-                    <ResourceDictionary Source="../Styles/GroupBoxStyle.xaml"/>
-                    <ResourceDictionary Source="../Styles/SelectorButtonStyle.xaml"/>
+                    <ResourceDictionary Source="../Styles/All.xaml"/>
                 </ResourceDictionary.MergedDictionaries>
             </ResourceDictionary>
         </DataTemplate.Resources>
@@ -22,6 +20,8 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+            
+            <!--#region Toolbar-->
             <ToolBar Grid.Row="0">
                 <Button Content="Перезапуск" Command="{Binding RestartCommand}"/>
                 <Button DataContext="{Binding PlayPauseCommand}" Content="{Binding Label}" Command="{Binding }"/>
@@ -29,6 +29,9 @@
                 <Separator/>
                 <Button Content="Параметри симуляції" Command="{Binding SimulationOptionsCommand}"/>
             </ToolBar>
+            <!--#endregion-->
+            
+            <!--#region Main content-->
             <Border Background="{DynamicResource SecondaryBackgroundColor}" Grid.Row="1" Margin="0" Padding="10" MinWidth="259" MinHeight="169">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -38,33 +41,15 @@
                         <ColumnDefinition Width="4"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Border Grid.Column="0" BorderBrush="{DynamicResource BorderColor}" BorderThickness="{DynamicResource BorderThickness}" 
-                            Background="{DynamicResource PrimaryBackgroundColor}" Padding="4">
-                        <ContentControl Content="{Binding Gauge}" ContentTemplate="{StaticResource GaugeTemplate}" Margin="8" Grid.Column="1"/>
+                    
+                    <!--#region Gauge-->
+                    <Border Grid.Column="0" Style="{DynamicResource ContainerBorderStyle}">
+                        <ContentControl Content="{Binding Gauge}" ContentTemplate="{StaticResource GaugeTemplate}" Margin="8"/>
                     </Border>
-                    <Border Grid.Column="2" Grid.Row="0" BorderBrush="{DynamicResource BorderColor}" BorderThickness="{DynamicResource BorderThickness}" 
-                            Background="{DynamicResource PrimaryBackgroundColor}" Padding="4">
-                        <!--<ScrollViewer Padding="4" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled" VerticalContentAlignment="Stretch">
-                            <Grid VerticalAlignment="Stretch">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="4"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="4"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Text="ІПРАЙ" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0"/>
-                                <ContentControl Grid.Row="1" HorizontalAlignment="Stretch" Content="{Binding PrVisualContext}" ContentTemplateSelector="{DynamicResource VisualContextTemplateSelector}" Grid.Column="0"/>
-                                <TextBlock Text="МСВ" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="2"/>
-                                <ContentControl Grid.Row="1" Content="{Binding StVisualContext}" ContentTemplateSelector="{DynamicResource VisualContextTemplateSelector}" Grid.Column="2"/>
-                                <TextBlock Text="Порівнянння (різниця результатів)" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="4"/>
-                                <ContentControl Grid.Row="1" Content="{Binding DiffVisualContext}" ContentTemplateSelector="{DynamicResource VisualContextTemplateSelector}" Grid.Column="4"/>
-                            </Grid>
-                        </ScrollViewer>-->
+                    <!--#endregion-->
+                    
+                    <!--#region Table-->
+                    <Border Grid.Column="2" Style="{DynamicResource ContainerBorderStyle}">
                         <controls:PrevNextTabControl>
                             <controls:PrevNextTabControl.ItemSource>
                                 <controls:Items>
@@ -96,19 +81,25 @@
                             </controls:PrevNextTabControl.ItemSource>
                         </controls:PrevNextTabControl>
                     </Border>
-                    <Border Grid.Column="4" BorderBrush="{DynamicResource BorderColor}" BorderThickness="{DynamicResource BorderThickness}" 
-                            Background="{DynamicResource PrimaryBackgroundColor}" Padding="4" Width="250">
+                    <!--#endregion-->
+                    
+                    <!--#region Side panel-->
+                    <Border Grid.Column="4" Width="250" Style="{DynamicResource ContainerBorderStyle}">
                         <StackPanel>
-                            <GroupBox Header="ІПРАЙ:">
+                            <GroupBox Header="ІПРАЙ:" Style="{DynamicResource FlatGroupBoxStyle}">
                                 <ContentControl Content="{Binding PrSimulationInfo}"/>
                             </GroupBox>
-                            <GroupBox Header="МСВ:">
+                            <GroupBox Header="МСВ:" Style="{DynamicResource FlatGroupBoxStyle}">
                                 <ContentControl Content="{Binding StSimulationInfo}"/>
                             </GroupBox>
                         </StackPanel>
                     </Border>
+                    <!--#endregion-->
+                    
                 </Grid>
             </Border>
+            <!--#endregion-->
+            
         </Grid>
     </DataTemplate>
 </ResourceDictionary>

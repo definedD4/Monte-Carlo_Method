@@ -131,6 +131,7 @@
     <Compile Include="Util\DelegateCommand.cs" />
     <Compile Include="Util\EnumUtil.cs" />
     <Compile Include="Util\InterfaceTemplateSelector.cs" />
+    <Compile Include="Util\Player.cs" />
     <Compile Include="Util\PointedValueBehavior.cs" />
     <Compile Include="Util\Rotation3DBehavior.cs" />
     <Compile Include="Util\SwitchStateCommand.cs" />
@@ -186,6 +187,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\SimulationOptionsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\All.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\BorderStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

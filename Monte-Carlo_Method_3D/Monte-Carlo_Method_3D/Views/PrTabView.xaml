@@ -8,10 +8,8 @@
                 <ResourceDictionary.MergedDictionaries>
                     <ResourceDictionary Source="Gauge.xaml"/>
                     <ResourceDictionary Source="SimulationInfoView.xaml"/>
-
-                    <ResourceDictionary Source="../Styles/Resources.xaml"/>
-                    <ResourceDictionary Source="../Styles/GroupBoxStyle.xaml"/>
-                    <ResourceDictionary Source="../Styles/SelectorButtonStyle.xaml"/>
+                    
+                    <ResourceDictionary Source="../Styles/All.xaml"/>
                 </ResourceDictionary.MergedDictionaries>
             </ResourceDictionary>
         </DataTemplate.Resources>
@@ -20,6 +18,8 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+            
+            <!--#region Toolbar-->
             <ToolBar Grid.Row="0">
                 <Button Content="Перезапуск" Command="{Binding RestartCommand}"/>
                 <Button DataContext="{Binding PlayPauseCommand}" Content="{Binding Label}" Command="{Binding }"/>
@@ -28,6 +28,9 @@
                 <Button Content="Параметри симуляції" Command="{Binding SimulationOptionsCommand}"/>
                 <Button Content="Експортувати у формат CSV" Command="{Binding ExportToCsvCommand}"/>
             </ToolBar>
+            <!--#endregion-->
+            
+            <!--#region Main content-->
             <Border Background="{DynamicResource SecondaryBackgroundColor}" Grid.Row="1" Margin="0" Padding="10" MinWidth="259" MinHeight="169">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -35,34 +38,44 @@
                         <ColumnDefinition Width="4"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Border Grid.Column="0" BorderBrush="{DynamicResource BorderColor}" BorderThickness="{DynamicResource BorderThickness}" 
-                            Background="{DynamicResource PrimaryBackgroundColor}" Padding="4">
+                    
+                    <!--#region Visualization-->
+                    <Border Grid.Column="0" Style="{DynamicResource ContainerBorderStyle}" >
                         <Grid Margin="10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
+                            
                             <ContentControl Content="{Binding Gauge}" ContentTemplate="{StaticResource GaugeTemplate}" Margin="8" Grid.Column="0"/>
-                            <ContentControl Content="{Binding VisualContext}" Grid.Column="1" ContentTemplateSelector="{DynamicResource VisualContextTemplateSelector}"/>
+                            
+                            <ContentControl Content="{Binding VisualContext}" Grid.Column="1" 
+                                            ContentTemplateSelector="{DynamicResource VisualContextTemplateSelector}"/>
                         </Grid>
                     </Border>
-                    <Border Grid.Column="2" BorderBrush="{DynamicResource BorderColor}" BorderThickness="{DynamicResource BorderThickness}" 
-                            Background="{DynamicResource PrimaryBackgroundColor}" Padding="4" Width="300">
+                    <!--#endregion-->
+                    
+                    <!--#region Side panel-->
+                    <Border Grid.Column="2" Width="300" Style="{DynamicResource ContainerBorderStyle}">
                         <StackPanel>
-                            <GroupBox Header="Візуалізація:">
+                            <GroupBox Style="{DynamicResource FlatGroupBoxStyle}" Header="Візуалізація:">
                                 <StackPanel Orientation="Horizontal">
                                     <Button Style="{DynamicResource SelectorButtonStyle}" Content="2D"      Command="{Binding VisualTypeSelector}" CommandParameter="2D" Margin="1,0"/>
                                     <Button Style="{DynamicResource SelectorButtonStyle}" Content="3D"      Command="{Binding VisualTypeSelector}" CommandParameter="3D" Margin="1,0"/>
                                     <Button Style="{DynamicResource SelectorButtonStyle}" Content="Таблиця" Command="{Binding VisualTypeSelector}" CommandParameter="Table" Margin="1,0"/>
                                 </StackPanel>
                             </GroupBox>
-                            <GroupBox Header="Інформація про симуляцію:">
+                            <GroupBox Style="{DynamicResource FlatGroupBoxStyle}" Header="Інформація про симуляцію:">
                                 <ContentControl Content="{Binding SimulationInfo}"/>
                             </GroupBox>
                         </StackPanel>
                     </Border>
+                    <!--#endregion-->
+                    
                 </Grid>
             </Border>
+            <!--#endregion-->
+            
         </Grid>
     </DataTemplate>
 </ResourceDictionary>

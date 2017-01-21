@@ -3,7 +3,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Resources.xaml"/>
     </ResourceDictionary.MergedDictionaries>
-    <Style TargetType="{x:Type GroupBox}">
+    <Style TargetType="{x:Type GroupBox}" x:Key="FlatGroupBoxStyle" >
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type GroupBox}">

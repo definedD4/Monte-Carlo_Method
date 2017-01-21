@@ -68,7 +68,7 @@ namespace Monte_Carlo_Method_3D.Visualization
                 texture.Unlock();
             }
             texture.Freeze();
-
+            
             var visual = new DrawingVisual();
             using (DrawingContext drawingContext = visual.RenderOpen())
             {
