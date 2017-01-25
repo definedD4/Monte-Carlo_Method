@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using Monte_Carlo_Method_3D.DataModel;
+using Monte_Carlo_Method_3D.VisualizationModel;
 
 namespace Monte_Carlo_Method_3D.Visualization
 {
@@ -35,6 +36,21 @@ namespace Monte_Carlo_Method_3D.Visualization
         public Color BackgroundColor { get; set; } = Colors.White;
         public Color ForegroundColor { get; set; } = Colors.Black;
         public Color GridColor { get; set; } = Colors.DarkGray;
+
+        public GridTableVisualization GenerateTableVisualization(GridData data)
+        {
+            return new GridTableVisualization(GenerateTableTexture(data), data);
+        }
+
+        public GridTableVisualization GenerateColorVisualization(GridData data)
+        {
+            return new GridTableVisualization(GenerateColorTexture(data), data);
+        }
+
+        public Model3DVisualization Generate3DVisualization(GridData data)
+        {
+            return new Model3DVisualization(GenerateModel(data));
+        }
 
         public GeometryModel3D GenerateModel(GridData data)
         {
@@ -104,6 +120,7 @@ namespace Monte_Carlo_Method_3D.Visualization
                 }
             }
             var image = new DrawingImage(visual.Drawing);
+            image.Freeze();
             return image;
         }
     }

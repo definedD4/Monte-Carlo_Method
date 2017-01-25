@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Windows.Input;
 using System.Windows.Threading;
 using Monte_Carlo_Method_3D.Dialogs;
-using Monte_Carlo_Method_3D.GraphRendering;
 using Monte_Carlo_Method_3D.Simulation;
 using Monte_Carlo_Method_3D.Util;
 using Monte_Carlo_Method_3D.Visualization;
+using Monte_Carlo_Method_3D.VisualizationModel;
 
 namespace Monte_Carlo_Method_3D.ViewModels
 {
@@ -22,16 +21,9 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private StVisualizer m_StVisualizer;
         private DiffVisualizer m_DiffVisualizer;
 
-        private PrVisualContext m_PrVisualContext;
-        private StVisualContext m_StVisualContext;
-        private DiffVisualContext m_DiffVisualContext;
-
-        private bool m_SimulationInProgress = false;
-
-        private readonly SwitchStateCommand m_PlayPauseCommand;
-        private readonly DelegateCommand m_RestartCommand;
-        private readonly DelegateCommand m_SimulationOptionsCommand;
-        private readonly DelegateCommand m_SimulateStepCommand;
+        private IVisualization m_PrVisualization;
+        private IVisualization m_StVisualization;
+        private IVisualization m_DiffVisualization;
 
         public CpTabViewModel(SimulationOptions options) : base("Порівняння")
         {
@@ -43,30 +35,27 @@ namespace Monte_Carlo_Method_3D.ViewModels
             m_Player = new Player(() =>
             {
                 Simulate(0.05d);
-
-                m_PrVisualContext.UpdateVisualization();
-                m_StVisualContext.UpdateVisualization();
-                m_DiffVisualContext.UpdateVisualization();
+                
             }, () =>
             {
                 for (int i = 0; i < 50; i++)
                 {
                     Simulate();
                 }
-
-                m_PrVisualContext.UpdateVisualization();
-                m_StVisualContext.UpdateVisualization();
-                m_DiffVisualContext.UpdateVisualization();
             }, () =>
             {
+                PrVisualization = m_PrVisualizer.GenerateTableVisualization(m_PrSimulator.GetData());
+                StVisualization = m_StVisualizer.GenerateTableVisualization(m_StSimulator.GetData());
+                DiffVisualization = m_DiffVisualizer.GenerateTableVisualization(m_DiffGenerator.GetData());
+
                 OnPropertyChanged(nameof(PrSimulationInfo));
                 OnPropertyChanged(nameof(StSimulationInfo));
             }, TimeSpan.FromMilliseconds(10), DispatcherPriority.ContextIdle);
 
-            m_PlayPauseCommand = new SwitchStateCommand("Пауза", "Програвання", false, _ => !m_Player.SingleStepRunning);
-            m_PlayPauseCommand.StateChanged += (s, e) =>
+            PlayPauseCommand = new SwitchStateCommand("Пауза", "Програвання", false, _ => !m_Player.SingleStepRunning);
+            PlayPauseCommand.StateChanged += (s, e) =>
             {
-                if (m_PlayPauseCommand.State)
+                if (PlayPauseCommand.State)
                 {
                     m_Player.Start();
                     UpdateCommands();
@@ -78,25 +67,25 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 }
             };
 
-            m_SimulateStepCommand = new DelegateCommand(x =>
+            SimulateStepCommand = new DelegateCommand(x =>
             {
                 m_Player.StepOnce();
             }, x => !m_Player.RunningOrPlaying);
 
-            m_RestartCommand = new DelegateCommand(x =>
+            RestartCommand = new DelegateCommand(x =>
             {
                 m_PrSimulator.Reset();
                 m_StSimulator.Reset();
 
-                m_PrVisualContext.UpdateVisualization();
-                m_StVisualContext.UpdateVisualization();
-                m_DiffVisualContext.UpdateVisualization();
+                PrVisualization = m_PrVisualizer.GenerateTableVisualization(m_PrSimulator.GetData());
+                StVisualization = m_StVisualizer.GenerateTableVisualization(m_StSimulator.GetData());
+                DiffVisualization = m_DiffVisualizer.GenerateTableVisualization(m_DiffGenerator.GetData());
 
                 OnPropertyChanged(nameof(PrSimulationInfo));
                 OnPropertyChanged(nameof(StSimulationInfo));
             }, _ => !m_Player.RunningOrPlaying);
 
-            m_SimulationOptionsCommand = new DelegateCommand(x =>
+            SimulationOptionsCommand = new DelegateCommand(x =>
             {
                 SimulationOptionsDialog dialog = new SimulationOptionsDialog(SimulationOptions.FromSimulator(m_PrSimulator));
                 dialog.ShowDialog();
@@ -148,47 +137,37 @@ namespace Monte_Carlo_Method_3D.ViewModels
             m_StVisualizer = new StVisualizer(m_StSimulator.Size, m_StSimulator.StartLocation, m_Pallete);
             m_DiffVisualizer = new DiffVisualizer(m_DiffGenerator.Size);
 
-            PrVisualContext = new PrTableVisualContext(m_PrSimulator, m_PrVisualizer);
-            StVisualContext = new StTableVisualContext(m_StSimulator, m_StVisualizer);
-            DiffVisualContext = new DiffVisualContext(m_DiffGenerator, m_DiffVisualizer);
-
-            PrVisualContext.UpdateVisualization();
-            StVisualContext.UpdateVisualization();
-            DiffVisualContext.UpdateVisualization();
+            PrVisualization = m_PrVisualizer.GenerateTableVisualization(m_PrSimulator.GetData());
+            StVisualization = m_StVisualizer.GenerateTableVisualization(m_StSimulator.GetData());
+            DiffVisualization = m_DiffVisualizer.GenerateTableVisualization(m_DiffGenerator.GetData());
         }
 
         private void UpdateCommands()
         {
-            m_PlayPauseCommand.RaiseCanExecuteChanged();
-            m_RestartCommand.RaiseCanExecuteChanged();
-            m_SimulationOptionsCommand.RaiseCanExecuteChanged();
+            PlayPauseCommand.RaiseCanExecuteChanged();
+            RestartCommand.RaiseCanExecuteChanged();
+            SimulationOptionsCommand.RaiseCanExecuteChanged();
         }
 
-        public bool SimulationInProgress
-        {
-            get { return m_SimulationInProgress; }
-            private set { m_SimulationInProgress = value; OnPropertyChanged(nameof(SimulationInProgress)); UpdateCommands(); }
-        }
+        public SwitchStateCommand PlayPauseCommand { get; }
+        public DelegateCommand RestartCommand { get; }
+        public DelegateCommand SimulationOptionsCommand { get; }
+        public DelegateCommand SimulateStepCommand { get; }
 
-        public ICommand PlayPauseCommand => m_PlayPauseCommand;
-        public ICommand RestartCommand => m_RestartCommand;
-        public ICommand SimulationOptionsCommand => m_SimulationOptionsCommand;
-        public ICommand SimulateStepCommand => m_SimulateStepCommand;
-
-        public PrVisualContext PrVisualContext
+        public IVisualization PrVisualization
         {
-            get { return m_PrVisualContext; }
-            set { m_PrVisualContext = value; OnPropertyChanged(nameof(PrVisualContext));}
+            get { return m_PrVisualization; }
+            set { m_PrVisualization = value; OnPropertyChanged(nameof(PrVisualization));}
         }
-        public StVisualContext StVisualContext
+        public IVisualization StVisualization
         {
-            get { return m_StVisualContext; }
-            set { m_StVisualContext = value; OnPropertyChanged(nameof(StVisualContext)); }
+            get { return m_StVisualization; }
+            set { m_StVisualization = value; OnPropertyChanged(nameof(StVisualization)); }
         }
-        public DiffVisualContext DiffVisualContext
+        public IVisualization DiffVisualization
         {
-            get { return m_DiffVisualContext; }
-            set { m_DiffVisualContext = value; OnPropertyChanged(nameof(DiffVisualContext)); }
+            get { return m_DiffVisualization; }
+            set { m_DiffVisualization = value; OnPropertyChanged(nameof(DiffVisualization)); }
         }      
 
         public PrSimulationInfo PrSimulationInfo => m_PrSimulator.SimulationInfo;

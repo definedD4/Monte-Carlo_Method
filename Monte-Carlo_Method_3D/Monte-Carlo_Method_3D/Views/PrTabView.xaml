@@ -57,8 +57,7 @@
                                 <controls:Gauge Pallete="{Binding Pallete}" Width="100" Grid.Row="1"/>
                             </Grid>
 
-                            <ContentControl Content="{Binding VisualContext}" Grid.Column="1" 
-                                            ContentTemplateSelector="{DynamicResource VisualContextTemplateSelector}"/>
+                            <controls:VisualizationPresenter Visualization="{Binding Visualization}" Grid.Column="1"/>
                         </Grid>
                     </Border>
                     <!--#endregion-->

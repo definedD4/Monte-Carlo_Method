@@ -56,8 +56,8 @@
                                 <TextBlock Text="Шкала ймовірності" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" Margin="4"/>
                                 <controls:Gauge Pallete="{Binding Pallete}" Width="100" Grid.Row="1"/>
                             </Grid>
-
-                            <ContentControl Grid.Column="1" Content="{Binding VisualContext}" ContentTemplateSelector="{DynamicResource VisualContextTemplateSelector}"/>
+                            
+                            <controls:VisualizationPresenter Visualization="{Binding Visualization}" Grid.Column="1"/>
                         </Grid>
                     </Border>
                     <!--#endregion-->

@@ -50,7 +50,7 @@
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
                                         <TextBlock Text="ІПРАЙ" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" Grid.Row="0"/>
-                                        <ContentControl Grid.Row="1" HorizontalAlignment="Stretch" Content="{Binding PrVisualContext}" ContentTemplateSelector="{DynamicResource VisualContextTemplateSelector}"/>
+                                        <controls:VisualizationPresenter Visualization="{Binding PrVisualization}" Grid.Row="1"/>
                                     </Grid>
                                     <Grid>
                                         <Grid.RowDefinitions>
@@ -58,7 +58,7 @@
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
                                         <TextBlock Text="МСВ" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" Grid.Row="0"/>
-                                        <ContentControl Grid.Row="1" Content="{Binding StVisualContext}" ContentTemplateSelector="{DynamicResource VisualContextTemplateSelector}"/>
+                                        <controls:VisualizationPresenter Visualization="{Binding StVisualization}" Grid.Row="1"/>
                                     </Grid>
                                     <Grid>
                                         <Grid.RowDefinitions>
@@ -66,7 +66,7 @@
                                             <RowDefinition Height="*"/>
                                         </Grid.RowDefinitions>
                                         <TextBlock Text="Порівнянння (різниця результатів)" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" Grid.Row="0"/>
-                                        <ContentControl Grid.Row="1" Content="{Binding DiffVisualContext}" ContentTemplateSelector="{DynamicResource VisualContextTemplateSelector}"/>
+                                        <controls:VisualizationPresenter Visualization="{Binding DiffVisualization}" Grid.Row="1"/>
                                     </Grid>
                                 </controls:Items>
                             </controls:PrevNextTabControl.ItemSource>

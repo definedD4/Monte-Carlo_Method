@@ -95,6 +95,9 @@
     <Compile Include="Controls\PrevNextTabControl.xaml.cs">
       <DependentUpon>PrevNextTabControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\VisualizationPresenter.xaml.cs">
+      <DependentUpon>VisualizationPresenter.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ZoomAndPanImage.xaml.cs">
       <DependentUpon>ZoomAndPanImage.xaml</DependentUpon>
     </Compile>
@@ -107,20 +110,14 @@
       <DependentUpon>ShowTableDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Exceptions\TableLoadException.cs" />
+    <Compile Include="SVContext\PrSvContext.cs" />
+    <Compile Include="SVContext\StSvContext.cs" />
     <Compile Include="Util\FormattingUtil.cs" />
     <Compile Include="Simulation\SimulationOptions.cs" />
     <Compile Include="Dialogs\SimulationOptionsDialog.xaml.cs">
       <DependentUpon>SimulationOptionsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Gauge.cs" />
-    <Compile Include="GraphRendering\DiffVisualContext.cs" />
-    <Compile Include="GraphRendering\Interfaces.cs" />
-    <Compile Include="GraphRendering\PrGridVisualContext.cs" />
-    <Compile Include="GraphRendering\StTableVisualContext.cs" />
-    <Compile Include="GraphRendering\PrTableVisualContext.cs" />
-    <Compile Include="GraphRendering\StGridVisualContext.cs" />
-    <Compile Include="GraphRendering\StVisualContext.cs" />
-    <Compile Include="GraphRendering\StVisualContext2D.cs" />
     <Compile Include="Simulation\DiffGenerator.cs" />
     <Compile Include="Simulation\PrSimulationInfo.cs" />
     <Compile Include="Simulation\StParticlePath.cs" />
@@ -155,10 +152,7 @@
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GraphRendering\PrVisualContext.cs" />
     <Compile Include="Simulation\PrSimulator.cs" />
-    <Compile Include="GraphRendering\PrVisualContext2D.cs" />
-    <Compile Include="GraphRendering\PrVisualContext3D.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -174,6 +168,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\PrevNextTabControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\VisualizationPresenter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -228,10 +226,6 @@
     <Page Include="Views\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\VisualContextView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\StTabView.xaml">
       <Generator>MSBuild:Compile</Generator>

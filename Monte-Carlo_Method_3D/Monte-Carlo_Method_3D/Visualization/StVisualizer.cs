@@ -10,6 +10,7 @@ using Monte_Carlo_Method_3D.Simulation;
 using Monte_Carlo_Method_3D.Util;
 using System.Diagnostics;
 using Monte_Carlo_Method_3D.DataModel;
+using Monte_Carlo_Method_3D.VisualizationModel;
 
 namespace Monte_Carlo_Method_3D.Visualization
 {
@@ -41,6 +42,16 @@ namespace Monte_Carlo_Method_3D.Visualization
 
         public bool DrawPath { get; set; } = true;
         public bool DrawStartPoint { get; set; } = true;
+
+        public EdgeTableVisualization GenerateTableVisualization(EdgeData data)
+        {
+            return new EdgeTableVisualization(GenerateTableTexture(data), data);
+        }
+
+        public EdgeTableVisualization GenerateColorVisualization(EdgeData data, StParticlePath path)
+        {
+            return new EdgeTableVisualization(GenerateColorTexture(data, path), data);
+        }
 
         public ImageSource GenerateColorTexture(EdgeData data, StParticlePath path)
         {

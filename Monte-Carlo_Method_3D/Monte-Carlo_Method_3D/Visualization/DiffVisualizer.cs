@@ -7,6 +7,7 @@ using System.Windows.Media;
 using Monte_Carlo_Method_3D.DataModel;
 using Monte_Carlo_Method_3D.Simulation;
 using Monte_Carlo_Method_3D.Util;
+using Monte_Carlo_Method_3D.VisualizationModel;
 
 namespace Monte_Carlo_Method_3D.Visualization
 {
@@ -26,6 +27,11 @@ namespace Monte_Carlo_Method_3D.Visualization
         public Color BackgroundColor { get; set; } = Colors.White;
         public Color ForegroundColor { get; set; } = Colors.Black;
         public Color GridColor { get; set; } = Colors.DarkGray;
+
+        public IVisualization GenerateTableVisualization(EdgeData data)
+        {
+            return new EdgeTableVisualization(GenerateTableTexture(data), data);
+        }
 
         public ImageSource GenerateTableTexture(EdgeData data)
         {
