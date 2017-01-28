@@ -8,7 +8,7 @@ using System.Windows.Media;
 using Monte_Carlo_Method_3D.DataModel;
 using Monte_Carlo_Method_3D.Simulation;
 
-namespace Monte_Carlo_Method_3D.Util
+namespace Monte_Carlo_Method_3D.Visualization
 {
     public static class DrawingUtil
     {
@@ -20,10 +20,10 @@ namespace Monte_Carlo_Method_3D.Util
             pixels[index + 2] = color.R;
         }
 
-        public static void DrawTableCell(DrawingContext drawingContext, int x, int y, string str, Color foregroundColor)
+        public static void DrawTableCell(DrawingContext drawingContext, int x, int y, string str, Brush foregroundBrush)
         {
             drawingContext.DrawText(new FormattedText(str,
-                            CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), 0.15, new SolidColorBrush(foregroundColor)),
+                            CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), 0.15, foregroundBrush),
                             new Point(x + 0.2f, y + 0.2f));
         }
 

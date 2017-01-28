@@ -159,6 +159,7 @@
     </Compile>
     <Compile Include="Visualization\Pallete.cs" />
     <Compile Include="Visualization\StVisualizer.cs" />
+    <Compile Include="Visualization\Visualizer2D.cs" />
     <Page Include="Controls\GridDataLoadSlot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
