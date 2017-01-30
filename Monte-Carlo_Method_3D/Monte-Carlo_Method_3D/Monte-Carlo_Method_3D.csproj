@@ -58,6 +58,10 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JetBrains.Annotations, Version=10.2.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.10.2.1\lib\net\JetBrains.Annotations.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -142,7 +146,7 @@
     <Compile Include="VisualizationModel\EdgeTableVisualization.cs" />
     <Compile Include="VisualizationModel\GridTableVisualization.cs" />
     <Compile Include="VisualizationModel\Interfaces.cs" />
-    <Compile Include="Visualization\DiffVisualizer.cs" />
+    <Compile Include="VisualizationProvider\GridDataVisualizationProvider.cs" />
     <Compile Include="Visualization\DrawingUtil.cs" />
     <Compile Include="Visualization\GraphMesh.cs" />
     <Compile Include="Visualization\PrVisualizer.cs" />
@@ -158,8 +162,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Visualization\Pallete.cs" />
-    <Compile Include="Visualization\StVisualizer.cs" />
     <Compile Include="Visualization\Visualizer2D.cs" />
+    <Compile Include="Visualization\Visualizer3D.cs" />
     <Page Include="Controls\GridDataLoadSlot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

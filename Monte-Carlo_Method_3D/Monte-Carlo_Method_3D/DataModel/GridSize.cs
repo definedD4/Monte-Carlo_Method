@@ -2,18 +2,18 @@ namespace Monte_Carlo_Method_3D.DataModel
 {
     public struct GridSize
     {
-        public int Rows { get; }
-        public int Columns { get; }
+        public int Width { get; }
+        public int Height { get; }
 
-        public GridSize(int rows, int columns)
+        public GridSize(int width, int height)
         {
-            Rows = rows;
-            Columns = columns;
+            Height = height;
+            Width = width;
         }
 
         public bool Equals(GridSize other)
         {
-            return Rows == other.Rows && Columns == other.Columns;
+            return Height == other.Height && Width == other.Width;
         }
 
         public override bool Equals(object obj)
@@ -26,7 +26,7 @@ namespace Monte_Carlo_Method_3D.DataModel
         {
             unchecked
             {
-                return (Rows * 397) ^ Columns;
+                return (Height * 397) ^ Width;
             }
         }
 
@@ -42,7 +42,7 @@ namespace Monte_Carlo_Method_3D.DataModel
 
         public override string ToString()
         {
-            return $"({Rows}, {Columns})";
+            return $"({Height}, {Width})";
         }
     }
 }

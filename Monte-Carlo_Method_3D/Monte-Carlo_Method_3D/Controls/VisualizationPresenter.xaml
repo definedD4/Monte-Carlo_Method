@@ -62,10 +62,10 @@
                 <Viewport3D.Camera>
                     <PerspectiveCamera
                         FarPlaneDistance="1000"
-                        LookDirection="-1, -1, -1"
+                        LookDirection="-1, -1.5, -1"
                         UpDirection="0,1,0"
                         NearPlaneDistance="0.01"
-                        Position="1,1,1"
+                        Position="1,2,1"
                         FieldOfView="70"/>
                 </Viewport3D.Camera>
                 <ModelVisual3D>

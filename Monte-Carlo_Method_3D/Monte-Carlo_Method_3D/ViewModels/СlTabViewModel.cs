@@ -54,7 +54,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                     MessageBox.Show($"Не заданы значения на граничных узлах.");
                     return;
                 }
-                if (EdgeData.Size != new GridSize(m_GridHeight, m_GridWidth))
+                if (EdgeData.Size != new GridSize(m_GridWidth, m_GridHeight))
                 {
                     MessageBox.Show($"Размеры сетки и таблицы граничных значений не совпадают.");
                     return;
@@ -170,8 +170,8 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 OnPropertyChanged(nameof(EdgeData));
 
                 // Set size text fields to size of loaded grid
-                GridWidth = EdgeData.Size.Columns;
-                GridHeight = EdgeData.Size.Rows;
+                GridWidth = EdgeData.Size.Width;
+                GridHeight = EdgeData.Size.Height;
             }
         }
 

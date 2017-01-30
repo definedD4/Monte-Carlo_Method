@@ -6,11 +6,12 @@
         xmlns:local="clr-namespace:Monte_Carlo_Method_3D.Dialogs"
         xmlns:controls="clr-namespace:Monte_Carlo_Method_3D.Controls"
         mc:Ignorable="d"
+        x:Name="Window"
         Title="Просмотр таблицы" Height="300" Width="300" WindowStyle="ToolWindow">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Styles/Resources.xaml"/>
+                <ResourceDictionary Source="../Styles/All.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -22,9 +23,15 @@
         <Border Background="{StaticResource PrimaryBackgroundColor}" BorderBrush="{DynamicResource BorderColor}" BorderThickness="0,0,0,1">
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="TitleTb" Margin="4"/>
+                <StackPanel Orientation="Horizontal" Margin="4">
+                    <Button Style="{DynamicResource SelectorButtonStyle}" Content="2D"      Command="{Binding VisualTypeSelector}" CommandParameter="2D" Margin="1,0"/>
+                    <Button Style="{DynamicResource SelectorButtonStyle}" Content="3D"      Command="{Binding VisualTypeSelector}" CommandParameter="3D" Margin="1,0"/>
+                    <Button Style="{DynamicResource SelectorButtonStyle}" Content="Таблиця" Command="{Binding VisualTypeSelector}" CommandParameter="Table" Margin="1,0"/>
+                </StackPanel>
             </StackPanel>
         </Border>
-        <controls:ZoomAndPanImage x:Name="Img" RenderOptions.BitmapScalingMode="NearestNeighbor" Grid.Row="1"/>
+        <controls:VisualizationPresenter x:Name="VisualizationPresenter" Grid.Row="1"/>
+        <!--<controls:ZoomAndPanImage x:Name="Img" RenderOptions.BitmapScalingMode="NearestNeighbor" Grid.Row="1"/>-->
         <Popup x:Name="PointedValuePopup" AllowsTransparency="True" 
                Placement="Relative" PlacementTarget="{Binding ElementName=dataImage}" Grid.Row="1">
             <Border BorderBrush="{DynamicResource BorderColor}" BorderThickness="{DynamicResource BorderThickness}" 

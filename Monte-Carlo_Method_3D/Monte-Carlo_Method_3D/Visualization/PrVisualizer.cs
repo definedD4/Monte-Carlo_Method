@@ -22,8 +22,8 @@ namespace Monte_Carlo_Method_3D.Visualization
         public PrVisualizer(GridSize size, Pallete pallete)
         {
             Size = size;
-            Width = Size.Columns;
-            Height = Size.Rows;
+            Width = Size.Width;
+            Height = Size.Height;
             m_Pallete = pallete;
 
             m_Mesh = new GraphMesh(Size);     
@@ -116,7 +116,7 @@ namespace Monte_Carlo_Method_3D.Visualization
 
                 foreach (var idx in data.Bounds.EnumerateRegion())
                 {
-                    DrawingUtil.DrawTableCell(drawingContext, idx.J, idx.I, FormattingUtil.FormatShort(data[idx]), ForegroundColor);
+                    DrawingUtil.DrawTableCell(drawingContext, idx.J, idx.I, FormattingUtil.FormatShort(data[idx]), new SolidColorBrush(ForegroundColor));
                 }
             }
             var image = new DrawingImage(visual.Drawing);

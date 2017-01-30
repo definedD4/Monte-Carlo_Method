@@ -33,8 +33,8 @@ namespace Monte_Carlo_Method_3D.Dialogs
             InitializeComponent();
             DataContext = this;
 
-            WidthSetting = options.Size.Columns;
-            HeightSetting = options.Size.Rows;
+            WidthSetting = options.Size.Width;
+            HeightSetting = options.Size.Height;
             StartXSetting = options.StartLocation.J + 1;
             StartYSetting = options.StartLocation.I + 1;
         }
@@ -110,7 +110,7 @@ namespace Monte_Carlo_Method_3D.Dialogs
             return true;
         }
 
-        public SimulationOptions SimulationOptions => new SimulationOptions(new GridSize(HeightSetting, WidthSetting),
+        public SimulationOptions SimulationOptions => new SimulationOptions(new GridSize(WidthSetting, HeightSetting),
             new GridIndex(StartYSetting - 1, StartXSetting - 1));
 
         public event PropertyChangedEventHandler PropertyChanged;

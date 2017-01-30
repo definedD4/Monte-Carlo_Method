@@ -32,16 +32,16 @@ namespace Monte_Carlo_Method_3D.SVContext
 
         protected class TableStSvContext : StSvContext
         {
-            private readonly StVisualizer m_Visualizer;
+            private readonly Visualizer2D m_Visualizer;
 
             public TableStSvContext(SimulationOptions options, Pallete pallete) : base(options, pallete)
             {
-                m_Visualizer = new StVisualizer(options.Size, options.StartLocation, pallete);
+                m_Visualizer = new Visualizer2D() {Pallete = pallete};
             }
 
             public override IVisualization ProvideVisualization()
             {
-                return m_Visualizer.GenerateTableVisualization(Simulator.GetData());
+                return m_Visualizer.GenerateEdgeTableVisualization(Simulator.GetData());
             }
 
             public override StSvContext Clone(SimulationOptions options)
@@ -57,16 +57,16 @@ namespace Monte_Carlo_Method_3D.SVContext
 
         protected class ColorStSvContext : StSvContext
         {
-            private readonly StVisualizer m_Visualizer;
+            private readonly Visualizer2D m_Visualizer;
 
             public ColorStSvContext(SimulationOptions options, Pallete pallete) : base(options, pallete)
             {
-                m_Visualizer = new StVisualizer(options.Size, options.StartLocation, pallete);
+                m_Visualizer = new Visualizer2D() {Pallete = pallete};
             }
 
             public override IVisualization ProvideVisualization()
             {
-                return m_Visualizer.GenerateColorVisualization(Simulator.GetData(), Simulator.LastPath);
+                return m_Visualizer.GenerateEdgeColorVisualizationWithPath(Simulator.GetData(), Simulator.LastPath);
             }
 
             public override StSvContext Clone(SimulationOptions options)

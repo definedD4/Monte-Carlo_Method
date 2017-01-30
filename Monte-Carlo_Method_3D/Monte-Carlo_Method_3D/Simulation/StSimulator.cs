@@ -3,6 +3,7 @@ using System.Security.Policy;
 using Monte_Carlo_Method_3D.Util;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Monte_Carlo_Method_3D.DataModel;
 
 namespace Monte_Carlo_Method_3D.Simulation
@@ -34,6 +35,7 @@ namespace Monte_Carlo_Method_3D.Simulation
             m_ProccesedData = EdgeData.AllocateLike(m_Data);
 
             SimulationInfo = new StSimulationInfo(TotalSimulations, AverageTravelPath, TotalSimTime);
+            LastPath = new StParticlePath(StartLocation, null, new List<GridIndex>());
         }
 
         public GridSize Size { get; }
@@ -79,7 +81,7 @@ namespace Monte_Carlo_Method_3D.Simulation
             TotalSimTime += stopwatch.Elapsed.TotalMilliseconds;
 
             SimulationInfo = new StSimulationInfo(TotalSimulations, AverageTravelPath, TotalSimTime);
-            LastPath = new StParticlePath(path);
+            LastPath = new StParticlePath(StartLocation, path.Last(), path);
         }
 
         private void ProcessData()
@@ -118,7 +120,7 @@ namespace Monte_Carlo_Method_3D.Simulation
             TotalSimTime = 0;
 
             SimulationInfo = new StSimulationInfo(TotalSimulations, AverageTravelPath, TotalSimTime);
-            LastPath = null;
+            LastPath = new StParticlePath(StartLocation, null, new List<GridIndex>());
         }
 
         public EdgeData GetData() => m_ProccesedData;

@@ -14,8 +14,8 @@ namespace Monte_Carlo_Method_3D.Visualization
         public GraphMesh(GridSize size)
         {
             Size = size;
-            Width = Size.Columns;
-            Height = Size.Rows;
+            Width = Size.Width;
+            Height = Size.Height;
 
             Mesh = new MeshGeometry3D();
             InitMesh();
@@ -82,8 +82,8 @@ namespace Monte_Carlo_Method_3D.Visualization
                 Point3D p = Mesh.Positions[i];
                 GridIndex index = GetIndex(p);
 
-                double val = data[index];
-                p.Y = Math.Sqrt(val);
+                double val = Math.Pow(data[index], 1 / 8d);
+                p.Y = val;
 
                 Mesh.Positions[i] = p;
             }

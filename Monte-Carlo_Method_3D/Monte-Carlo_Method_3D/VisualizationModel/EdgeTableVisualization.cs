@@ -19,8 +19,8 @@ namespace Monte_Carlo_Method_3D.VisualizationModel
         public double? GetValueAtRelativeCoords(Point coords)
         {
             var idx = new GridIndex(
-                (int)Floor(coords.Y * Data.Size.Rows),
-                (int)Floor(coords.X * Data.Size.Columns));
+                (int)Floor(coords.Y * Data.Size.Height),
+                (int)Floor(coords.X * Data.Size.Width));
 
             if (Data.CanIndex(idx))
             {

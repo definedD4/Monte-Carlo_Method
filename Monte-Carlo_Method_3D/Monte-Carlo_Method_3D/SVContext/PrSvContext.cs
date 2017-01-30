@@ -33,13 +33,13 @@ namespace Monte_Carlo_Method_3D.SVContext
         public static PrSvContext Table(SimulationOptions options, Pallete pallete) => 
             new TablePrSvContext(options, pallete);
 
-        protected class TablePrSvContext : PrSvContext
+        private class TablePrSvContext : PrSvContext
         {
-            private readonly PrVisualizer m_Visualizer;
+            private readonly Visualizer2D m_Visualizer;
 
             public TablePrSvContext(SimulationOptions options, Pallete pallete) : base(options, pallete)
             {
-                m_Visualizer = new PrVisualizer(options.Size, pallete);
+                m_Visualizer = new Visualizer2D() {Pallete = pallete};
             }
 
             public override IVisualization ProvideVisualization()
@@ -58,13 +58,13 @@ namespace Monte_Carlo_Method_3D.SVContext
         public static PrSvContext Color(SimulationOptions options, Pallete pallete) =>
             new ColorPrSvContext(options, pallete);
 
-        protected class ColorPrSvContext : PrSvContext
+        private class ColorPrSvContext : PrSvContext
         {
-            private readonly PrVisualizer m_Visualizer;
+            private readonly Visualizer2D m_Visualizer;
 
             public ColorPrSvContext(SimulationOptions options, Pallete pallete) : base(options, pallete)
             {
-                m_Visualizer = new PrVisualizer(options.Size, pallete);
+                m_Visualizer = new Visualizer2D() {Pallete = pallete};
             }
 
             public override IVisualization ProvideVisualization()
@@ -83,18 +83,18 @@ namespace Monte_Carlo_Method_3D.SVContext
         public static PrSvContext Model3D(SimulationOptions options, Pallete pallete) =>
             new Model3DPrSvContext(options, pallete);
 
-        protected class Model3DPrSvContext : PrSvContext
+        private class Model3DPrSvContext : PrSvContext
         {
-            private readonly PrVisualizer m_Visualizer;
+            private readonly Visualizer3D m_Visualizer;
 
             public Model3DPrSvContext(SimulationOptions options, Pallete pallete) : base(options, pallete)
             {
-                m_Visualizer = new PrVisualizer(options.Size, pallete);
+                m_Visualizer = new Visualizer3D(options.Size) {Pallete = pallete};
             }
 
             public override IVisualization ProvideVisualization()
             {
-                return m_Visualizer.Generate3DVisualization(Simulator.GetData());
+                return m_Visualizer.GenerateModel3DVisualization(Simulator.GetData());
             }
 
             public override PrSvContext Clone(SimulationOptions options)

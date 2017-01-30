@@ -10,7 +10,6 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="VisualContextView.xaml"/>
                 <ResourceDictionary Source="PrTabView.xaml"/>
                 <ResourceDictionary Source="StTabView.xaml"/>
                 <ResourceDictionary Source="CpTabView.xaml"/>

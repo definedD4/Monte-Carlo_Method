@@ -27,23 +27,23 @@ namespace Monte_Carlo_Method_3D.DataModel
 
         public bool IsInside(GridIndex index)
         {
-            return index.I >= Pos.I && index.I < Pos.I + Size.Rows && index.J >= Pos.J && index.J < Pos.J + Size.Columns;
+            return index.I >= Pos.I && index.I < Pos.I + Size.Height && index.J >= Pos.J && index.J < Pos.J + Size.Width;
         }
 
         public GridRegion Shrink(int margin)
         {
             var pos = new GridIndex(Pos.I + margin, Pos.J + margin);
-            var size = new GridSize(Size.Rows - 2 * margin, Size.Columns - 2 * margin);
-            if (size.Rows < 0 || size.Columns < 0)
+            var size = new GridSize(Size.Width - 2 * margin, Size.Height - 2 * margin);
+            if (size.Height < 0 || size.Width < 0)
                 throw new InvalidOperationException("Region cannot shrink.");
             return new GridRegion(pos, size);
         }
 
         public IEnumerable<GridIndex> EnumerateRegion()
         {
-            for(int i = Pos.I; i < Pos.I + Size.Rows; i++)
+            for(int i = Pos.I; i < Pos.I + Size.Height; i++)
             {
-                for(int j = Pos.J; j < Pos.J + Size.Columns; j++)
+                for(int j = Pos.J; j < Pos.J + Size.Width; j++)
                 {
                     yield return new GridIndex(i, j);
                 }
@@ -52,16 +52,16 @@ namespace Monte_Carlo_Method_3D.DataModel
 
         public IEnumerable<GridIndex> EnumerateEdge()
         {
-            for (int i = Pos.I; i < Pos.I + Size.Rows; i++)
+            for (int i = Pos.I; i < Pos.I + Size.Height; i++)
             {
                 yield return new GridIndex(i, Pos.J);
-                yield return new GridIndex(i, Pos.J + Size.Columns - 1);
+                yield return new GridIndex(i, Pos.J + Size.Width - 1);
             }
 
-            for (int j = Pos.J + 1; j < Pos.J + Size.Columns - 1; j++)
+            for (int j = Pos.J + 1; j < Pos.J + Size.Width - 1; j++)
             {
                 yield return new GridIndex(Pos.I, j);
-                yield return new GridIndex(Pos.I + Size.Rows - 1, j);
+                yield return new GridIndex(Pos.I + Size.Height - 1, j);
             }
         }
 

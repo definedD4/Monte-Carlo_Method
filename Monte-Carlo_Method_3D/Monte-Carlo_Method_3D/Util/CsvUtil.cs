@@ -12,13 +12,13 @@ namespace Monte_Carlo_Method_3D.Util
     {
         public static IEnumerable<string> ExportToLines(GridData data, char delim = ';')
         {
-            for (int j = 0; j < data.Size.Columns; j++)
+            for (int j = 0; j < data.Size.Width; j++)
             {
                 StringBuilder str = new StringBuilder();
-                for (int i = 0; i < data.Size.Rows; i++)
+                for (int i = 0; i < data.Size.Height; i++)
                 {
                     str.Append(data[new GridIndex(i, j)]);
-                    if (j != data.Size.Columns - 1)
+                    if (j != data.Size.Width - 1)
                         str.Append(delim);
                 }
                 yield return str.ToString();

@@ -13,13 +13,13 @@ namespace Monte_Carlo_Method_3D.DataModel
         public GridRegion Bounds { get; }
         public GridRegion Inaccessable { get; }
 
-        public static EdgeData FromArray(double[,] data) => new EdgeData(new GridSize(data.GetLength(0), data.GetLength(1)), data);
-        public static EdgeData AllocateNew(GridSize size) => new EdgeData(size, new double[size.Rows, size.Columns]);
+        public static EdgeData FromArray(double[,] data) => new EdgeData(new GridSize(data.GetLength(1), data.GetLength(0)), data);
+        public static EdgeData AllocateNew(GridSize size) => new EdgeData(size, new double[size.Height, size.Width]);
         public static EdgeData AllocateLike(EdgeData other) => EdgeData.AllocateNew(other.Size);
 
         private EdgeData(GridSize size, double[,] data)
         {
-            if (data.GetLength(0) != size.Rows || data.GetLength(1) != size.Columns)
+            if (data.GetLength(0) != size.Height || data.GetLength(1) != size.Width)
                 throw new ArgumentException("Dimensions don't match.");
 
             Size = size;

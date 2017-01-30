@@ -17,9 +17,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private Pallete m_Pallete;
         private Player m_Player;
 
-        private PrVisualizer m_PrVisualizer;
-        private StVisualizer m_StVisualizer;
-        private DiffVisualizer m_DiffVisualizer;
+        private Visualizer2D m_Visualizer;
 
         private IVisualization m_PrVisualization;
         private IVisualization m_StVisualization;
@@ -44,9 +42,9 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 }
             }, () =>
             {
-                PrVisualization = m_PrVisualizer.GenerateTableVisualization(m_PrSimulator.GetData());
-                StVisualization = m_StVisualizer.GenerateTableVisualization(m_StSimulator.GetData());
-                DiffVisualization = m_DiffVisualizer.GenerateTableVisualization(m_DiffGenerator.GetData());
+                PrVisualization = m_Visualizer.GenerateTableVisualization(m_PrSimulator.GetData());
+                StVisualization = m_Visualizer.GenerateEdgeTableVisualization(m_StSimulator.GetData());
+                DiffVisualization = m_Visualizer.GenerateEdgeTableVisualization(m_DiffGenerator.GetData());
 
                 OnPropertyChanged(nameof(PrSimulationInfo));
                 OnPropertyChanged(nameof(StSimulationInfo));
@@ -77,9 +75,9 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 m_PrSimulator.Reset();
                 m_StSimulator.Reset();
 
-                PrVisualization = m_PrVisualizer.GenerateTableVisualization(m_PrSimulator.GetData());
-                StVisualization = m_StVisualizer.GenerateTableVisualization(m_StSimulator.GetData());
-                DiffVisualization = m_DiffVisualizer.GenerateTableVisualization(m_DiffGenerator.GetData());
+                PrVisualization = m_Visualizer.GenerateTableVisualization(m_PrSimulator.GetData());
+                StVisualization = m_Visualizer.GenerateEdgeTableVisualization(m_StSimulator.GetData());
+                DiffVisualization = m_Visualizer.GenerateEdgeTableVisualization(m_DiffGenerator.GetData());
 
                 OnPropertyChanged(nameof(PrSimulationInfo));
                 OnPropertyChanged(nameof(StSimulationInfo));
@@ -132,14 +130,11 @@ namespace Monte_Carlo_Method_3D.ViewModels
             m_StSimulator = new StSimulator(options);
             m_DiffGenerator = new DiffGenerator(m_PrSimulator, m_StSimulator);
 
+            m_Visualizer = new Visualizer2D() {Pallete = m_Pallete};
 
-            m_PrVisualizer = new PrVisualizer(m_PrSimulator.Size, m_Pallete);
-            m_StVisualizer = new StVisualizer(m_StSimulator.Size, m_StSimulator.StartLocation, m_Pallete);
-            m_DiffVisualizer = new DiffVisualizer(m_DiffGenerator.Size);
-
-            PrVisualization = m_PrVisualizer.GenerateTableVisualization(m_PrSimulator.GetData());
-            StVisualization = m_StVisualizer.GenerateTableVisualization(m_StSimulator.GetData());
-            DiffVisualization = m_DiffVisualizer.GenerateTableVisualization(m_DiffGenerator.GetData());
+            PrVisualization = m_Visualizer.GenerateTableVisualization(m_PrSimulator.GetData());
+            StVisualization = m_Visualizer.GenerateEdgeTableVisualization(m_StSimulator.GetData());
+            DiffVisualization = m_Visualizer.GenerateEdgeTableVisualization(m_DiffGenerator.GetData());
         }
 
         private void UpdateCommands()

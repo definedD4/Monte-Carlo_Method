@@ -57,7 +57,7 @@ namespace Monte_Carlo_Method_3D.Calculation
 
         private double CalcCell(GridIndex coords)
         {
-            var sim = new StSimulator(new SimulationOptions(new GridSize(m_Height, m_Width), coords));
+            var sim = new StSimulator(new SimulationOptions(new GridSize(m_Width, m_Height), coords));
             while (CanContinue(sim.SimulationInfo))
             {
                 if (CancelRequested())

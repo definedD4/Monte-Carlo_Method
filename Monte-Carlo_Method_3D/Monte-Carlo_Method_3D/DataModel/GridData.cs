@@ -12,13 +12,13 @@ namespace Monte_Carlo_Method_3D.DataModel
         public GridSize Size { get; }
         public GridRegion Bounds { get; }
 
-        public static GridData FromArray(double[,] data) => new GridData(new GridSize(data.GetLength(0), data.GetLength(1)), data);
-        public static GridData AllocateNew(GridSize size) => new GridData(size, new double[size.Rows, size.Columns]);
+        public static GridData FromArray(double[,] data) => new GridData(new GridSize(data.GetLength(1), data.GetLength(0)), data);
+        public static GridData AllocateNew(GridSize size) => new GridData(size, new double[size.Height, size.Width]);
         public static GridData AllocateLike(GridData other) => GridData.AllocateNew(other.Size);
 
         private GridData(GridSize size, double[,] data)
         {
-            if(data.GetLength(0) != size.Rows || data.GetLength(1) != size.Columns)
+            if(data.GetLength(0) != size.Height || data.GetLength(1) != size.Width)
                 throw new ArgumentException("Dimensions don't match.");
 
             Size = size;

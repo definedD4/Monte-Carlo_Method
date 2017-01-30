@@ -13,6 +13,9 @@ using System.Windows.Shapes;
 using Monte_Carlo_Method_3D.DataModel;
 using Monte_Carlo_Method_3D.Simulation;
 using Monte_Carlo_Method_3D.Util;
+using Monte_Carlo_Method_3D.Visualization;
+using Monte_Carlo_Method_3D.VisualizationModel;
+using Monte_Carlo_Method_3D.VisualizationProvider;
 
 namespace Monte_Carlo_Method_3D.Dialogs
 {
@@ -26,28 +29,52 @@ namespace Monte_Carlo_Method_3D.Dialogs
             new ShowTableDialog(data).Show();
         }
 
-        private readonly Color BackgroundColor = Colors.White;
-        private readonly Color ForegroundColor = Colors.Black;
-        private readonly Pen GridPen = new Pen(Brushes.DarkGray, 0.01D);
-
         private readonly GridData m_Data;
 
+        // TODO: Fix bugs with rendering
         public ShowTableDialog(GridData data)
         {
             m_Data = data;
 
             InitializeComponent();
 
-            Img.Source = DrawingUtil.DrawTable(data, BackgroundColor, ForegroundColor, GridPen);
+            this.DataContext = this;
+
+            VisualTypeSelector = new SelectorCommand("Table");
+
+            VisualTypeSelector.SelectionChanged += (sender, args) =>
+            {
+                switch (VisualTypeSelector.SelectedValue)
+                {
+                    case "Table":
+                        VisualizationPresenter.Visualization =
+                            GridDataVisualizationProvider.Table().ProvideVisualization(m_Data);
+                        break;
+                    case "2D":
+                        VisualizationPresenter.Visualization =
+                            GridDataVisualizationProvider.Color().ProvideVisualization(m_Data);
+                        break;
+                    case "3D":
+                        VisualizationPresenter.Visualization =
+                            GridDataVisualizationProvider.Model3D(m_Data.Size).ProvideVisualization(m_Data);
+                        break;
+                }
+            };
+
+            VisualTypeSelector.RaiseSelectionChanged();                      
+
+            TitleTb.Text = $"Таблица: {m_Data.Size.Height} на {m_Data.Size.Width}";
+
+            /*Img.Source = DrawingUtil.DrawTable(data, BackgroundColor, ForegroundColor, GridPen);
 
             Img.MouseMove += (s, e) =>
             {
                 var pos = e.GetPosition(Img);
 
-                int x = (int)Math.Truncate(pos.X * data.Size.Columns / Img.ActualWidth);
-                int y = (int)Math.Truncate(pos.Y * data.Size.Rows / Img.ActualHeight);
+                int x = (int)Math.Truncate(pos.X * data.Size.Width / Img.ActualWidth);
+                int y = (int)Math.Truncate(pos.Y * data.Size.Height / Img.ActualHeight);
 
-                if(x < 0 || x >= m_Data.Size.Columns || y < 0 || y >= m_Data.Size.Rows)
+                if(x < 0 || x >= m_Data.Size.Width || y < 0 || y >= m_Data.Size.Height)
                     return;
 
                 if (!PointedValuePopup.IsOpen) { PointedValuePopup.IsOpen = true; }
@@ -61,9 +88,9 @@ namespace Monte_Carlo_Method_3D.Dialogs
             Img.MouseLeave += (s, e) =>
             {
                 PointedValuePopup.IsOpen = false;
-            };
-
-            TitleTb.Text = $"Таблица: {m_Data.Size.Rows} на {m_Data.Size.Columns}";
+            };*/
         }
+
+        public SelectorCommand VisualTypeSelector { get; }
     }
 }
