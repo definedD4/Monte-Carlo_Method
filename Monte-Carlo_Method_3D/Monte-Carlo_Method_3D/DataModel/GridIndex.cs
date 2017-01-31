@@ -24,6 +24,16 @@
         public GridIndex Bottom() =>      new GridIndex(I + 1, J    );
         public GridIndex BottomRight() => new GridIndex(I + 1, J + 1);
 
+        /// <summary>
+        /// Returns position of indexed element in array as if it was a bitmap.
+        /// </summary>
+        /// <param name="stride">Data row size</param>
+        /// <param name="positionsPerIndex">Data item size</param>
+        /// <returns></returns>
+        public int Offset(int stride, int positionsPerIndex = 1) => I * stride + J * positionsPerIndex;
+
+        public int Offset(GridSize size) => Offset(size.Width);
+
         public bool Equals(GridIndex other)
         {
             return I == other.I && J == other.J;

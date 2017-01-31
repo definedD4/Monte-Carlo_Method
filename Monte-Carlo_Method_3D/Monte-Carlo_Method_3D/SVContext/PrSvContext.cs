@@ -1,5 +1,6 @@
 ﻿using Monte_Carlo_Method_3D.Simulation;
 using Monte_Carlo_Method_3D.Visualization;
+using Monte_Carlo_Method_3D.Visualization.GraphMesh;
 using Monte_Carlo_Method_3D.VisualizationModel;
 
 namespace Monte_Carlo_Method_3D.SVContext
@@ -89,7 +90,7 @@ namespace Monte_Carlo_Method_3D.SVContext
 
             public Model3DPrSvContext(SimulationOptions options, Pallete pallete) : base(options, pallete)
             {
-                m_Visualizer = new Visualizer3D(options.Size) {Pallete = pallete};
+                m_Visualizer = new Visualizer3D(options.Size, size => new HistogramGraphMesh(size)) {Pallete = pallete};
             }
 
             public override IVisualization ProvideVisualization()

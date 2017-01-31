@@ -20,34 +20,6 @@ namespace Monte_Carlo_Method_3D.Visualization
             pixels[index + 2] = color.R;
         }
 
-        // TODO: Remove
-        public static void DrawTableCell(DrawingContext drawingContext, int x, int y, string str, Brush foregroundBrush)
-        {
-            drawingContext.DrawText(new FormattedText(str,
-                            CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), 0.15, foregroundBrush),
-                            new Point(x + 0.2f, y + 0.2f));
-        }
-
-        // TODO: Remove
-        public static ImageSource DrawTable(GridData data, Color background, Color foreground, Pen gridPen)
-        {
-            var visual = new DrawingVisual();
-            using (DrawingContext drawingContext = visual.RenderOpen())
-            {
-                drawingContext.DrawRectangle(new SolidColorBrush(background), null, new Rect(new Size(data.Size.Width, data.Size.Height)));
-
-                DrawGrid(drawingContext, gridPen, data.Size.Width, data.Size.Height);
-
-                foreach (var idx in data.Bounds.EnumerateRegion())
-                {
-                    var str = Math.Round(data[idx], 5).ToString("G3");
-                    DrawTableCell(drawingContext, idx.J, idx.I, str, new SolidColorBrush(foreground));
-                }
-            }
-            var image = new DrawingImage(visual.Drawing);
-            return image;
-        }
-
         public static void DrawGrid(DrawingContext drawingContext, Pen gridPen, int columns, int rows)
         {
             for (int i = 0; i <= rows; i++)

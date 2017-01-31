@@ -1,17 +1,14 @@
-﻿using Monte_Carlo_Method_3D.Simulation;
-using Monte_Carlo_Method_3D.Util;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
+using System.Diagnostics;
 using System.Windows.Media.Media3D;
+using JetBrains.Annotations;
 using Monte_Carlo_Method_3D.DataModel;
 
-namespace Monte_Carlo_Method_3D.Visualization
+namespace Monte_Carlo_Method_3D.Visualization.GraphMesh
 {
-    public class GraphMesh
+    public class TriangleGraphMesh : IGraphMesh
     {
-        public GraphMesh(GridSize size)
+        public TriangleGraphMesh(GridSize size)
         {
             Size = size;
             Width = Size.Width;
@@ -72,7 +69,7 @@ namespace Monte_Carlo_Method_3D.Visualization
             }
         }
 
-        public void UpdateMesh(GridData data)
+        public void UpdateMesh([NotNull] GridData data)
         {
             if (data.Size != Size)
                 throw new ArgumentException("Data dimensions don't match up.", nameof(data));

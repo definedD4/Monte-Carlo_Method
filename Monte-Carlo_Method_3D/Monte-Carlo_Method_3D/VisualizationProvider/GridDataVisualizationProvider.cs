@@ -1,5 +1,6 @@
 ﻿using Monte_Carlo_Method_3D.DataModel;
 using Monte_Carlo_Method_3D.Visualization;
+using Monte_Carlo_Method_3D.Visualization.GraphMesh;
 using Monte_Carlo_Method_3D.VisualizationModel;
 
 namespace Monte_Carlo_Method_3D.VisualizationProvider
@@ -40,7 +41,7 @@ namespace Monte_Carlo_Method_3D.VisualizationProvider
 
             public Model3DVisualizationProvider(GridSize size)
             {
-                m_Visualizer = new Visualizer3D(size);
+                m_Visualizer = new Visualizer3D(size, _size => new TriangleGraphMesh(_size));
             }
 
             public override IVisualization ProvideVisualization(GridData data)

@@ -5,6 +5,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using JetBrains.Annotations;
 using Monte_Carlo_Method_3D.DataModel;
+using Monte_Carlo_Method_3D.Visualization.GraphMesh;
 using Monte_Carlo_Method_3D.VisualizationModel;
 
 namespace Monte_Carlo_Method_3D.Visualization
@@ -13,17 +14,17 @@ namespace Monte_Carlo_Method_3D.Visualization
     {
         private const int Dpi = 96;
 
-        private readonly GraphMesh m_Mesh;
+        private readonly IGraphMesh m_Mesh;
 
         public Pallete Pallete { get; set; } = new Pallete();
 
         public GridSize Size { get; }
 
-        public Visualizer3D(GridSize size)
+        public Visualizer3D(GridSize size, Func<GridSize, IGraphMesh> meshCreator)
         {
             Size = size;
 
-            m_Mesh = new GraphMesh(Size);
+            m_Mesh = meshCreator(size);
         }
 
         public Model3DVisualization GenerateModel3DVisualization([NotNull] GridData data)
@@ -35,7 +36,11 @@ namespace Monte_Carlo_Method_3D.Visualization
 
             var texture = GenerateGridColorImage(data);
             m_Mesh.UpdateMesh(data);
-            return new Model3DVisualization(new GeometryModel3D(m_Mesh.Mesh, new DiffuseMaterial(new ImageBrush(texture))));
+            var brush = new ImageBrush(texture);
+            var material = new DiffuseMaterial(brush);
+            var model = new GeometryModel3D(m_Mesh.Mesh, material);
+            //model.BackMaterial = material;
+            return new Model3DVisualization(model);
         }
 
         // TODO: Remove copied code
@@ -55,6 +60,7 @@ namespace Monte_Carlo_Method_3D.Visualization
                 }
             }
             bitmap.Unlock();
+            RenderOptions.SetBitmapScalingMode(bitmap, BitmapScalingMode.NearestNeighbor);
             bitmap.Freeze();
             return bitmap;
         }

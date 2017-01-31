@@ -61,10 +61,10 @@ namespace Monte_Carlo_Method_3D.Dialogs
                 }
             };
 
-            VisualTypeSelector.RaiseSelectionChanged();                      
-
             TitleTb.Text = $"Таблица: {m_Data.Size.Height} на {m_Data.Size.Width}";
 
+            VisualTypeSelector.RaiseSelectionChanged();
+            
             /*Img.Source = DrawingUtil.DrawTable(data, BackgroundColor, ForegroundColor, GridPen);
 
             Img.MouseMove += (s, e) =>
