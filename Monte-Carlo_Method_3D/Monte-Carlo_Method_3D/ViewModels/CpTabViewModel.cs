@@ -14,7 +14,6 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private StSimulator m_StSimulator;
         private DiffGenerator m_DiffGenerator;
 
-        private Pallete m_Pallete;
         private Player m_Player;
 
         private Visualizer2D m_Visualizer;
@@ -25,8 +24,6 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         public CpTabViewModel(SimulationOptions options) : base("Порівняння")
         {
-            m_Pallete = new Pallete();
-
             InitComponents(options);
 
             // Init palyer
@@ -130,7 +127,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
             m_StSimulator = new StSimulator(options);
             m_DiffGenerator = new DiffGenerator(m_PrSimulator, m_StSimulator);
 
-            m_Visualizer = new Visualizer2D() {Pallete = m_Pallete};
+            m_Visualizer = new Visualizer2D();
 
             PrVisualization = m_Visualizer.GenerateTableVisualization(m_PrSimulator.GetData());
             StVisualization = m_Visualizer.GenerateEdgeTableVisualization(m_StSimulator.GetData());

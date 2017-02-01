@@ -6,6 +6,7 @@ using System.Windows.Media.Media3D;
 using JetBrains.Annotations;
 using Monte_Carlo_Method_3D.DataModel;
 using Monte_Carlo_Method_3D.Visualization.GraphMesh;
+using Monte_Carlo_Method_3D.Visualization.GraphMesh.Factory;
 using Monte_Carlo_Method_3D.VisualizationModel;
 
 namespace Monte_Carlo_Method_3D.Visualization
@@ -16,15 +17,13 @@ namespace Monte_Carlo_Method_3D.Visualization
 
         private readonly IGraphMesh m_Mesh;
 
-        public Pallete Pallete { get; set; } = new Pallete();
-
         public GridSize Size { get; }
 
-        public Visualizer3D(GridSize size, Func<GridSize, IGraphMesh> meshCreator)
+        public Visualizer3D(GridSize size)
         {
             Size = size;
 
-            m_Mesh = meshCreator(size);
+            m_Mesh = GraphMeshFactory.Construct(VisualizationOptions.Current.GraphMeshKind, Size);
         }
 
         public Model3DVisualization GenerateModel3DVisualization([NotNull] GridData data)
@@ -39,13 +38,14 @@ namespace Monte_Carlo_Method_3D.Visualization
             var brush = new ImageBrush(texture);
             var material = new DiffuseMaterial(brush);
             var model = new GeometryModel3D(m_Mesh.Mesh, material);
-            //model.BackMaterial = material;
             return new Model3DVisualization(model);
         }
 
         // TODO: Remove copied code
         private ImageSource GenerateGridColorImage([NotNull] GridData data)
         {
+            var options = VisualizationOptions.Current;
+
             var bitmap = new WriteableBitmap(data.Size.Width, data.Size.Height, Dpi, Dpi, PixelFormats.Bgr24, null);
             int bytesPerPixel = bitmap.Format.BitsPerPixel / 8;
             int stride = bitmap.BackBufferStride;
@@ -56,7 +56,7 @@ namespace Monte_Carlo_Method_3D.Visualization
                 byte* bytes = (byte*)bitmap.BackBuffer.ToPointer();
                 foreach (var idx in data.Bounds.EnumerateRegion())
                 {
-                    DrawingUtil.DrawColorCell(bytes, idx.J, idx.I, Pallete.GetColor(data[idx]), bytesPerPixel, stride);
+                    DrawingUtil.DrawColorCell(bytes, idx.J, idx.I, options.Pallete.GetColor(data[idx]), bytesPerPixel, stride);
                 }
             }
             bitmap.Unlock();

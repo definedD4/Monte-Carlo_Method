@@ -1,4 +1,5 @@
-﻿using Monte_Carlo_Method_3D.Simulation;
+﻿using JetBrains.Annotations;
+using Monte_Carlo_Method_3D.Simulation;
 using Monte_Carlo_Method_3D.Visualization;
 using Monte_Carlo_Method_3D.VisualizationModel;
 
@@ -6,37 +7,34 @@ namespace Monte_Carlo_Method_3D.SVContext
 {
     public abstract class StSvContext
     {
-        public SimulationOptions Options { get; }
-
-        public Pallete Pallete { get; }
+        public SimulationOptions SimulationOptions { get; }
 
         public StSimulator Simulator { get; }
 
-        private StSvContext(SimulationOptions options, Pallete pallete)
+        private StSvContext(SimulationOptions simulationOptions)
         {
-            Options = options;
-            Pallete = pallete;
-            Simulator = new StSimulator(options);
+            SimulationOptions = simulationOptions;
+            Simulator = new StSimulator(simulationOptions);
         }
 
         public abstract IVisualization ProvideVisualization();
 
-        public abstract StSvContext Clone(SimulationOptions options);
+        public abstract StSvContext Clone([NotNull] SimulationOptions options);
 
         // Implementations
 
         // Table
 
-        public static StSvContext Table(SimulationOptions options, Pallete pallete) =>
-            new StSvContext.TableStSvContext(options, pallete);
+        public static StSvContext Table(SimulationOptions options) =>
+            new StSvContext.TableStSvContext(options);
 
-        protected class TableStSvContext : StSvContext
+        private class TableStSvContext : StSvContext
         {
             private readonly Visualizer2D m_Visualizer;
 
-            public TableStSvContext(SimulationOptions options, Pallete pallete) : base(options, pallete)
+            public TableStSvContext(SimulationOptions simulationOptions) : base(simulationOptions)
             {
-                m_Visualizer = new Visualizer2D() {Pallete = pallete};
+                m_Visualizer = new Visualizer2D();
             }
 
             public override IVisualization ProvideVisualization()
@@ -46,22 +44,22 @@ namespace Monte_Carlo_Method_3D.SVContext
 
             public override StSvContext Clone(SimulationOptions options)
             {
-                return new TableStSvContext(options, Pallete);
+                return new TableStSvContext(options);
             }
         }
 
         // Color
 
-        public static StSvContext Color(SimulationOptions options, Pallete pallete) =>
-            new StSvContext.ColorStSvContext(options, pallete);
+        public static StSvContext Color(SimulationOptions options) =>
+            new StSvContext.ColorStSvContext(options);
 
-        protected class ColorStSvContext : StSvContext
+        private class ColorStSvContext : StSvContext
         {
             private readonly Visualizer2D m_Visualizer;
 
-            public ColorStSvContext(SimulationOptions options, Pallete pallete) : base(options, pallete)
+            public ColorStSvContext(SimulationOptions simulationOptions) : base(simulationOptions)
             {
-                m_Visualizer = new Visualizer2D() {Pallete = pallete};
+                m_Visualizer = new Visualizer2D();
             }
 
             public override IVisualization ProvideVisualization()
@@ -71,7 +69,7 @@ namespace Monte_Carlo_Method_3D.SVContext
 
             public override StSvContext Clone(SimulationOptions options)
             {
-                return new ColorStSvContext(options, Pallete);
+                return new ColorStSvContext(options);
             }
         }
     }

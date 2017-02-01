@@ -1,13 +1,15 @@
-﻿using Monte_Carlo_Method_3D.DataModel;
+﻿using JetBrains.Annotations;
+using Monte_Carlo_Method_3D.DataModel;
 using Monte_Carlo_Method_3D.Visualization;
 using Monte_Carlo_Method_3D.Visualization.GraphMesh;
+using Monte_Carlo_Method_3D.Visualization.GraphMesh.Factory;
 using Monte_Carlo_Method_3D.VisualizationModel;
 
 namespace Monte_Carlo_Method_3D.VisualizationProvider
 {
     public abstract class GridDataVisualizationProvider
     {
-        public abstract IVisualization ProvideVisualization(GridData data);
+        public abstract IVisualization ProvideVisualization([NotNull] GridData data);
 
         public static GridDataVisualizationProvider Table() => new TableVisualizationProvider();
 
@@ -41,7 +43,7 @@ namespace Monte_Carlo_Method_3D.VisualizationProvider
 
             public Model3DVisualizationProvider(GridSize size)
             {
-                m_Visualizer = new Visualizer3D(size, _size => new TriangleGraphMesh(_size));
+                m_Visualizer = new Visualizer3D(size);
             }
 
             public override IVisualization ProvideVisualization(GridData data)

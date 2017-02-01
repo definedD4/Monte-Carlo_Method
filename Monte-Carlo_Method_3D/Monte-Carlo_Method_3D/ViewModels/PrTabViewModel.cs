@@ -15,19 +15,18 @@ namespace Monte_Carlo_Method_3D.ViewModels
     {
         private readonly Player m_Player;
 
-        public Pallete Pallete { get; }
-
         private SimulationOptions m_SimulationOptions;
+
         private PrSvContext m_SvContext;
         private IVisualization m_Visualization;
+
+        public Pallete Pallete => VisualizationOptions.Current.Pallete;
 
         public PrTabViewModel(SimulationOptions simulationOptions) : base("ІПРАЙ")
         {
             m_SimulationOptions = simulationOptions;
 
-            Pallete = new Pallete();
-
-            m_SvContext = PrSvContext.Table(m_SimulationOptions, Pallete);
+            m_SvContext = PrSvContext.Table(m_SimulationOptions);
 
             // Init player
             m_Player = new Player(() =>
@@ -99,13 +98,13 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 switch (VisualTypeSelector.SelectedValue)
                 {
                     case "Table":
-                        m_SvContext = PrSvContext.Table(m_SvContext.Options, m_SvContext.Pallete);
+                        m_SvContext = PrSvContext.Table(m_SvContext.SimulationOptions);
                         break;
                     case "2D":
-                        m_SvContext = PrSvContext.Color(m_SvContext.Options, m_SvContext.Pallete);
+                        m_SvContext = PrSvContext.Color(m_SvContext.SimulationOptions);
                         break;
                     case "3D":
-                        m_SvContext = PrSvContext.Model3D(m_SvContext.Options, m_SvContext.Pallete);
+                        m_SvContext = PrSvContext.Model3D(m_SvContext.SimulationOptions);
                         break;
                 }
                 Visualization = m_SvContext.ProvideVisualization();

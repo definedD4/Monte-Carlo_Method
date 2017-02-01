@@ -148,6 +148,7 @@
     <Compile Include="VisualizationModel\Interfaces.cs" />
     <Compile Include="VisualizationProvider\GridDataVisualizationProvider.cs" />
     <Compile Include="Visualization\DrawingUtil.cs" />
+    <Compile Include="Visualization\GraphMesh\Factory\GraphMeshFactory.cs" />
     <Compile Include="Visualization\GraphMesh\HistogramGraphMesh.cs" />
     <Compile Include="Visualization\GraphMesh\TriangleGraphMesh.cs" />
     <Compile Include="Util\SelectorCommand.cs" />
@@ -163,6 +164,7 @@
     </Compile>
     <Compile Include="Visualization\GraphMesh\IGraphMesh.cs" />
     <Compile Include="Visualization\Pallete.cs" />
+    <Compile Include="Visualization\VisualizationOptions.cs" />
     <Compile Include="Visualization\Visualizer2D.cs" />
     <Compile Include="Visualization\Visualizer3D.cs" />
     <Page Include="Controls\GridDataLoadSlot.xaml">
