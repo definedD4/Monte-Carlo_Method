@@ -20,7 +20,17 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid Background="{DynamicResource SecondaryBackgroundColor}">
-        <TabControl ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab}" IsSynchronizedWithCurrentItem="False">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0">
+            <MenuItem Header="Сервіс">
+                <MenuItem Header="Налаштування" Command="{Binding SettingsCommand}"/>
+            </MenuItem>
+        </Menu>
+        <TabControl ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab}"
+                    IsSynchronizedWithCurrentItem="False" Grid.Row="1">
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Header}" Margin="2"/>

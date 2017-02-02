@@ -2,6 +2,8 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using Monte_Carlo_Method_3D.DataModel;
+using Monte_Carlo_Method_3D.Dialogs;
+using Monte_Carlo_Method_3D.Util;
 
 namespace Monte_Carlo_Method_3D.ViewModels
 {
@@ -9,8 +11,16 @@ namespace Monte_Carlo_Method_3D.ViewModels
     {
         private TabViewModel m_SelectedTab;
 
+        public DelegateCommand SettingsCommand { get; }
+
         public MainViewModel()
         {
+            SettingsCommand = new DelegateCommand(_ =>
+            {
+                var dlg = new SettingsDialog();
+                dlg.ShowDialog();
+            });
+
             SimulationOptions options = new SimulationOptions(new GridSize(9, 9), new GridIndex(4, 4));
 
             Tabs.Add(new PrTabViewModel(options));
