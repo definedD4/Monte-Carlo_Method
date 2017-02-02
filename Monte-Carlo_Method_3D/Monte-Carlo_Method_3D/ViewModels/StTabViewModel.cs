@@ -6,8 +6,8 @@ using Monte_Carlo_Method_3D.Visualization;
 using System.Windows.Threading;
 using Monte_Carlo_Method_3D.Dialogs;
 using Microsoft.Win32;
-using Monte_Carlo_Method_3D.SVContext;
 using Monte_Carlo_Method_3D.VisualizationModel;
+using Monte_Carlo_Method_3D.VisualizationProvider;
 
 namespace Monte_Carlo_Method_3D.ViewModels
 {
@@ -16,27 +16,32 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private readonly Player m_Player;
 
         private SimulationOptions m_SimulationOptions;
-        private StSvContext m_SvContext;
+
+        private StSimulator m_Simulator;
+
+        private StVisualizationProvider m_VisualizationProvider;
         private IVisualization m_Visualization;
 
         public Pallete Pallete => VisualizationOptions.Current.Pallete;
 
         public StTabViewModel(SimulationOptions options) : base("МСВ")
         {
-            m_SimulationOptions = options;  
+            m_SimulationOptions = options;
 
-            m_SvContext = StSvContext.Table(m_SimulationOptions);
+            m_Simulator = new StSimulator(m_SimulationOptions);
+
+            m_VisualizationProvider = StVisualizationProvider.Table();
 
             // Init player
             m_Player = new Player(() =>
             {
-                m_SvContext.Simulator.SimulateSteps(1);
+                m_Simulator.SimulateSteps(1);
             }, () =>
             {
-                m_SvContext.Simulator.SimulateSteps(20);
+                m_Simulator.SimulateSteps(20);
             }, () =>
             {
-                Visualization = m_SvContext.ProvideVisualization();
+                Visualization = m_VisualizationProvider.ProvideVisualization(m_Simulator);
                 OnPropertyChanged(nameof(SimulationInfo));
             }, TimeSpan.FromMilliseconds(10), DispatcherPriority.ContextIdle);
 
@@ -62,8 +67,8 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
             RestartCommand = new DelegateCommand(x =>
             {
-                m_SvContext.Simulator.Reset();
-                Visualization = m_SvContext.ProvideVisualization();
+                m_Simulator.Reset();
+                Visualization = m_VisualizationProvider.ProvideVisualization(m_Simulator);
                 OnPropertyChanged(nameof(SimulationInfo));
             }, x => !m_Player.RunningOrPlaying);
 
@@ -75,8 +80,9 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 if (dialog.DialogResult.GetValueOrDefault(false))
                 {
                     m_SimulationOptions = dialog.SimulationOptions;
-                    m_SvContext = m_SvContext.Clone(m_SimulationOptions);
-                    Visualization = m_SvContext.ProvideVisualization();
+                    m_Simulator = new StSimulator(m_SimulationOptions);
+                    m_VisualizationProvider = StVisualizationProvider.Table();
+                    Visualization = m_VisualizationProvider.ProvideVisualization(m_Simulator);
                     OnPropertyChanged(nameof(SimulationInfo));
                 }
             }, x => !m_Player.RunningOrPlaying);
@@ -88,13 +94,13 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 switch (VisualTypeSelector.SelectedValue)
                 {
                     case "Table":
-                        m_SvContext = StSvContext.Table(m_SvContext.SimulationOptions);
+                        m_VisualizationProvider = StVisualizationProvider.Table();
                         break;
                     case "2D":
-                        m_SvContext = StSvContext.Color(m_SvContext.SimulationOptions);
+                        m_VisualizationProvider = StVisualizationProvider.Color();
                         break;
                 }
-                Visualization = m_SvContext.ProvideVisualization();
+                Visualization = m_VisualizationProvider.ProvideVisualization(m_Simulator);
             };
             VisualTypeSelector.RaiseSelectionChanged();
             VisualTypeSelector.UpdateSelectors();
@@ -104,7 +110,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 SaveFileDialog saveFileDialog = new SaveFileDialog() { Filter = "Файл CSV (*.csv)|*.csv" };
                 if (saveFileDialog.ShowDialog(Application.Current.MainWindow).GetValueOrDefault())
                 {
-                     CsvUtil.ExportToFile(m_SvContext.Simulator.GetData().AsGridData(), saveFileDialog.FileName);
+                     CsvUtil.ExportToFile(m_Simulator.GetData().AsGridData(), saveFileDialog.FileName);
                 }
             });
         }
@@ -122,7 +128,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
             set { m_Visualization = value; OnPropertyChanged(nameof(Visualization)); }
         }
 
-        public StSimulationInfo SimulationInfo => m_SvContext.Simulator.SimulationInfo;
+        public StSimulationInfo SimulationInfo => m_Simulator.SimulationInfo;
 
         public DelegateCommand StepCommand { get; }
         public SwitchStateCommand PlayPauseCommand { get; }

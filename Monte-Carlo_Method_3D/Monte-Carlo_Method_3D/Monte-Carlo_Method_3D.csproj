@@ -114,8 +114,6 @@
       <DependentUpon>ShowTableDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Exceptions\TableLoadException.cs" />
-    <Compile Include="SVContext\PrSvContext.cs" />
-    <Compile Include="SVContext\StSvContext.cs" />
     <Compile Include="Util\FormattingUtil.cs" />
     <Compile Include="Simulation\SimulationOptions.cs" />
     <Compile Include="Dialogs\SimulationOptionsDialog.xaml.cs">
@@ -147,6 +145,7 @@
     <Compile Include="VisualizationModel\GridTableVisualization.cs" />
     <Compile Include="VisualizationModel\Interfaces.cs" />
     <Compile Include="VisualizationProvider\GridDataVisualizationProvider.cs" />
+    <Compile Include="VisualizationProvider\StVisualizationProvider.cs" />
     <Compile Include="Visualization\DrawingUtil.cs" />
     <Compile Include="Visualization\GraphMesh\Factory\GraphMeshFactory.cs" />
     <Compile Include="Visualization\GraphMesh\HistogramGraphMesh.cs" />
