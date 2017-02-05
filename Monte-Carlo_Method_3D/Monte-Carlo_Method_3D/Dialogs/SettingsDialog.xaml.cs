@@ -11,45 +11,43 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Monte_Carlo_Method_3D.ViewModels;
+using ReactiveUI;
 
 namespace Monte_Carlo_Method_3D.Dialogs
 {
     /// <summary>
     /// Interaction logic for SettingsDialog.xaml
     /// </summary>
-    public partial class SettingsDialog : Window
+    public partial class SettingsDialog : Window, IViewFor<SettingsViewModel>
     {
-        private VisualizationOptions m_Options;
-
-        private VisualizationOptions m_OldOptions;
-
         public SettingsDialog()
         {
             InitializeComponent();
 
-            m_Options = VisualizationOptions.Current;
-            m_OldOptions = VisualizationOptions.Current;
+            this.WhenAnyValue(x => x.ViewModel)
+                .Subscribe(x =>
+                {
+                    DataContext = x;
+                    x?.CloseDialog.Subscribe(_ =>
+                    {
+                        Close();
+                    });
+                });
+
+            this.BindCommand(ViewModel, x => x.Ok, x => x.OkBtn);
+
+            this.BindCommand(ViewModel, x => x.Apply, x => x.ApplyBtn);
+
+            this.BindCommand(ViewModel, x => x.Cancel, x => x.CancelBtn);           
         }
 
-        public VisualizationOptions Options => m_Options;
-
-        private void OkButtonClick(object sender, RoutedEventArgs e)
+        object IViewFor.ViewModel
         {
-            VisualizationOptions.Current = m_Options;
-            DialogResult = true;
-            Close();
+            get { return ViewModel; }
+            set { ViewModel = (SettingsViewModel)value; }
         }
 
-        private void ApplyButtonClick(object sender, RoutedEventArgs e)
-        {
-            VisualizationOptions.Current = m_Options;
-        }
-
-        private void CancelButtonClick(object sender, RoutedEventArgs e)
-        {
-            VisualizationOptions.Current = m_OldOptions;
-            DialogResult = false;
-            Close();
-        }
+        public SettingsViewModel ViewModel { get; set; }
     }
 }

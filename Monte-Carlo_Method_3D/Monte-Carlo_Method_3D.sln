@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monte-Carlo_Method_3D", "Monte-Carlo_Method_3D\Monte-Carlo_Method_3D.csproj", "{6794EC3F-5A21-4979-B473-E5907273F24E}"
 EndProject
@@ -14,6 +14,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeDataGenerator", "EdgeDataGenerator\EdgeDataGenerator.csproj", "{C20CB7F2-4307-439C-9072-0629BC1D0C6E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDataOrganizer", "TestDataOrganizer\TestDataOrganizer.csproj", "{56B56E70-2359-403B-AF85-13AF9FD7CCA2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenClCalculation", "OpenClCalculation\OpenClCalculation.csproj", "{ABFD5B14-54EF-4EEA-A362-081F4BAE854B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenClTest", "OpenClTest\OpenClTest.csproj", "{ADCA8EB2-4D2E-4A0A-ADFF-4D35D9EA2B9E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,6 +89,30 @@ Global
 		{56B56E70-2359-403B-AF85-13AF9FD7CCA2}.Release|x64.Build.0 = Release|Any CPU
 		{56B56E70-2359-403B-AF85-13AF9FD7CCA2}.Release|x86.ActiveCfg = Release|Any CPU
 		{56B56E70-2359-403B-AF85-13AF9FD7CCA2}.Release|x86.Build.0 = Release|Any CPU
+		{ABFD5B14-54EF-4EEA-A362-081F4BAE854B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABFD5B14-54EF-4EEA-A362-081F4BAE854B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABFD5B14-54EF-4EEA-A362-081F4BAE854B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{ABFD5B14-54EF-4EEA-A362-081F4BAE854B}.Debug|x64.Build.0 = Debug|Any CPU
+		{ABFD5B14-54EF-4EEA-A362-081F4BAE854B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ABFD5B14-54EF-4EEA-A362-081F4BAE854B}.Debug|x86.Build.0 = Debug|Any CPU
+		{ABFD5B14-54EF-4EEA-A362-081F4BAE854B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABFD5B14-54EF-4EEA-A362-081F4BAE854B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABFD5B14-54EF-4EEA-A362-081F4BAE854B}.Release|x64.ActiveCfg = Release|Any CPU
+		{ABFD5B14-54EF-4EEA-A362-081F4BAE854B}.Release|x64.Build.0 = Release|Any CPU
+		{ABFD5B14-54EF-4EEA-A362-081F4BAE854B}.Release|x86.ActiveCfg = Release|Any CPU
+		{ABFD5B14-54EF-4EEA-A362-081F4BAE854B}.Release|x86.Build.0 = Release|Any CPU
+		{ADCA8EB2-4D2E-4A0A-ADFF-4D35D9EA2B9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADCA8EB2-4D2E-4A0A-ADFF-4D35D9EA2B9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADCA8EB2-4D2E-4A0A-ADFF-4D35D9EA2B9E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{ADCA8EB2-4D2E-4A0A-ADFF-4D35D9EA2B9E}.Debug|x64.Build.0 = Debug|Any CPU
+		{ADCA8EB2-4D2E-4A0A-ADFF-4D35D9EA2B9E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ADCA8EB2-4D2E-4A0A-ADFF-4D35D9EA2B9E}.Debug|x86.Build.0 = Debug|Any CPU
+		{ADCA8EB2-4D2E-4A0A-ADFF-4D35D9EA2B9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADCA8EB2-4D2E-4A0A-ADFF-4D35D9EA2B9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADCA8EB2-4D2E-4A0A-ADFF-4D35D9EA2B9E}.Release|x64.ActiveCfg = Release|Any CPU
+		{ADCA8EB2-4D2E-4A0A-ADFF-4D35D9EA2B9E}.Release|x64.Build.0 = Release|Any CPU
+		{ADCA8EB2-4D2E-4A0A-ADFF-4D35D9EA2B9E}.Release|x86.ActiveCfg = Release|Any CPU
+		{ADCA8EB2-4D2E-4A0A-ADFF-4D35D9EA2B9E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,5 +122,6 @@ Global
 		{EF263E2A-5326-4AF0-AC91-6C870EDDCD46} = {76583068-A60F-4F4B-AF89-5F73767FA609}
 		{C20CB7F2-4307-439C-9072-0629BC1D0C6E} = {76583068-A60F-4F4B-AF89-5F73767FA609}
 		{56B56E70-2359-403B-AF85-13AF9FD7CCA2} = {76583068-A60F-4F4B-AF89-5F73767FA609}
+		{ADCA8EB2-4D2E-4A0A-ADFF-4D35D9EA2B9E} = {76583068-A60F-4F4B-AF89-5F73767FA609}
 	EndGlobalSection
 EndGlobal

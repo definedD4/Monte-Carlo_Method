@@ -17,7 +17,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
         {
             SettingsCommand = new DelegateCommand(_ =>
             {
-                var dlg = new SettingsDialog();
+                var dlg = new SettingsDialog {ViewModel = new SettingsViewModel()};
                 dlg.ShowDialog();
             });
 

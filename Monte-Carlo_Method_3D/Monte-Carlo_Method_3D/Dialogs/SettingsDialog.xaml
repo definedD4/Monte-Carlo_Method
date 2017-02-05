@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:Monte_Carlo_Method_3D.Dialogs"
         xmlns:util="clr-namespace:Monte_Carlo_Method_3D.Util"
         xmlns:visf="clr-namespace:Monte_Carlo_Method_3D.Visualization.GraphMesh.Factory"
+        xmlns:viewModels="clr-namespace:Monte_Carlo_Method_3D.ViewModels"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance viewModels:SettingsViewModel}"
         Title="SettingsDialog" Height="300" Width="300">
     <Grid>
         <Grid.RowDefinitions>
@@ -22,17 +24,21 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            
-            <TextBlock Text="Тип тривимірного графіку" Grid.Row="0" Grid.Column="0" Margin="4"/>
+
+            <TextBlock Text="Розмір написів (em):" Grid.Row="0" Grid.Column="0" Margin="4"/>
+            <TextBox x:Name="TextEmSize" Text="{Binding VisluaizationTextEm}"
+                      Grid.Row="0" Grid.Column="1" Margin="4"/>
+
+            <TextBlock Text="Тип тривимірного графіку:" Grid.Row="1" Grid.Column="0" Margin="4"/>
             <ComboBox ItemsSource="{util:EnumSelection {x:Type visf:GraphMeshKind}}" SelectedValue="{Binding Options.GraphMeshKind}"
                       DisplayMemberPath="DisplayName" SelectedValuePath="Value"
-                      Grid.Row="0" Grid.Column="1" Margin="4"/>
+                      Grid.Row="1" Grid.Column="1" Margin="4"/>
             
         </Grid>
         <UniformGrid Columns="3" Grid.Row="1" HorizontalAlignment="Right">
-            <Button Content="Скасувати" Click="OkButtonClick" Margin="4"/>
-            <Button Content="Виконати" Click="ApplyButtonClick" Margin="4"/>
-            <Button Content="ОК" Click="CancelButtonClick" Margin="4"/>
+            <Button x:Name="CancelBtn" Content="Скасувати" Margin="4"/>
+            <Button x:Name="ApplyBtn" Content="Виконати" Margin="4"/>
+            <Button x:Name="OkBtn" Content="ОК" Margin="4"/>
         </UniformGrid>
     </Grid>
 </Window>
