@@ -3,11 +3,15 @@ using Monte_Carlo_Method_3D.Simulation;
 using Monte_Carlo_Method_3D.Util;
 using Monte_Carlo_Method_3D.Visualization;
 using System;
+using System.Reactive;
 using System.Windows;
 using System.Windows.Threading;
 using Microsoft.Win32;
+using Monte_Carlo_Method_3D.AppSettings;
 using Monte_Carlo_Method_3D.VisualizationModel;
 using Monte_Carlo_Method_3D.VisualizationProvider;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
 namespace Monte_Carlo_Method_3D.ViewModels
 {
@@ -20,9 +24,20 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private PrSimulator m_Simulator;
 
         private GridDataVisualizationProvider m_VisualizationProvider;
-        private IVisualization m_Visualization;
 
-        public Pallete Pallete => VisualizationOptions.Current.Pallete;
+        [Reactive] public IVisualization Visualization { get; private set; }
+
+        public Pallete Pallete => Settings.Current.VisualizationOptions.Pallete;
+
+        private ReactiveCommand<Unit, Unit> UpdateVisualization { get; }
+
+        public SwitchStateCommand PlayPauseCommand { get; }
+        public ReactiveCommand<Unit, Unit> Step { get; }
+        public DelegateCommand RestartCommand { get; }
+        public DelegateCommand SimulationOptionsCommand { get; }
+        public DelegateCommand ExportToCsvCommand { get; }
+
+        public SelectorCommand VisualTypeSelector { get; }
 
         public PrTabViewModel(SimulationOptions simulationOptions) : base("ІПРАЙ")
         {
@@ -41,14 +56,19 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 m_Simulator.SimulateSteps(5);             
             }, () =>
             {
-                Visualization = m_VisualizationProvider.ProvideVisualization(m_Simulator.GetData());
-                OnPropertyChanged(nameof(SimulationInfo));
+                UpdateVisualization.Execute().Subscribe();
             }, TimeSpan.FromMilliseconds(10), DispatcherPriority.ContextIdle);
 
-            StepCommand = new DelegateCommand(x =>
+            UpdateVisualization = ReactiveCommand.Create(() =>
+            {
+                Visualization = m_VisualizationProvider.ProvideVisualization(m_Simulator.GetData());
+                OnPropertyChanged(nameof(SimulationInfo));
+            });
+
+            Step = ReactiveCommand.Create(() =>
             {
                 m_Player.StepOnce();
-            }, x => !m_Player.RunningOrPlaying);
+            }, m_Player.WhenAny(x => x.RunningOrPlaying, r => !r.Value));
 
             PlayPauseCommand = new SwitchStateCommand("Пауза", "Програти", false, _ => !m_Player.SingleStepRunning);
             PlayPauseCommand.StateChanged += (s, e) =>
@@ -115,11 +135,12 @@ namespace Monte_Carlo_Method_3D.ViewModels
             };
             VisualTypeSelector.RaiseSelectionChanged();
             VisualTypeSelector.UpdateSelectors();
+
+            Settings.SettingsCange.InvokeCommand(UpdateVisualization);
         }
         
         private void UpdateCommands()
         {
-            StepCommand.RaiseCanExecuteChanged();
             PlayPauseCommand.RaiseCanExecuteChanged();
             RestartCommand.RaiseCanExecuteChanged();
             SimulationOptionsCommand.RaiseCanExecuteChanged();
@@ -128,18 +149,6 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         public PrSimulationInfo SimulationInfo => m_Simulator.SimulationInfo;
 
-        public SwitchStateCommand PlayPauseCommand { get; }
-        public DelegateCommand StepCommand { get; }
-        public DelegateCommand RestartCommand { get; }
-        public DelegateCommand SimulationOptionsCommand { get; }
-        public DelegateCommand ExportToCsvCommand { get; }
-
-        public SelectorCommand VisualTypeSelector { get; }
-
-        public IVisualization Visualization
-        {
-            get { return m_Visualization; }
-            set { m_Visualization = value; OnPropertyChanged(nameof(Visualization)); }
-        }
+        
     }
 }

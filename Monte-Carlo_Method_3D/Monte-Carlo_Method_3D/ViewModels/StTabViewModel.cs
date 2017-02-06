@@ -6,6 +6,7 @@ using Monte_Carlo_Method_3D.Visualization;
 using System.Windows.Threading;
 using Monte_Carlo_Method_3D.Dialogs;
 using Microsoft.Win32;
+using Monte_Carlo_Method_3D.AppSettings;
 using Monte_Carlo_Method_3D.VisualizationModel;
 using Monte_Carlo_Method_3D.VisualizationProvider;
 
@@ -22,7 +23,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private StVisualizationProvider m_VisualizationProvider;
         private IVisualization m_Visualization;
 
-        public Pallete Pallete => VisualizationOptions.Current.Pallete;
+        public Pallete Pallete => Settings.Current.VisualizationOptions.Pallete;
 
         public StTabViewModel(SimulationOptions options) : base("МСВ")
         {

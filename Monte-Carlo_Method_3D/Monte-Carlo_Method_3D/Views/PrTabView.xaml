@@ -23,7 +23,7 @@
             <ToolBar Grid.Row="0">
                 <Button Content="Перезапуск" Command="{Binding RestartCommand}"/>
                 <Button DataContext="{Binding PlayPauseCommand}" Content="{Binding Label}" Command="{Binding }"/>
-                <Button Content="Наступний крок" Command="{Binding StepCommand}"/>
+                <Button Content="Наступний крок" Command="{Binding Step}"/>
                 <Separator/>
                 <Button Content="Параметри симуляції" Command="{Binding SimulationOptionsCommand}"/>
                 <Button Content="Експортувати у формат CSV" Command="{Binding ExportToCsvCommand}"/>

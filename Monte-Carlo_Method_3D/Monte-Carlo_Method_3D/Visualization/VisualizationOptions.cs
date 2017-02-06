@@ -6,14 +6,12 @@ namespace Monte_Carlo_Method_3D.Visualization
 {
     public class VisualizationOptions
     {
-        public static VisualizationOptions Current { get; set; } = new VisualizationOptions();
-
         public Pallete Pallete { get; set; } = new Pallete();
         public Color BackgroundColor { get; set; } = Colors.White;
 
         public Brush ForegroundBrush { get; set; } = new SolidColorBrush(Colors.Black);
         public Typeface TextTypeface { get; set; } = new Typeface("Segoe UI");
-        public double TextEmSize { get; set; } = 0.15;
+        public double TextEmSize { get; set; } = 0.2;
 
         public bool DrawGrid { get; set; } = true;
         public Pen GridPen { get; set; } = new Pen(new SolidColorBrush(Colors.DarkGray), 0.01D);

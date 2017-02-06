@@ -4,6 +4,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using JetBrains.Annotations;
+using Monte_Carlo_Method_3D.AppSettings;
 using Monte_Carlo_Method_3D.DataModel;
 using Monte_Carlo_Method_3D.Visualization.GraphMesh;
 using Monte_Carlo_Method_3D.Visualization.GraphMesh.Factory;
@@ -23,7 +24,7 @@ namespace Monte_Carlo_Method_3D.Visualization
         {
             Size = size;
 
-            m_Mesh = GraphMeshFactory.Construct(VisualizationOptions.Current.GraphMeshKind, Size);
+            m_Mesh = GraphMeshFactory.Construct(Settings.Current.VisualizationOptions.GraphMeshKind, Size);
         }
 
         public Model3DVisualization GenerateModel3DVisualization([NotNull] GridData data)
@@ -44,7 +45,7 @@ namespace Monte_Carlo_Method_3D.Visualization
         // TODO: Remove copied code
         private ImageSource GenerateGridColorImage([NotNull] GridData data)
         {
-            var options = VisualizationOptions.Current;
+            var options = Settings.Current.VisualizationOptions;
 
             var bitmap = new WriteableBitmap(data.Size.Width, data.Size.Height, Dpi, Dpi, PixelFormats.Bgr24, null);
             int bytesPerPixel = bitmap.Format.BitsPerPixel / 8;

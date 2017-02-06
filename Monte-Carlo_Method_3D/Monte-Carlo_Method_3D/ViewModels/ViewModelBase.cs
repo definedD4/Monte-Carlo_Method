@@ -4,13 +4,12 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ReactiveUI;
 
 namespace Monte_Carlo_Method_3D.ViewModels
 {
-    public abstract class ViewModelBase : INotifyPropertyChanged
+    public abstract class ViewModelBase : ReactiveObject
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
         protected void OnPropertyChanged(string propertyName)
         {
             if (string.IsNullOrWhiteSpace(propertyName))
@@ -18,20 +17,12 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 throw new ArgumentException("Invalid property name.");
             }
 
-            PropertyChangedEventHandler temp = PropertyChanged;
-            if (temp != null)
-            {
-                temp(this, new PropertyChangedEventArgs(propertyName));
-            }
+            this.RaisePropertyChanged(propertyName);
         }
 
         protected void RaisePropertyChanged(PropertyChangedEventArgs e)
         {
-            PropertyChangedEventHandler temp = PropertyChanged;
-            if (temp != null)
-            {
-                temp(this, e);
-            }
+            this.RaisePropertyChanged(e.PropertyName);
         }
     }
 }

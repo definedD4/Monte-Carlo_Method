@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Text;
 using System.Windows.Threading;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
 namespace Monte_Carlo_Method_3D.Util
 {
-    public class Player
+    public class Player : ReactiveObject
     {
         // Settings
         public TimeSpan TimerInterval { get; }
@@ -28,22 +32,22 @@ namespace Monte_Carlo_Method_3D.Util
         /// <summary>
         /// Indicates whether automatic playing is on
         /// </summary>
-        public bool Playing { get; private set; } = false;
+        [Reactive] public bool Playing { get; private set; } = false;
 
         /// <summary>
         /// Indicates whether any step operations is running
         /// </summary>
-        public bool Running { get; private set; } = false;
+        [Reactive] public bool Running { get; private set; } = false;
 
         /// <summary>
         /// Indicates whether running or playing is in progress
         /// </summary>
-        public bool RunningOrPlaying => Running || Playing;
+        public bool RunningOrPlaying { [ObservableAsProperty] get; }
 
         /// <summary>
         /// Indicates whether single step operation is running
         /// </summary>
-        public bool SingleStepRunning => Running && !Playing;
+        public bool SingleStepRunning { [ObservableAsProperty]get; }
 
         public Player(Action stepOnce, Action stepAuto, Action afterStep, TimeSpan timerInterval, DispatcherPriority dispatcherPriority)
         {
@@ -71,6 +75,14 @@ namespace Monte_Carlo_Method_3D.Util
 
                 m_AfterStep();
             };
+
+            this.WhenAnyValue(x => x.Playing, x => x.Running)
+                .Select(t => t.Item1 || t.Item2)
+                .ToPropertyEx(this, x => x.RunningOrPlaying);
+
+            this.WhenAnyValue(x => x.Playing, x => x.Running)
+                .Select(t => t.Item1 && !t.Item2)
+                .ToPropertyEx(this, x => x.SingleStepRunning);
         }
 
         public void StepOnce()

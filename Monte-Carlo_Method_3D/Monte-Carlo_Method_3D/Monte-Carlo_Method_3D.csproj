@@ -149,7 +149,7 @@
       <DependentUpon>ShowTableDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Exceptions\TableLoadException.cs" />
-    <Compile Include="Settings\Settings.cs" />
+    <Compile Include="AppSettings\Settings.cs" />
     <Compile Include="Util\FormattingUtil.cs" />
     <Compile Include="Simulation\SimulationOptions.cs" />
     <Compile Include="Dialogs\SimulationOptionsDialog.xaml.cs">

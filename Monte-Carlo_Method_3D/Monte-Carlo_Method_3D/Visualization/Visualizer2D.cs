@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using JetBrains.Annotations;
+using Monte_Carlo_Method_3D.AppSettings;
 using Monte_Carlo_Method_3D.Simulation;
 
 namespace Monte_Carlo_Method_3D.Visualization
@@ -21,7 +22,7 @@ namespace Monte_Carlo_Method_3D.Visualization
 
         public GridTableVisualization GenerateTableVisualization([NotNull] GridData data)
         {
-            var options = VisualizationOptions.Current;
+            var options = Settings.Current.VisualizationOptions;
 
             var backgroundBrush = new SolidColorBrush(options.BackgroundColor);
 
@@ -55,7 +56,7 @@ namespace Monte_Carlo_Method_3D.Visualization
 
         public GridTableVisualization GenerateColorVisualization([NotNull] GridData data)
         {
-            var options = VisualizationOptions.Current;
+            var options = Settings.Current.VisualizationOptions;
             var backgroundBrush = new SolidColorBrush(options.BackgroundColor);
 
             var visual = new DrawingVisual();
@@ -81,7 +82,7 @@ namespace Monte_Carlo_Method_3D.Visualization
 
         public EdgeTableVisualization GenerateEdgeTableVisualization([NotNull] EdgeData data)
         {
-            var options = VisualizationOptions.Current;
+            var options = Settings.Current.VisualizationOptions;
 
             var backgroundBrush = new SolidColorBrush(options.BackgroundColor);
 
@@ -116,7 +117,7 @@ namespace Monte_Carlo_Method_3D.Visualization
 
         public EdgeTableVisualization GenerateEdgeColorVisualization([NotNull] EdgeData data)
         {
-            var options = VisualizationOptions.Current;
+            var options = Settings.Current.VisualizationOptions;
 
             var backgroundBrush = new SolidColorBrush(options.BackgroundColor);
 
@@ -143,7 +144,7 @@ namespace Monte_Carlo_Method_3D.Visualization
 
         public EdgeTableVisualization GenerateEdgeColorVisualizationWithPath([NotNull] EdgeData data, [NotNull] StParticlePath path)
         {
-            var options = VisualizationOptions.Current;
+            var options = Settings.Current.VisualizationOptions;
 
             var backgroundBrush = new SolidColorBrush(options.BackgroundColor);
 
@@ -201,7 +202,7 @@ namespace Monte_Carlo_Method_3D.Visualization
 
         private ImageSource GenerateGridColorImage([NotNull] GridData data)
         {
-            var options = VisualizationOptions.Current;
+            var options = Settings.Current.VisualizationOptions;
 
             var bitmap = new WriteableBitmap(data.Size.Width, data.Size.Height, Dpi, Dpi, PixelFormats.Bgr24, null);
             int bytesPerPixel = bitmap.Format.BitsPerPixel / 8;
@@ -223,7 +224,7 @@ namespace Monte_Carlo_Method_3D.Visualization
 
         private ImageSource GenerateEdgeColorImage([NotNull] EdgeData data)
         {
-            var options = VisualizationOptions.Current;
+            var options = Settings.Current.VisualizationOptions;
 
             var bitmap = new WriteableBitmap(data.Size.Width, data.Size.Height, Dpi, Dpi, PixelFormats.Bgr24, null);
             int bytesPerPixel = bitmap.Format.BitsPerPixel / 8;

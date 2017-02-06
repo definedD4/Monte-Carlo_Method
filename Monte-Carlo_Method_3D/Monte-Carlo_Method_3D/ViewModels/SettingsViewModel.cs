@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reactive;
+using Monte_Carlo_Method_3D.AppSettings;
 using Monte_Carlo_Method_3D.Visualization;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -8,33 +9,33 @@ namespace Monte_Carlo_Method_3D.ViewModels
 {
     public class SettingsViewModel : ReactiveObject
     {
-        private VisualizationOptions m_OldOptions;
+        private Settings m_OldSettings;
 
         public SettingsViewModel()
         {
-            m_OldOptions = VisualizationOptions.Current;
+            m_OldSettings = Settings.Current;
 
-            LoadProperties(m_OldOptions);
+            LoadProperties(m_OldSettings);
 
             Ok = ReactiveCommand.Create(() =>
             {
-                var visualizationOptions = EmitOptions();
+                var settings = EmitSettings();
 
-                VisualizationOptions.Current = visualizationOptions;
+                Settings.Current = settings;
 
                 CloseDialog.Execute().Subscribe(_ => { });
             });
 
             Apply = ReactiveCommand.Create(() =>
             {
-                var visualizationOptions = EmitOptions();
+                var settings = EmitSettings();
 
-                VisualizationOptions.Current = visualizationOptions;
+                Settings.Current = settings;
             });
 
             Cancel = ReactiveCommand.Create(() =>
             {
-                VisualizationOptions.Current = m_OldOptions;
+                Settings.Current = m_OldSettings;
 
                 CloseDialog.Execute().Subscribe(_ => { });
             });
@@ -42,18 +43,18 @@ namespace Monte_Carlo_Method_3D.ViewModels
             CloseDialog = ReactiveCommand.Create(() => Unit.Default);
         }
 
-        private void LoadProperties(VisualizationOptions options)
+        private void LoadProperties(Settings settings)
         {
-            VisluaizationTextEm = options.TextEmSize;
+            VisluaizationTextEm = settings.VisualizationOptions.TextEmSize;
         }
 
-        private VisualizationOptions EmitOptions()
+        private Settings EmitSettings()
         {
-            var opt = m_OldOptions.Copy();
+            var settings = m_OldSettings.Copy();
 
-            opt.TextEmSize = VisluaizationTextEm;
+            settings.VisualizationOptions.TextEmSize = VisluaizationTextEm;
 
-            return opt;
+            return settings;
         }
 
         public ReactiveCommand<Unit, Unit> Ok { get; }
