@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive;
 using System.Windows;
 using Monte_Carlo_Method_3D.Simulation;
 using Monte_Carlo_Method_3D.Util;
@@ -10,6 +11,8 @@ using Monte_Carlo_Method_3D.AppSettings;
 using Monte_Carlo_Method_3D.Util.Commands;
 using Monte_Carlo_Method_3D.VisualizationModel;
 using Monte_Carlo_Method_3D.VisualizationProvider;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
 namespace Monte_Carlo_Method_3D.ViewModels
 {
@@ -22,59 +25,104 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private StSimulator m_Simulator;
 
         private StVisualizationProvider m_VisualizationProvider;
-        private IVisualization m_Visualization;
+
+        [Reactive]
+        public IVisualization Visualization { get; private set; }
 
         public Pallete Pallete => Settings.Current.VisualizationOptions.Pallete;
 
-        public StTabViewModel(SimulationOptions options) : base("МСВ")
+        private ReactiveCommand<Unit, Unit> UpdateVisualization { get; }
+
+        public ReactivePlayPauseCommand PlayPause { get; }
+
+        public ReactiveCommand<Unit, Unit> Step { get; }
+
+        public ReactiveCommand<Unit, Unit> Restart { get; }
+
+        public ReactiveCommand<Unit, Unit> OpenSimulationOptions { get; }
+
+        public ReactiveCommand<Unit, Unit> ExportToCsv { get; }
+
+        public ReactiveSelectorCommand<string> VisualTypeSelector { get; }
+
+        [Reactive] public StSimulationInfo SimulationInfo { get; private set; }
+
+        public StTabViewModel(SimulationOptions simulationOptions) : base("МСВ")
         {
-            m_SimulationOptions = options;
+            m_SimulationOptions = simulationOptions;
 
             m_Simulator = new StSimulator(m_SimulationOptions);
 
             m_VisualizationProvider = StVisualizationProvider.Table();
 
-            // Init player
             m_Player = new Player(() =>
             {
-                m_Simulator.SimulateSteps(1);
+                m_Simulator.SimulateSteps();
             }, () =>
             {
-                m_Simulator.SimulateSteps(20);
+                m_Simulator.SimulateSteps(5);
             }, () =>
             {
-                Visualization = m_VisualizationProvider.ProvideVisualization(m_Simulator);
-                OnPropertyChanged(nameof(SimulationInfo));
+                UpdateVisualization.Execute().Subscribe();
             }, TimeSpan.FromMilliseconds(10), DispatcherPriority.ContextIdle);
 
-            StepCommand = new DelegateCommand(_ =>
+            UpdateVisualization = ReactiveCommand.Create(() =>
+            {
+                Visualization = m_VisualizationProvider.ProvideVisualization(m_Simulator);
+                SimulationInfo = m_Simulator.SimulationInfo;
+            });
+
+            var notRunningOrPlaying = m_Player.WhenAny(x => x.RunningOrPlaying, r => !r.Value);
+
+            var notSingleStepRunning = m_Player.WhenAny(x => x.SingleStepRunning, r => !r.Value);
+
+            Step = ReactiveCommand.Create(() =>
             {
                 m_Player.StepOnce();
-            }, _ => !m_Player.RunningOrPlaying);
+            }, notRunningOrPlaying);
 
-            PlayPauseCommand = new SwitchStateCommand("Пауза", "Програти", false, _ => !m_Player.SingleStepRunning);
-            PlayPauseCommand.StateChanged += (s, e) =>
+            PlayPause = new ReactivePlayPauseCommand("Програти", "Пауза", notSingleStepRunning);
+
+            PlayPause.Subscribe(p =>
             {
-                if (PlayPauseCommand.State)
+                if (p)
                 {
                     m_Player.Start();
-                    UpdateCommands();
                 }
                 else
                 {
                     m_Player.Stop();
-                    UpdateCommands();
                 }
-            };
+            });
 
-            RestartCommand = new DelegateCommand(x =>
+            Restart = ReactiveCommand.Create(() =>
             {
                 m_Simulator.Reset();
-                Visualization = m_VisualizationProvider.ProvideVisualization(m_Simulator);
-                OnPropertyChanged(nameof(SimulationInfo));
-            }, x => !m_Player.RunningOrPlaying);
+            }, notRunningOrPlaying);
 
-            SimulationOptionsCommand = new DelegateCommand(x =>
+            Restart.InvokeCommand(UpdateVisualization);
+
+            VisualTypeSelector = new ReactiveSelectorCommand<string>(x => (string)x, "Table");
+
+            VisualTypeSelector.Selected
+                .Subscribe(option =>
+                {
+                    switch (option)
+                    {
+                        case "Table":
+                            m_VisualizationProvider = StVisualizationProvider.Table();
+                            break;
+                        case "2D":
+                            m_VisualizationProvider = StVisualizationProvider.Color();
+                            break;
+                    }
+                });
+
+            VisualTypeSelector.Selected
+                .ToSignal()
+                .InvokeCommand(UpdateVisualization);
+
+            OpenSimulationOptions = ReactiveCommand.Create(() =>
             {
                 SimulationOptionsDialog dialog = new SimulationOptionsDialog(m_SimulationOptions);
                 dialog.ShowDialog();
@@ -84,59 +132,22 @@ namespace Monte_Carlo_Method_3D.ViewModels
                     m_SimulationOptions = dialog.SimulationOptions;
                     m_Simulator = new StSimulator(m_SimulationOptions);
                     m_VisualizationProvider = StVisualizationProvider.Table();
-                    Visualization = m_VisualizationProvider.ProvideVisualization(m_Simulator);
-                    OnPropertyChanged(nameof(SimulationInfo));
                 }
-            }, x => !m_Player.RunningOrPlaying);
+            }, notRunningOrPlaying);
 
-            VisualTypeSelector = new SelectorCommand("2D");
+            OpenSimulationOptions
+                .InvokeCommand(UpdateVisualization);
 
-            VisualTypeSelector.SelectionChanged += (s, e) =>
-            {
-                switch (VisualTypeSelector.SelectedValue)
-                {
-                    case "Table":
-                        m_VisualizationProvider = StVisualizationProvider.Table();
-                        break;
-                    case "2D":
-                        m_VisualizationProvider = StVisualizationProvider.Color();
-                        break;
-                }
-                Visualization = m_VisualizationProvider.ProvideVisualization(m_Simulator);
-            };
-            VisualTypeSelector.RaiseSelectionChanged();
-            VisualTypeSelector.UpdateSelectors();
-
-            ExportToCsvCommand = new DelegateCommand(_ =>
+            ExportToCsv = ReactiveCommand.Create(() =>
             {
                 SaveFileDialog saveFileDialog = new SaveFileDialog() { Filter = "Файл CSV (*.csv)|*.csv" };
                 if (saveFileDialog.ShowDialog(Application.Current.MainWindow).GetValueOrDefault())
                 {
-                     CsvUtil.ExportToFile(m_Simulator.GetData().AsGridData(), saveFileDialog.FileName);
+                    CsvUtil.ExportToFile(m_Simulator.GetData().AsGridData(), saveFileDialog.FileName);
                 }
             });
-        }
 
-        private void UpdateCommands()
-        {
-            StepCommand.RaiseCanExecuteChanged();
-            PlayPauseCommand.RaiseCanExecuteChanged();
-            RestartCommand.RaiseCanExecuteChanged();
+            Settings.SettingsChange.InvokeCommand(UpdateVisualization);
         }
-        
-        public IVisualization Visualization
-        {
-            get { return m_Visualization; }
-            set { m_Visualization = value; OnPropertyChanged(nameof(Visualization)); }
-        }
-
-        public StSimulationInfo SimulationInfo => m_Simulator.SimulationInfo;
-
-        public DelegateCommand StepCommand { get; }
-        public SwitchStateCommand PlayPauseCommand { get; }
-        public DelegateCommand RestartCommand { get; }
-        public SelectorCommand VisualTypeSelector { get; }
-        public DelegateCommand SimulationOptionsCommand { get; }
-        public DelegateCommand ExportToCsvCommand { get; }
     }
 }

@@ -45,6 +45,8 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         public ReactiveSelectorCommand<string> VisualTypeSelector { get; }
 
+        [Reactive] public PrSimulationInfo SimulationInfo { get; private set; }
+
         public PrTabViewModel(SimulationOptions simulationOptions) : base("ІПРАЙ")
         {
             m_SimulationOptions = simulationOptions;
@@ -67,7 +69,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
             UpdateVisualization = ReactiveCommand.Create(() =>
             {
                 Visualization = m_VisualizationProvider.ProvideVisualization(m_Simulator.GetData());
-                OnPropertyChanged(nameof(SimulationInfo));
+                SimulationInfo = m_Simulator.SimulationInfo;
             });
 
             var notRunningOrPlaying = m_Player.WhenAny(x => x.RunningOrPlaying, r => !r.Value);
@@ -150,9 +152,5 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
             Settings.SettingsChange.InvokeCommand(UpdateVisualization);
         }
-
-        public PrSimulationInfo SimulationInfo => m_Simulator.SimulationInfo;
-
-
     }
 }
