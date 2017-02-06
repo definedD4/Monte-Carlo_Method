@@ -26,7 +26,8 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         private GridDataVisualizationProvider m_VisualizationProvider;
 
-        [Reactive] public IVisualization Visualization { get; private set; }
+        [Reactive]
+        public IVisualization Visualization { get; private set; }
 
         public Pallete Pallete => Settings.Current.VisualizationOptions.Pallete;
 
@@ -35,11 +36,14 @@ namespace Monte_Carlo_Method_3D.ViewModels
         public ReactivePlayPauseCommand PlayPause { get; }
 
         public ReactiveCommand<Unit, Unit> Step { get; }
-        public DelegateCommand RestartCommand { get; }
-        public DelegateCommand SimulationOptionsCommand { get; }
-        public DelegateCommand ExportToCsvCommand { get; }
 
-        public SelectorCommand VisualTypeSelector { get; }
+        public ReactiveCommand<Unit, Unit> Restart { get; }
+
+        public ReactiveCommand<Unit, Unit> OpenSimulationOptions { get; }
+
+        public ReactiveCommand<Unit, Unit> ExportToCsv { get; }
+
+        public ReactiveSelectorCommand<string> VisualTypeSelector { get; }
 
         public PrTabViewModel(SimulationOptions simulationOptions) : base("ІПРАЙ")
         {
@@ -49,13 +53,12 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
             m_VisualizationProvider = GridDataVisualizationProvider.Table();
 
-            // Init player
             m_Player = new Player(() =>
             {
                 m_Simulator.SimulateSteps();
             }, () =>
             {
-                m_Simulator.SimulateSteps(5);             
+                m_Simulator.SimulateSteps(5);
             }, () =>
             {
                 UpdateVisualization.Execute().Subscribe();
@@ -67,13 +70,16 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 OnPropertyChanged(nameof(SimulationInfo));
             });
 
+            var notRunningOrPlaying = m_Player.WhenAny(x => x.RunningOrPlaying, r => !r.Value);
+
+            var notSingleStepRunning = m_Player.WhenAny(x => x.SingleStepRunning, r => !r.Value);
+
             Step = ReactiveCommand.Create(() =>
             {
                 m_Player.StepOnce();
-            }, m_Player.WhenAny(x => x.RunningOrPlaying, r => !r.Value));
+            }, notRunningOrPlaying);
 
-            PlayPause = new ReactivePlayPauseCommand("Програти", "Пауза",
-                m_Player.WhenAny(x => x.SingleStepRunning, r => !r.Value));
+            PlayPause = new ReactivePlayPauseCommand("Програти", "Пауза", notSingleStepRunning);
 
             PlayPause.Subscribe(p =>
             {
@@ -85,17 +91,39 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 {
                     m_Player.Stop();
                 }
-                UpdateCommands();
             });
 
-            RestartCommand = new DelegateCommand(x =>
+            Restart = ReactiveCommand.Create(() =>
             {
                 m_Simulator.Reset();
-                Visualization = m_VisualizationProvider.ProvideVisualization(m_Simulator.GetData());
-                OnPropertyChanged(nameof(SimulationInfo));
-            }, x => !m_Player.RunningOrPlaying);
+            }, notRunningOrPlaying);
 
-            SimulationOptionsCommand = new DelegateCommand(x =>
+            Restart.InvokeCommand(UpdateVisualization);
+
+            VisualTypeSelector = new ReactiveSelectorCommand<string>(x => (string)x, "Table");
+
+            VisualTypeSelector.Selected
+                .Subscribe(option =>
+                {
+                    switch (option)
+                    {
+                        case "Table":
+                            m_VisualizationProvider = GridDataVisualizationProvider.Table();
+                            break;
+                        case "2D":
+                            m_VisualizationProvider = GridDataVisualizationProvider.Color();
+                            break;
+                        case "3D":
+                            m_VisualizationProvider = GridDataVisualizationProvider.Model3D(m_SimulationOptions.Size);
+                            break;
+                    }
+                });
+
+            VisualTypeSelector.Selected
+                .ToSignal()
+                .InvokeCommand(UpdateVisualization);
+
+            OpenSimulationOptions = ReactiveCommand.Create(() =>
             {
                 SimulationOptionsDialog dialog = new SimulationOptionsDialog(m_SimulationOptions);
                 dialog.ShowDialog();
@@ -105,12 +133,13 @@ namespace Monte_Carlo_Method_3D.ViewModels
                     m_SimulationOptions = dialog.SimulationOptions;
                     m_Simulator = new PrSimulator(m_SimulationOptions);
                     m_VisualizationProvider = GridDataVisualizationProvider.Table();
-                    Visualization = m_VisualizationProvider.ProvideVisualization(m_Simulator.GetData());
-                    OnPropertyChanged(nameof(SimulationInfo));
                 }
-            }, x => !m_Player.RunningOrPlaying);
+            }, notRunningOrPlaying);
 
-            ExportToCsvCommand = new DelegateCommand(x =>
+            OpenSimulationOptions
+                .InvokeCommand(UpdateVisualization);
+
+            ExportToCsv = ReactiveCommand.Create(() =>
             {
                 SaveFileDialog saveFileDialog = new SaveFileDialog() { Filter = "Файл CSV (*.csv)|*.csv" };
                 if (saveFileDialog.ShowDialog(Application.Current.MainWindow).GetValueOrDefault())
@@ -119,39 +148,11 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 }
             });
 
-            VisualTypeSelector = new SelectorCommand("Table");
-
-            VisualTypeSelector.SelectionChanged += (s, e) =>
-            {
-                switch (VisualTypeSelector.SelectedValue)
-                {
-                    case "Table":
-                        m_VisualizationProvider = GridDataVisualizationProvider.Table();
-                        break;
-                    case "2D":
-                        m_VisualizationProvider = GridDataVisualizationProvider.Color();
-                        break;
-                    case "3D":
-                        m_VisualizationProvider = GridDataVisualizationProvider.Model3D(m_SimulationOptions.Size);
-                        break;
-                }
-                Visualization = m_VisualizationProvider.ProvideVisualization(m_Simulator.GetData());
-            };
-            VisualTypeSelector.RaiseSelectionChanged();
-            VisualTypeSelector.UpdateSelectors();
-
-            Settings.SettingsCange.InvokeCommand(UpdateVisualization);
-        }
-        
-        private void UpdateCommands()
-        {
-            RestartCommand.RaiseCanExecuteChanged();
-            SimulationOptionsCommand.RaiseCanExecuteChanged();
-            ExportToCsvCommand.RaiseCanExecuteChanged();
+            Settings.SettingsChange.InvokeCommand(UpdateVisualization);
         }
 
         public PrSimulationInfo SimulationInfo => m_Simulator.SimulationInfo;
 
-        
+
     }
 }

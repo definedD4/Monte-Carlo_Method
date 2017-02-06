@@ -151,6 +151,7 @@
     <Compile Include="Exceptions\TableLoadException.cs" />
     <Compile Include="AppSettings\Settings.cs" />
     <Compile Include="Util\Commands\ReactivePlayPauseCommand.cs" />
+    <Compile Include="Util\Commands\ReactiveSelectorCommand.cs" />
     <Compile Include="Util\FormattingUtil.cs" />
     <Compile Include="Simulation\SimulationOptions.cs" />
     <Compile Include="Dialogs\SimulationOptionsDialog.xaml.cs">
@@ -168,6 +169,7 @@
     <Compile Include="Util\InterfaceTemplateSelector.cs" />
     <Compile Include="Util\Player.cs" />
     <Compile Include="Util\PointedValueBehavior.cs" />
+    <Compile Include="Util\ReactiveExtensions.cs" />
     <Compile Include="Util\Rotation3DBehavior.cs" />
     <Compile Include="Util\Commands\SwitchStateCommand.cs" />
     <Compile Include="Calculation\CalculationConstraints.cs" />

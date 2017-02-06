@@ -33,7 +33,7 @@ namespace Monte_Carlo_Method_3D.AppSettings
 
         private static Subject<Unit> s_SettingsChangeSubject = new Subject<Unit>();
 
-        public static IObservable<Unit> SettingsCange => s_SettingsChangeSubject;
+        public static IObservable<Unit> SettingsChange => s_SettingsChangeSubject;
 
         public VisualizationOptions VisualizationOptions { get; }
 

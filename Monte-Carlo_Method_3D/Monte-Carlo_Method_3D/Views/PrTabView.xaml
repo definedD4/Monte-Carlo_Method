@@ -21,12 +21,12 @@
             
             <!--#region Toolbar-->
             <ToolBar Grid.Row="0">
-                <Button Content="Перезапуск" Command="{Binding RestartCommand}"/>
+                <Button Content="Перезапуск" Command="{Binding Restart}"/>
                 <Button Content="{Binding PlayPause.Text}" Command="{Binding PlayPause}"/>
                 <Button Content="Наступний крок" Command="{Binding Step}"/>
                 <Separator/>
-                <Button Content="Параметри симуляції" Command="{Binding SimulationOptionsCommand}"/>
-                <Button Content="Експортувати у формат CSV" Command="{Binding ExportToCsvCommand}"/>
+                <Button Content="Параметри симуляції" Command="{Binding OpenSimulationOptions}"/>
+                <Button Content="Експортувати у формат CSV" Command="{Binding ExportToCsv}"/>
             </ToolBar>
             <!--#endregion-->
             

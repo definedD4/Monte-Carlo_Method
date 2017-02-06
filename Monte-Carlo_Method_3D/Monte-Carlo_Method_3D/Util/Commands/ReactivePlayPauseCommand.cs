@@ -43,7 +43,8 @@ namespace Monte_Carlo_Method_3D.Util.Commands
             m_CanExecute
                 .ToPropertyEx(this, x => x.CanExecuteValue);
 
-            m_CanExecute
+            this
+                .WhenAnyValue(x => x.CanExecuteValue)
                 .Subscribe(c =>
                 {
                     CanExecuteChanged?.Invoke(this, EventArgs.Empty);
