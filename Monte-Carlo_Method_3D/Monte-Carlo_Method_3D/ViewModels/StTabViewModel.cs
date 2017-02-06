@@ -7,6 +7,7 @@ using System.Windows.Threading;
 using Monte_Carlo_Method_3D.Dialogs;
 using Microsoft.Win32;
 using Monte_Carlo_Method_3D.AppSettings;
+using Monte_Carlo_Method_3D.Util.Commands;
 using Monte_Carlo_Method_3D.VisualizationModel;
 using Monte_Carlo_Method_3D.VisualizationProvider;
 

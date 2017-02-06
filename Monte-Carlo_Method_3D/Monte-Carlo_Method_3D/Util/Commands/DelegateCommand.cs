@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Monte_Carlo_Method_3D.Util
+namespace Monte_Carlo_Method_3D.Util.Commands
 {
     public class DelegateCommand : ICommand
     {

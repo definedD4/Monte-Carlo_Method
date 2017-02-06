@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace Monte_Carlo_Method_3D.Util
+namespace Monte_Carlo_Method_3D.Util.Commands
 {
     public class SelectorCommand : ICommand
     {

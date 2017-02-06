@@ -76,11 +76,11 @@ namespace Monte_Carlo_Method_3D.Util
                 m_AfterStep();
             };
 
-            this.WhenAnyValue(x => x.Playing, x => x.Running)
+            this.WhenAnyValue(x => x.Running, x => x.Playing)
                 .Select(t => t.Item1 || t.Item2)
                 .ToPropertyEx(this, x => x.RunningOrPlaying);
 
-            this.WhenAnyValue(x => x.Playing, x => x.Running)
+            this.WhenAnyValue(x => x.Running, x => x.Playing)
                 .Select(t => t.Item1 && !t.Item2)
                 .ToPropertyEx(this, x => x.SingleStepRunning);
         }

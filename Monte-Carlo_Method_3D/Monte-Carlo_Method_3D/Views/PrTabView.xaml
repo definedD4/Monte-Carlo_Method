@@ -22,7 +22,7 @@
             <!--#region Toolbar-->
             <ToolBar Grid.Row="0">
                 <Button Content="Перезапуск" Command="{Binding RestartCommand}"/>
-                <Button DataContext="{Binding PlayPauseCommand}" Content="{Binding Label}" Command="{Binding }"/>
+                <Button Content="{Binding PlayPause.Text}" Command="{Binding PlayPause}"/>
                 <Button Content="Наступний крок" Command="{Binding Step}"/>
                 <Separator/>
                 <Button Content="Параметри симуляції" Command="{Binding SimulationOptionsCommand}"/>
@@ -40,7 +40,7 @@
                     </Grid.ColumnDefinitions>
                     
                     <!--#region Visualization-->
-                    <Border Grid.Column="0" Style="{DynamicResource ContainerBorderStyle}" >
+                    <Border Grid.Column="0" Style="{DynamicResource ContainerBorderStyle}">
                         <Grid Margin="10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>

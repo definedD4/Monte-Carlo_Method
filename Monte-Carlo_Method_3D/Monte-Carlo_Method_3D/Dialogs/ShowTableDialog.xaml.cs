@@ -12,6 +12,7 @@ using System.Windows.Shapes;
 using Monte_Carlo_Method_3D.DataModel;
 using Monte_Carlo_Method_3D.Simulation;
 using Monte_Carlo_Method_3D.Util;
+using Monte_Carlo_Method_3D.Util.Commands;
 using Monte_Carlo_Method_3D.Visualization;
 using Monte_Carlo_Method_3D.VisualizationModel;
 using Monte_Carlo_Method_3D.VisualizationProvider;

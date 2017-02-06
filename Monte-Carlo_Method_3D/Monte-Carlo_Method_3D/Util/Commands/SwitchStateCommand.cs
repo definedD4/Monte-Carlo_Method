@@ -1,11 +1,8 @@
-﻿using Monte_Carlo_Method_3D.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Windows.Input;
+using Monte_Carlo_Method_3D.ViewModels;
 
-namespace Monte_Carlo_Method_3D.Util
+namespace Monte_Carlo_Method_3D.Util.Commands
 {
     public class SwitchStateCommand : ViewModelBase, ICommand
     {

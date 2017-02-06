@@ -150,6 +150,7 @@
     </Compile>
     <Compile Include="Exceptions\TableLoadException.cs" />
     <Compile Include="AppSettings\Settings.cs" />
+    <Compile Include="Util\Commands\ReactivePlayPauseCommand.cs" />
     <Compile Include="Util\FormattingUtil.cs" />
     <Compile Include="Simulation\SimulationOptions.cs" />
     <Compile Include="Dialogs\SimulationOptionsDialog.xaml.cs">
@@ -162,13 +163,13 @@
     <Compile Include="Simulation\StSimulationInfo.cs" />
     <Compile Include="Simulation\StSimulator.cs" />
     <Compile Include="Util\CsvUtil.cs" />
-    <Compile Include="Util\DelegateCommand.cs" />
+    <Compile Include="Util\Commands\DelegateCommand.cs" />
     <Compile Include="Util\EnumUtil.cs" />
     <Compile Include="Util\InterfaceTemplateSelector.cs" />
     <Compile Include="Util\Player.cs" />
     <Compile Include="Util\PointedValueBehavior.cs" />
     <Compile Include="Util\Rotation3DBehavior.cs" />
-    <Compile Include="Util\SwitchStateCommand.cs" />
+    <Compile Include="Util\Commands\SwitchStateCommand.cs" />
     <Compile Include="Calculation\CalculationConstraints.cs" />
     <Compile Include="ViewModels\ConstraintChooserViewModel.cs" />
     <Compile Include="ViewModels\CpTabViewModel.cs" />
@@ -187,7 +188,7 @@
     <Compile Include="Visualization\GraphMesh\Factory\GraphMeshFactory.cs" />
     <Compile Include="Visualization\GraphMesh\HistogramGraphMesh.cs" />
     <Compile Include="Visualization\GraphMesh\TriangleGraphMesh.cs" />
-    <Compile Include="Util\SelectorCommand.cs" />
+    <Compile Include="Util\Commands\SelectorCommand.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\MainView.xaml.cs">

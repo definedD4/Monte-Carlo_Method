@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Threading;
 using Microsoft.Win32;
 using Monte_Carlo_Method_3D.AppSettings;
+using Monte_Carlo_Method_3D.Util.Commands;
 using Monte_Carlo_Method_3D.VisualizationModel;
 using Monte_Carlo_Method_3D.VisualizationProvider;
 using ReactiveUI;
@@ -31,7 +32,8 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         private ReactiveCommand<Unit, Unit> UpdateVisualization { get; }
 
-        public SwitchStateCommand PlayPauseCommand { get; }
+        public ReactivePlayPauseCommand PlayPause { get; }
+
         public ReactiveCommand<Unit, Unit> Step { get; }
         public DelegateCommand RestartCommand { get; }
         public DelegateCommand SimulationOptionsCommand { get; }
@@ -70,10 +72,12 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 m_Player.StepOnce();
             }, m_Player.WhenAny(x => x.RunningOrPlaying, r => !r.Value));
 
-            PlayPauseCommand = new SwitchStateCommand("Пауза", "Програти", false, _ => !m_Player.SingleStepRunning);
-            PlayPauseCommand.StateChanged += (s, e) =>
+            PlayPause = new ReactivePlayPauseCommand("Програти", "Пауза",
+                m_Player.WhenAny(x => x.SingleStepRunning, r => !r.Value));
+
+            PlayPause.Subscribe(p =>
             {
-                if (PlayPauseCommand.State)
+                if (p)
                 {
                     m_Player.Start();
                 }
@@ -82,7 +86,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
                     m_Player.Stop();
                 }
                 UpdateCommands();
-            };
+            });
 
             RestartCommand = new DelegateCommand(x =>
             {
@@ -141,7 +145,6 @@ namespace Monte_Carlo_Method_3D.ViewModels
         
         private void UpdateCommands()
         {
-            PlayPauseCommand.RaiseCanExecuteChanged();
             RestartCommand.RaiseCanExecuteChanged();
             SimulationOptionsCommand.RaiseCanExecuteChanged();
             ExportToCsvCommand.RaiseCanExecuteChanged();
