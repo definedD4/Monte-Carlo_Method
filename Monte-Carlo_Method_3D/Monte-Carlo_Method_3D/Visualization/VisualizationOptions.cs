@@ -35,17 +35,33 @@ namespace Monte_Carlo_Method_3D.Visualization
 
         public Pen GridPen => new Pen(new SolidColorBrush(GridColor), GridThickness);
 
-        public Pen PathPen { get; set; } = new Pen(new SolidColorBrush(Colors.Black), 0.1D);
+        [JsonProperty]
+        public Color PathColor { get; set; } = Colors.Black;
 
+        [JsonProperty]
+        public double PathThickness { get; set; } = 0.1D;
+
+        public Pen PathPen => new Pen(new SolidColorBrush(PathColor), PathThickness);
+
+        [JsonProperty]
         public bool DrawStartPoint { get; set; } = true;
 
-        public Drawing StartPointDrawing { get; set; } = new GeometryDrawing(new SolidColorBrush(Colors.DarkBlue),
+        [JsonProperty]
+        public Color StartPointColor { get; set; } = Colors.DarkBlue;
+
+        public Drawing StartPointDrawing => new GeometryDrawing(
+            new SolidColorBrush(StartPointColor),
             null,
             new EllipseGeometry(new Point(0, 0), 0.2, 0.2));
 
+        [JsonProperty]
         public bool DrawEndPoint { get; set; } = true;
 
-        public Drawing EndPointDrawing { get; set; } = new GeometryDrawing(new SolidColorBrush(Colors.Brown),
+        [JsonProperty]
+        public Color EndPointColor { get; set; } = Colors.Brown;
+
+        public Drawing EndPointDrawing => new GeometryDrawing(
+            new SolidColorBrush(EndPointColor),
             null,
             new EllipseGeometry(new Point(0, 0), 0.2, 0.2));
 
