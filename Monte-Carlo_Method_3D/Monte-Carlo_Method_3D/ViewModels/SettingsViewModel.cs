@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Reactive;
+using System.Windows.Media;
 using Monte_Carlo_Method_3D.AppSettings;
 using Monte_Carlo_Method_3D.Visualization;
+using Monte_Carlo_Method_3D.Visualization.GraphMesh.Factory;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -9,7 +11,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
 {
     public class SettingsViewModel : ReactiveObject
     {
-        private Settings m_OldSettings;
+        private readonly Settings m_OldSettings;
 
         public SettingsViewModel()
         {
@@ -23,7 +25,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
                 Settings.Current = settings;
 
-                CloseDialog.Execute().Subscribe(_ => { });
+                CloseDialog.Execute().Subscribe();
             });
 
             Apply = ReactiveCommand.Create(() =>
@@ -37,7 +39,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
             {
                 Settings.Current = m_OldSettings;
 
-                CloseDialog.Execute().Subscribe(_ => { });
+                CloseDialog.Execute().Subscribe();
             });
 
             CloseDialog = ReactiveCommand.Create(() => Unit.Default);
@@ -46,6 +48,11 @@ namespace Monte_Carlo_Method_3D.ViewModels
         private void LoadProperties(Settings settings)
         {
             VisluaizationTextEm = settings.VisualizationOptions.TextEmSize;
+            VisualizationTextColor = settings.VisualizationOptions.ForegroundColor;
+            VisualizationBackgroundColor = settings.VisualizationOptions.BackgroundColor;
+            DrawGrid = settings.VisualizationOptions.DrawGrid;
+            VisualizationGridColor = settings.VisualizationOptions.GridColor;
+            VisualizationGridThickness = settings.VisualizationOptions.GridThickness;
         }
 
         private Settings EmitSettings()
@@ -53,6 +60,11 @@ namespace Monte_Carlo_Method_3D.ViewModels
             var settings = m_OldSettings.Copy();
 
             settings.VisualizationOptions.TextEmSize = VisluaizationTextEm;
+            settings.VisualizationOptions.ForegroundColor = VisualizationTextColor;
+            settings.VisualizationOptions.BackgroundColor = VisualizationBackgroundColor;
+            settings.VisualizationOptions.DrawGrid = DrawGrid;
+            settings.VisualizationOptions.GridColor = VisualizationGridColor;
+            settings.VisualizationOptions.GridThickness = VisualizationGridThickness;
 
             return settings;
         }
@@ -67,5 +79,20 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         [Reactive]
         public double VisluaizationTextEm { get; set; }
+
+        [Reactive]
+        public Color VisualizationTextColor { get; set; }
+
+        [Reactive]
+        public Color VisualizationBackgroundColor { get; set; }
+
+        [Reactive]
+        public bool DrawGrid { get; set; }
+
+        [Reactive]
+        public Color VisualizationGridColor { get; set; }
+
+        [Reactive]
+        public double VisualizationGridThickness { get; set; }
     }
 }

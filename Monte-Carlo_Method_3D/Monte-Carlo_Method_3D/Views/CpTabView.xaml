@@ -22,11 +22,11 @@
             
             <!--#region Toolbar-->
             <ToolBar Grid.Row="0">
-                <Button Content="Перезапуск" Command="{Binding RestartCommand}"/>
-                <Button DataContext="{Binding PlayPauseCommand}" Content="{Binding Label}" Command="{Binding }"/>
-                <Button Content="Наступний крок" Command="{Binding SimulateStepCommand}"/>
+                <Button Content="Перезапуск" Command="{Binding Restart}"/>
+                <Button Content="{Binding PlayPause.Text}" Command="{Binding PlayPause}"/>
+                <Button Content="Наступний крок" Command="{Binding SimulateStep}"/>
                 <Separator/>
-                <Button Content="Параметри симуляції" Command="{Binding SimulationOptionsCommand}"/>
+                <Button Content="Параметри симуляції" Command="{Binding OpenSimualationOptions}"/>
             </ToolBar>
             <!--#endregion-->
             

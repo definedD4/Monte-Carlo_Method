@@ -29,7 +29,8 @@ namespace Monte_Carlo_Method_3D.ViewModels
         [Reactive]
         public IVisualization Visualization { get; private set; }
 
-        public Pallete Pallete => Settings.Current.VisualizationOptions.Pallete;
+        [Reactive]
+        public Pallete Pallete { get; private set; }
 
         private ReactiveCommand<Unit, Unit> UpdateVisualization { get; }
 
@@ -147,7 +148,16 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 }
             });
 
-            Settings.SettingsChange.InvokeCommand(UpdateVisualization);
+            Settings.SettingsChange
+                .InvokeCommand(UpdateVisualization);
+
+            Settings.SettingsChange
+                .Subscribe(_ =>
+                {
+                    Pallete = Settings.Current.VisualizationOptions.Pallete;
+                });
+
+            Pallete = Settings.Current.VisualizationOptions.Pallete;
         }
     }
 }

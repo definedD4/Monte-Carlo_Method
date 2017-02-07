@@ -1,20 +1,39 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Media;
 using Monte_Carlo_Method_3D.Visualization.GraphMesh.Factory;
+using Newtonsoft.Json;
 
 namespace Monte_Carlo_Method_3D.Visualization
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public class VisualizationOptions
     {
         public Pallete Pallete { get; set; } = new Pallete();
+
+        [JsonProperty]
         public Color BackgroundColor { get; set; } = Colors.White;
 
-        public Brush ForegroundBrush { get; set; } = new SolidColorBrush(Colors.Black);
+        [JsonProperty]
+        public Color ForegroundColor { get; set; } = Colors.Black;
+
+        public Brush ForegroundBrush => new SolidColorBrush(ForegroundColor);
+
         public Typeface TextTypeface { get; set; } = new Typeface("Segoe UI");
+
+        [JsonProperty]
         public double TextEmSize { get; set; } = 0.2;
 
+        [JsonProperty]
         public bool DrawGrid { get; set; } = true;
-        public Pen GridPen { get; set; } = new Pen(new SolidColorBrush(Colors.DarkGray), 0.01D);
+
+        [JsonProperty]
+        public Color GridColor { get; set; } = Colors.DarkGray;
+
+        [JsonProperty]
+        public double GridThickness { get; set; } = 0.01D;
+
+        public Pen GridPen => new Pen(new SolidColorBrush(GridColor), GridThickness);
 
         public Pen PathPen { get; set; } = new Pen(new SolidColorBrush(Colors.Black), 0.1D);
 
