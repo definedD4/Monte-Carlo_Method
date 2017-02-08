@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Monte_Carlo_Method_3D.Styles"
+                    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit">
+    <Style x:Key="LocalizedColorPicker" TargetType="xctk:ColorPicker">
+        <Setter Property="AvailableColorsHeader" Value="Доступні кольори:"/>
+        <Setter Property="StandardColorsHeader" Value="Стандартні кольори:"/>
+        <Setter Property="RecentColorsHeader" Value="Недавні кольори:"/>
+        <Setter Property="AdvancedButtonHeader" Value="Додаткові"/>
+        <Setter Property="StandardButtonHeader" Value="Стандартні"/>
+    </Style>
+</ResourceDictionary>

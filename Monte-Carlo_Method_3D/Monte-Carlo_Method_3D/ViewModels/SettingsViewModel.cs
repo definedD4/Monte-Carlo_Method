@@ -53,6 +53,12 @@ namespace Monte_Carlo_Method_3D.ViewModels
             DrawGrid = settings.VisualizationOptions.DrawGrid;
             VisualizationGridColor = settings.VisualizationOptions.GridColor;
             VisualizationGridThickness = settings.VisualizationOptions.GridThickness;
+            DrawStartPoint = settings.VisualizationOptions.DrawStartPoint;
+            StartPointColor = settings.VisualizationOptions.StartPointColor;
+            DrawEndPoint = settings.VisualizationOptions.DrawEndPoint;
+            EndPointColor = settings.VisualizationOptions.EndPointColor;
+            PathColor = settings.VisualizationOptions.PathColor;
+            PathThickness = settings.VisualizationOptions.PathThickness;
         }
 
         private Settings EmitSettings()
@@ -65,6 +71,12 @@ namespace Monte_Carlo_Method_3D.ViewModels
             settings.VisualizationOptions.DrawGrid = DrawGrid;
             settings.VisualizationOptions.GridColor = VisualizationGridColor;
             settings.VisualizationOptions.GridThickness = VisualizationGridThickness;
+            settings.VisualizationOptions.DrawStartPoint = DrawStartPoint;
+            settings.VisualizationOptions.StartPointColor = StartPointColor;
+            settings.VisualizationOptions.DrawEndPoint = DrawEndPoint;
+            settings.VisualizationOptions.EndPointColor = EndPointColor;
+            settings.VisualizationOptions.PathColor = PathColor;
+            settings.VisualizationOptions.PathThickness = PathThickness;
 
             return settings;
         }
@@ -94,5 +106,23 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         [Reactive]
         public double VisualizationGridThickness { get; set; }
+
+        [Reactive]
+        public bool DrawStartPoint { get; set; }
+
+        [Reactive]
+        public Color StartPointColor { get; set; }
+
+        [Reactive]
+        public bool DrawEndPoint { get; set; }
+
+        [Reactive]
+        public Color EndPointColor { get; set; }
+
+        [Reactive]
+        public Color PathColor { get; set; }
+
+        [Reactive]
+        public double PathThickness { get; set; }
     }
 }

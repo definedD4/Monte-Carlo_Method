@@ -8,5 +8,6 @@
         <ResourceDictionary Source="SelectorButtonStyle.xaml"/>
         <ResourceDictionary Source="TabControlStyle.xaml"/>
         <ResourceDictionary Source="BorderStyle.xaml"/>
+        <ResourceDictionary Source="ColorPickerStyle.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
