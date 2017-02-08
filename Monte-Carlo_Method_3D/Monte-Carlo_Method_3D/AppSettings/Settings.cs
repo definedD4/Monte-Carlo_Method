@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reactive;
 using System.Reactive.Subjects;
@@ -54,7 +55,9 @@ namespace Monte_Carlo_Method_3D.AppSettings
 
         public Settings Copy()
         {
-            return (Settings)MemberwiseClone();
+            var copy = new Settings(VisualizationOptions.Copy());
+
+            return copy;
         }
     }
 }

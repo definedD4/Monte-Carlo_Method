@@ -150,6 +150,7 @@
     <Compile Include="Calculation\Calculation.cs" />
     <Compile Include="Calculation\StCalculation.cs" />
     <Compile Include="Calculation\PrCalculation.cs" />
+    <Compile Include="Controls\AdvancedTabControl.cs" />
     <Compile Include="Controls\GridDataLoadSlot.xaml.cs">
       <DependentUpon>GridDataLoadSlot.xaml</DependentUpon>
     </Compile>
@@ -263,6 +264,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\SimulationOptionsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\AdvancedTabControlStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

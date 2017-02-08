@@ -1,6 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Style TargetType="{x:Type TabControl}">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Monte_Carlo_Method_3D.Styles"
+                    xmlns:controls="clr-namespace:Monte_Carlo_Method_3D.Controls">
+    <Style TargetType="{x:Type controls:AdvancedTabControl}">
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">
@@ -11,13 +13,15 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <TabPanel x:Name="HeaderPanel"
-                                    Grid.Row="0"
+                        <DockPanel Grid.Row="0">
+                            <ContentPresenter DockPanel.Dock="Right" Content="{Binding AdditionalContent, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:AdvancedTabControl}}}"/>
+                            <TabPanel x:Name="HeaderPanel"
                                     Panel.ZIndex="1"
                                     Margin="0"
                                     IsItemsHost="True"
                                     KeyboardNavigation.TabIndex="1"
                                     Background="Transparent" />
+                        </DockPanel>
                         <Border x:Name="Border"
                                     Grid.Row="1"
                                     BorderThickness="0,2,0,0"

@@ -15,18 +15,20 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         public SettingsViewModel()
         {
-            m_OldSettings = Settings.Current;
+            m_OldSettings = Settings.Current.Copy();
 
             LoadProperties(m_OldSettings);
+
+            CloseDialog = ReactiveCommand.Create(() => Unit.Default);
 
             Ok = ReactiveCommand.Create(() =>
             {
                 var settings = EmitSettings();
 
                 Settings.Current = settings;
-
-                CloseDialog.Execute().Subscribe();
             });
+
+            Ok.InvokeCommand(CloseDialog);
 
             Apply = ReactiveCommand.Create(() =>
             {
@@ -38,11 +40,9 @@ namespace Monte_Carlo_Method_3D.ViewModels
             Cancel = ReactiveCommand.Create(() =>
             {
                 Settings.Current = m_OldSettings;
-
-                CloseDialog.Execute().Subscribe();
             });
 
-            CloseDialog = ReactiveCommand.Create(() => Unit.Default);
+            Cancel.InvokeCommand(CloseDialog);
         }
 
         private void LoadProperties(Settings settings)

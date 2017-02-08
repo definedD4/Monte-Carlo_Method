@@ -9,5 +9,6 @@
         <ResourceDictionary Source="TabControlStyle.xaml"/>
         <ResourceDictionary Source="BorderStyle.xaml"/>
         <ResourceDictionary Source="ColorPickerStyle.xaml"/>
+        <ResourceDictionary Source="AdvancedTabControlStyle.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
