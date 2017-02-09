@@ -20,7 +20,8 @@
                                     Margin="0"
                                     IsItemsHost="True"
                                     KeyboardNavigation.TabIndex="1"
-                                    Background="Transparent" />
+                                    Background="Transparent"
+                                    VerticalAlignment="Bottom"/>
                         </DockPanel>
                         <Border x:Name="Border"
                                     Grid.Row="1"
@@ -57,6 +58,9 @@
                                     </Border>
                                 </Grid>
                                 <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="DarkGray"/>
+                                    </Trigger>
                                     <Trigger Property="IsSelected" Value="True">
                                         <Setter Property="Panel.ZIndex" Value="100" />
                                         <Setter TargetName="Border" Property="Background" Value="{DynamicResource ActiveBackgroundColor}"/>

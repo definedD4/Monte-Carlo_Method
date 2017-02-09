@@ -21,24 +21,15 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid Background="{DynamicResource SecondaryBackgroundColor}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Menu Grid.Row="0">
-            <MenuItem Header="Сервіс">
-                <MenuItem Header="Налаштування" Command="{Binding SettingsCommand}"/>
-            </MenuItem>
-        </Menu>
         <controls:AdvancedTabControl ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab}"
-                    IsSynchronizedWithCurrentItem="False" Grid.Row="1">
+                    IsSynchronizedWithCurrentItem="False">
             <controls:AdvancedTabControl.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Header}" Margin="2"/>
                 </DataTemplate>
             </controls:AdvancedTabControl.ItemTemplate>
             <controls:AdvancedTabControl.AdditionalContent>
-                <Button Margin="4" Content="Settings"/>
+                <Button Style="{DynamicResource SettingsButtonStyle}" Command="{Binding SettingsCommand}"/>
             </controls:AdvancedTabControl.AdditionalContent>
         </controls:AdvancedTabControl>
     </Grid>
