@@ -35,7 +35,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         public СlTabViewModel() : base("Розрахунок")
         {
-            CalculationMethod = CalculationMethod.Propability;
+            CalculationMethod = Calculation.CalculationMethod.Propability;
 
             m_StartCommand = new DelegateCommand(x =>
             {
@@ -75,16 +75,17 @@ namespace Monte_Carlo_Method_3D.ViewModels
                 }
 
                 // Selecting calculation method
-                switch (m_CalculationMethod)
+                if (m_CalculationMethod == Calculation.CalculationMethod.Propability)
                 {
-                    case CalculationMethod.Propability:
-                        m_Calculation = new PrCalculation(constraint, GridWidth, GridHeight, EdgeData, calcMask);
-                    break;
-                    case CalculationMethod.Statistical:
-                        m_Calculation = new StCalculation(constraint, GridWidth, GridHeight, EdgeData, calcMask);
-                    break;
-                    default:
-                        throw new InvalidOperationException($"Invalid calculation method selected: {m_CalculationMethod}.");
+                    m_Calculation = new PrCalculation(constraint, GridWidth, GridHeight, EdgeData, calcMask);
+                }
+                else if (m_CalculationMethod == Calculation.CalculationMethod.Statistical)
+                {
+                    m_Calculation = new StCalculation(constraint, GridWidth, GridHeight, EdgeData, calcMask);
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Invalid calculation method selected: {m_CalculationMethod}.");
                 }
 
                 // Start calculation

@@ -32,8 +32,8 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Margin="2" Grid.Column="0" Text="Спосіб симуляції:"/>
-                                <ComboBox Margin="2" Grid.Column="1" ItemsSource="{ut:EnumSelection {x:Type cl:CalculationMethod}}"
-                                          SelectedValue="{Binding CalculationMethod}" DisplayMemberPath="DisplayName" SelectedValuePath="Value"/>
+                                <ComboBox Margin="2" Grid.Column="1" ItemsSource="{x:Static cl:CalculationMethod.AvailbleMethods}"
+                                          SelectedValue="{Binding CalculationMethod}" DisplayMemberPath="DisplayName"/>
                             </Grid>
                             <ContentPresenter Content="{Binding ConstraintChooser}"/>
                             <TextBlock Text="Вузли для розразунку:" Margin="2"/>

@@ -9,14 +9,6 @@ using Monte_Carlo_Method_3D.DataModel;
 
 namespace Monte_Carlo_Method_3D.Calculation
 {
-    public enum CalculationMethod
-    {
-        [Description("ІПРАЙ")]
-        Propability,
-        [Description("МСВ")]
-        Statistical
-    }
-
     public abstract class Calculation : INotifyPropertyChanged
     {
         private readonly ICalculationConstraint m_Constraint;

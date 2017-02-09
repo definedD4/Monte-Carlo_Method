@@ -148,6 +148,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Calculation\Calculation.cs" />
+    <Compile Include="Calculation\CalculationConstraintCreator.cs" />
+    <Compile Include="Calculation\CalculationMethod.cs" />
     <Compile Include="Calculation\StCalculation.cs" />
     <Compile Include="Calculation\PrCalculation.cs" />
     <Compile Include="Controls\AdvancedTabControl.cs" />
