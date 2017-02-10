@@ -9,7 +9,7 @@ namespace Monte_Carlo_Method_3D.ViewModels
     {
         public string Header { get; protected set; }
 
-        public TabViewModel(string header) : base()
+        protected TabViewModel(string header) : base()
         {
             Header = header;
         }
