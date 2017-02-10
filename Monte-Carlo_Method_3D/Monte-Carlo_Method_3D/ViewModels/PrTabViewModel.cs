@@ -62,10 +62,16 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
                 m_Player = new Player(() =>
                 {
-                    m_Simulator.SimulateSteps();
+                    using (logger.LogPerf("Step simulation"))
+                    {
+                        m_Simulator.SimulateSteps();
+                    }
                 }, () =>
                 {
-                    m_Simulator.SimulateSteps(5);
+                    using (logger.LogPerf("Auto simulation"))
+                    {
+                        m_Simulator.SimulateSteps(5);
+                    }
                 }, () =>
                 {
                     UpdateVisualization.Execute().Subscribe();

@@ -4,7 +4,7 @@
                     xmlns:sim="clr-namespace:Monte_Carlo_Method_3D.Simulation"
                     xmlns:util="clr-namespace:Monte_Carlo_Method_3D.Util">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="../Styles/Resources.xaml"/>
+        <ResourceDictionary Source="../Styles/All.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     
     <util:LongFormatConverter x:Key="LongFormatConverter"/>

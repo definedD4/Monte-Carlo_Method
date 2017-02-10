@@ -24,13 +24,13 @@ namespace Monte_Carlo_Method_3D.Util
             rotateTransform.Rotation = rotation;
             transform.Children.Add(rotateTransform);
 
-            ScaleTransform3D scaleTransform = new ScaleTransform3D();
+            /*ScaleTransform3D scaleTransform = new ScaleTransform3D();
             Binding binding = new Binding();
             binding.Path = new PropertyPath("ModelScale");
             BindingOperations.SetBinding(scaleTransform, ScaleTransform3D.ScaleXProperty, binding);
             BindingOperations.SetBinding(scaleTransform, ScaleTransform3D.ScaleYProperty, binding);
             BindingOperations.SetBinding(scaleTransform, ScaleTransform3D.ScaleZProperty, binding);
-            transform.Children.Add(scaleTransform);
+            transform.Children.Add(scaleTransform);*/
 
             AssociatedObject.Transform = transform;
 
