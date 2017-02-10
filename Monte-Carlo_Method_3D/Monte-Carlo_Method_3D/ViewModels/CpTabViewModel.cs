@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reactive;
 using System.Windows.Threading;
+using Monte_Carlo_Method_3D.AppSettings;
 using Monte_Carlo_Method_3D.Dialogs;
 using Monte_Carlo_Method_3D.Simulation;
 using Monte_Carlo_Method_3D.Util;
@@ -49,79 +50,90 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         public CpTabViewModel(SimulationOptions options) : base("Порівняння")
         {
-            InitComponents(options);
+            var logger = Logger.New(typeof(CpTabViewModel));
 
-            m_Player = new Player(() =>
+            using (logger.LogPerf("Init"))
             {
-                Simulate(0.05d);
+                InitComponents(options);
+
+                m_Player = new Player(() =>
+                {
+                    Simulate(0.05d);
                 
-            }, () =>
-            {
-                for (int i = 0; i < 50; i++)
+                }, () =>
                 {
-                    Simulate();
-                }
-            }, () =>
-            {
+                    for (int i = 0; i < 50; i++)
+                    {
+                        Simulate();
+                    }
+                }, () =>
+                {
+                    UpdateVisualization.Execute().Subscribe();
+                }, TimeSpan.FromMilliseconds(10), DispatcherPriority.ContextIdle);
+
+                UpdateVisualization = ReactiveCommand.Create(() =>
+                {
+                    using (logger.LogPerf("Visualization"))
+                    {
+                        PrVisualization = m_Visualizer.GenerateTableVisualization(m_PrSimulator.GetData());
+                        StVisualization = m_Visualizer.GenerateEdgeTableVisualization(m_StSimulator.GetData());
+                        DiffVisualization = m_Visualizer.GenerateEdgeTableVisualization(m_DiffGenerator.GetData());
+
+                        PrSimulationInfo = m_PrSimulator.SimulationInfo;
+                        StSimulationInfo = m_StSimulator.SimulationInfo;
+                    }
+                });
+
+                var notRunningOrPlaying = m_Player.WhenAny(x => x.RunningOrPlaying, r => !r.Value);
+
+                var notSingleStepRunning = m_Player.WhenAny(x => x.SingleStepRunning, r => !r.Value);
+
+                SimulateStep = ReactiveCommand.Create(() =>
+                {
+                    m_Player.StepOnce();
+                }, notRunningOrPlaying);
+
+                PlayPause = new ReactivePlayPauseCommand("Програти", "Пауза", notSingleStepRunning);
+
+                PlayPause.Subscribe(p =>
+                {
+                    if (p)
+                    {
+                        m_Player.Start();
+                    }
+                    else
+                    {
+                        m_Player.Stop();
+                    }
+                });
+
+                Restart = ReactiveCommand.Create(() =>
+                {
+                    m_PrSimulator.Reset();
+                    m_StSimulator.Reset();
+                }, notRunningOrPlaying);
+
+                Restart.InvokeCommand(UpdateVisualization);
+
+                OpenSimualationOptions = ReactiveCommand.Create(() =>
+                {
+                    SimulationOptionsDialog dialog = new SimulationOptionsDialog(SimulationOptions.FromSimulator(m_PrSimulator));
+                    dialog.ShowDialog();
+
+                    if (dialog.DialogResult.GetValueOrDefault(false))
+                    {
+                        SimulationOptions result = dialog.SimulationOptions;
+                        InitComponents(result);
+                    }
+                }, notRunningOrPlaying);
+
+                OpenSimualationOptions.InvokeCommand(UpdateVisualization);
+
+                Settings.SettingsChange
+                    .InvokeCommand(UpdateVisualization);
+
                 UpdateVisualization.Execute().Subscribe();
-            }, TimeSpan.FromMilliseconds(10), DispatcherPriority.ContextIdle);
-
-            UpdateVisualization = ReactiveCommand.Create(() =>
-            {
-                PrVisualization = m_Visualizer.GenerateTableVisualization(m_PrSimulator.GetData());
-                StVisualization = m_Visualizer.GenerateEdgeTableVisualization(m_StSimulator.GetData());
-                DiffVisualization = m_Visualizer.GenerateEdgeTableVisualization(m_DiffGenerator.GetData());
-
-                PrSimulationInfo = m_PrSimulator.SimulationInfo;
-                StSimulationInfo = m_StSimulator.SimulationInfo;
-            });
-
-            var notRunningOrPlaying = m_Player.WhenAny(x => x.RunningOrPlaying, r => !r.Value);
-
-            var notSingleStepRunning = m_Player.WhenAny(x => x.SingleStepRunning, r => !r.Value);
-
-            SimulateStep = ReactiveCommand.Create(() =>
-            {
-                m_Player.StepOnce();
-            }, notRunningOrPlaying);
-
-            PlayPause = new ReactivePlayPauseCommand("Програти", "Пауза", notSingleStepRunning);
-
-            PlayPause.Subscribe(p =>
-            {
-                if (p)
-                {
-                    m_Player.Start();
-                }
-                else
-                {
-                    m_Player.Stop();
-                }
-            });
-
-            Restart = ReactiveCommand.Create(() =>
-            {
-                m_PrSimulator.Reset();
-                m_StSimulator.Reset();
-            }, notRunningOrPlaying);
-
-            Restart.InvokeCommand(UpdateVisualization);
-
-            OpenSimualationOptions = ReactiveCommand.Create(() =>
-            {
-                SimulationOptionsDialog dialog = new SimulationOptionsDialog(SimulationOptions.FromSimulator(m_PrSimulator));
-                dialog.ShowDialog();
-
-                if (dialog.DialogResult.GetValueOrDefault(false))
-                {
-                    SimulationOptions result = dialog.SimulationOptions;
-                    InitComponents(result);
-                }
-            }, notRunningOrPlaying);
-
-            OpenSimualationOptions.InvokeCommand(UpdateVisualization);
-
-            UpdateVisualization.Execute().Subscribe();
+            }
         }
 
         private void Simulate(double time = 0d)

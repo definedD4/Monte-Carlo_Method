@@ -16,20 +16,25 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         public MainViewModel()
         {
-            SettingsCommand = new DelegateCommand(_ =>
+            var logger = Logger.New(typeof(MainViewModel));
+
+            using (logger.LogPerf("Init"))
             {
-                var dlg = new SettingsDialog {ViewModel = new SettingsViewModel()};
-                dlg.ShowDialog();
-            });
+                SettingsCommand = new DelegateCommand(_ =>
+                {
+                    var dlg = new SettingsDialog {ViewModel = new SettingsViewModel()};
+                    dlg.ShowDialog();
+                });
 
-            SimulationOptions options = new SimulationOptions(new GridSize(9, 9), new GridIndex(4, 4));
+                SimulationOptions options = new SimulationOptions(new GridSize(9, 9), new GridIndex(4, 4));
 
-            Tabs.Add(new PrTabViewModel(options));
-            Tabs.Add(new StTabViewModel(options));
-            Tabs.Add(new CpTabViewModel(options));
-            Tabs.Add(new СlTabViewModel());
+                Tabs.Add(new PrTabViewModel(options));
+                Tabs.Add(new StTabViewModel(options));
+                Tabs.Add(new CpTabViewModel(options));
+                Tabs.Add(new СlTabViewModel());
 
-            SelectedTab = Tabs.First();
+                SelectedTab = Tabs.First();
+            }
         }
 
         public ObservableCollection<TabViewModel> Tabs { get; } = new ObservableCollection<TabViewModel>();

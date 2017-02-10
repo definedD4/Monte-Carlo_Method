@@ -50,114 +50,122 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         public StTabViewModel(SimulationOptions simulationOptions) : base("МСВ")
         {
-            m_SimulationOptions = simulationOptions;
+            var logger = Logger.New(typeof(StTabViewModel));
 
-            m_Simulator = new StSimulator(m_SimulationOptions);
-
-            m_VisualizationProvider = StVisualizationProvider.Table();
-
-            m_Player = new Player(() =>
+            using (logger.LogPerf("Init"))
             {
-                m_Simulator.SimulateSteps();
-            }, () =>
-            {
-                m_Simulator.SimulateSteps(5);
-            }, () =>
-            {
-                UpdateVisualization.Execute().Subscribe();
-            }, TimeSpan.FromMilliseconds(10), DispatcherPriority.ContextIdle);
+                m_SimulationOptions = simulationOptions;
 
-            UpdateVisualization = ReactiveCommand.Create(() =>
-            {
-                Visualization = m_VisualizationProvider.ProvideVisualization(m_Simulator);
-                SimulationInfo = m_Simulator.SimulationInfo;
-            });
+                m_Simulator = new StSimulator(m_SimulationOptions);
 
-            var notRunningOrPlaying = m_Player.WhenAny(x => x.RunningOrPlaying, r => !r.Value);
+                m_VisualizationProvider = StVisualizationProvider.Table();
 
-            var notSingleStepRunning = m_Player.WhenAny(x => x.SingleStepRunning, r => !r.Value);
-
-            Step = ReactiveCommand.Create(() =>
-            {
-                m_Player.StepOnce();
-            }, notRunningOrPlaying);
-
-            PlayPause = new ReactivePlayPauseCommand("Програти", "Пауза", notSingleStepRunning);
-
-            PlayPause.Subscribe(p =>
-            {
-                if (p)
+                m_Player = new Player(() =>
                 {
-                    m_Player.Start();
-                }
-                else
+                    m_Simulator.SimulateSteps();
+                }, () =>
                 {
-                    m_Player.Stop();
-                }
-            });
-
-            Restart = ReactiveCommand.Create(() =>
-            {
-                m_Simulator.Reset();
-            }, notRunningOrPlaying);
-
-            Restart.InvokeCommand(UpdateVisualization);
-
-            VisualTypeSelector = new ReactiveSelectorCommand<string>(x => (string)x, "Table");
-
-            VisualTypeSelector.Selected
-                .Subscribe(option =>
+                    m_Simulator.SimulateSteps(5);
+                }, () =>
                 {
-                    switch (option)
+                    UpdateVisualization.Execute().Subscribe();
+                }, TimeSpan.FromMilliseconds(10), DispatcherPriority.ContextIdle);
+
+                UpdateVisualization = ReactiveCommand.Create(() =>
+                {
+                    using (logger.LogPerf("Visualization"))
                     {
-                        case "Table":
-                            m_VisualizationProvider = StVisualizationProvider.Table();
-                            break;
-                        case "2D":
-                            m_VisualizationProvider = StVisualizationProvider.Color();
-                            break;
+                        Visualization = m_VisualizationProvider.ProvideVisualization(m_Simulator);
+                        SimulationInfo = m_Simulator.SimulationInfo;
                     }
                 });
 
-            VisualTypeSelector.Selected
-                .ToSignal()
-                .InvokeCommand(UpdateVisualization);
+                var notRunningOrPlaying = m_Player.WhenAny(x => x.RunningOrPlaying, r => !r.Value);
 
-            OpenSimulationOptions = ReactiveCommand.Create(() =>
-            {
-                SimulationOptionsDialog dialog = new SimulationOptionsDialog(m_SimulationOptions);
-                dialog.ShowDialog();
+                var notSingleStepRunning = m_Player.WhenAny(x => x.SingleStepRunning, r => !r.Value);
 
-                if (dialog.DialogResult.GetValueOrDefault(false))
+                Step = ReactiveCommand.Create(() =>
                 {
-                    m_SimulationOptions = dialog.SimulationOptions;
-                    m_Simulator = new StSimulator(m_SimulationOptions);
-                    m_VisualizationProvider = StVisualizationProvider.Table();
-                }
-            }, notRunningOrPlaying);
+                    m_Player.StepOnce();
+                }, notRunningOrPlaying);
 
-            OpenSimulationOptions
-                .InvokeCommand(UpdateVisualization);
+                PlayPause = new ReactivePlayPauseCommand("Програти", "Пауза", notSingleStepRunning);
 
-            ExportToCsv = ReactiveCommand.Create(() =>
-            {
-                SaveFileDialog saveFileDialog = new SaveFileDialog() { Filter = "Файл CSV (*.csv)|*.csv" };
-                if (saveFileDialog.ShowDialog(Application.Current.MainWindow).GetValueOrDefault())
+                PlayPause.Subscribe(p =>
                 {
-                    CsvUtil.ExportToFile(m_Simulator.GetData().AsGridData(), saveFileDialog.FileName);
-                }
-            });
-
-            Settings.SettingsChange
-                .InvokeCommand(UpdateVisualization);
-
-            Settings.SettingsChange
-                .Subscribe(_ =>
-                {
-                    Pallete = Settings.Current.VisualizationOptions.Pallete;
+                    if (p)
+                    {
+                        m_Player.Start();
+                    }
+                    else
+                    {
+                        m_Player.Stop();
+                    }
                 });
 
-            Pallete = Settings.Current.VisualizationOptions.Pallete;
+                Restart = ReactiveCommand.Create(() =>
+                {
+                    m_Simulator.Reset();
+                }, notRunningOrPlaying);
+
+                Restart.InvokeCommand(UpdateVisualization);
+
+                VisualTypeSelector = new ReactiveSelectorCommand<string>(x => (string)x, "Table");
+
+                VisualTypeSelector.Selected
+                    .Subscribe(option =>
+                    {
+                        switch (option)
+                        {
+                            case "Table":
+                                m_VisualizationProvider = StVisualizationProvider.Table();
+                                break;
+                            case "2D":
+                                m_VisualizationProvider = StVisualizationProvider.Color();
+                                break;
+                        }
+                    });
+
+                VisualTypeSelector.Selected
+                    .ToSignal()
+                    .InvokeCommand(UpdateVisualization);
+
+                OpenSimulationOptions = ReactiveCommand.Create(() =>
+                {
+                    SimulationOptionsDialog dialog = new SimulationOptionsDialog(m_SimulationOptions);
+                    dialog.ShowDialog();
+
+                    if (dialog.DialogResult.GetValueOrDefault(false))
+                    {
+                        m_SimulationOptions = dialog.SimulationOptions;
+                        m_Simulator = new StSimulator(m_SimulationOptions);
+                        m_VisualizationProvider = StVisualizationProvider.Table();
+                    }
+                }, notRunningOrPlaying);
+
+                OpenSimulationOptions
+                    .InvokeCommand(UpdateVisualization);
+
+                ExportToCsv = ReactiveCommand.Create(() =>
+                {
+                    SaveFileDialog saveFileDialog = new SaveFileDialog() { Filter = "Файл CSV (*.csv)|*.csv" };
+                    if (saveFileDialog.ShowDialog(Application.Current.MainWindow).GetValueOrDefault())
+                    {
+                        CsvUtil.ExportToFile(m_Simulator.GetData().AsGridData(), saveFileDialog.FileName);
+                    }
+                });
+
+                Settings.SettingsChange
+                    .InvokeCommand(UpdateVisualization);
+
+                Settings.SettingsChange
+                    .Subscribe(_ =>
+                    {
+                        Pallete = Settings.Current.VisualizationOptions.Pallete;
+                    });
+
+                Pallete = Settings.Current.VisualizationOptions.Pallete;
+            }
         }
     }
 }

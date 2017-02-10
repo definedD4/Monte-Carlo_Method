@@ -1,5 +1,7 @@
 ﻿using System;
+using Monte_Carlo_Method_3D.DataModel;
 using Monte_Carlo_Method_3D.Util;
+using Monte_Carlo_Method_3D.Util.AssertHelper;
 using static System.Math;
 
 namespace EdgeDataGenerator
@@ -65,7 +67,7 @@ namespace EdgeDataGenerator
             }
 
             Console.WriteLine($"Generating grid {xd} by {yd} starting from ({xs}; {ys}) with cell size {h} ...");
-            double[,] res = new double[xd,yd];
+            GridData res = GridData.AllocateNew(new GridSize(xd, yd));
 
             for (int xi = 0; xi < xd; xi++)
             {

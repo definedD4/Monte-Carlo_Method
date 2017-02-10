@@ -199,6 +199,7 @@
     <Compile Include="Util\Commands\DelegateCommand.cs" />
     <Compile Include="Util\EnumUtil.cs" />
     <Compile Include="Util\InterfaceTemplateSelector.cs" />
+    <Compile Include="Util\Logger.cs" />
     <Compile Include="Util\Player.cs" />
     <Compile Include="Util\PointedValueBehavior.cs" />
     <Compile Include="Util\ReactiveExtensions.cs" />

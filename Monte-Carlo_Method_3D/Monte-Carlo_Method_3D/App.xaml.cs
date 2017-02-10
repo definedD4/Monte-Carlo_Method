@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Reactive.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Monte_Carlo_Method_3D.ViewModels;
 using Monte_Carlo_Method_3D.Views;
 using System.Windows;
+using Monte_Carlo_Method_3D.Util;
 
 namespace Monte_Carlo_Method_3D
 {
@@ -16,12 +18,27 @@ namespace Monte_Carlo_Method_3D
         {
             base.OnStartup(e);
 
-            PrepareJit();
+            Logger.Threshold = LogLevel.Debug;
+
+            var logger = Logger.New(typeof(App));
+            
+            Logger.Messages
+                .Subscribe(message =>
+                {
+                    Console.WriteLine($"[{message.LogLevel}] [{message.LoggerName}] (Thread: {message.ThreadId}) {message.Message}");
+                });
+
+            using (logger.LogPerf("Prepare JIT"))
+            {
+                PrepareJit();
+            }
 
             MainView view = new MainView();
             MainViewModel viewModel = new MainViewModel();
             view.DataContext = viewModel;
             view.Show();
+
+            logger.LogInfo($"Logger threshold is {Logger.Threshold}");
         }
 
         private void PrepareJit()

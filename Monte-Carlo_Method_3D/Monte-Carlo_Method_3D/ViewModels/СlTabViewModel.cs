@@ -60,110 +60,115 @@ namespace Monte_Carlo_Method_3D.ViewModels
 
         public СlTabViewModel() : base("Розрахунок")
         {
-            this
-                .WhenAnyValue(x => x.CalculationMethod)
-                .Where(method => method != null)
-                .Select(method => method.AvailableConstraints)
-                .ToPropertyEx(this, x => x.ConstraintCreators);
+            var logger = Logger.New(typeof(CpTabViewModel));
 
-            this
-                .WhenAnyValue(x => x.CalculationMethod)
-                .Where(method => method != null)
-                .Select(method => method.AvailableConstraints.First())
-                .Subscribe(creator =>
-                {
-                    SelectedConstraintCreator = creator;
-                });
-
-            this
-                .WhenAnyValue(x => x.SelectedConstraintCreator)
-                .Where(creator => creator != null)
-                .Select(creator => creator.ArgumentDisplayName)
-                .ToPropertyEx(this, x => x.ConstraintArgumentName);
-
-            var working = this
-                .WhenAnyValue(x => x.State)
-                .Select(s => s == CalculationState.Working);
-
-            Start = ReactiveCommand.Create(() =>
+            using (logger.LogPerf("Init"))
             {
-                CalculationConstraint constraint;
-                try
-                {
-                    constraint = SelectedConstraintCreator.Create(ConstraintArgument);
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show($"Некоректно задані обмеження симуляції.\nДеталі:\n{e.Message}");
-                    return;
-                }
-                if (EdgeData == null)
-                {
-                    MessageBox.Show($"Не заданні значення на межі сітки.");
-                    return;
-                }
+                this
+                    .WhenAnyValue(x => x.CalculationMethod)
+                    .Where(method => method != null)
+                    .Select(method => method.AvailableConstraints)
+                    .ToPropertyEx(this, x => x.ConstraintCreators);
 
-                List<GridIndex> calcMask = new List<GridIndex>();
-
-                try
-                {
-                    if (!string.IsNullOrWhiteSpace(CalculationMask))
+                this
+                    .WhenAnyValue(x => x.CalculationMethod)
+                    .Where(method => method != null)
+                    .Select(method => method.AvailableConstraints.First())
+                    .Subscribe(creator =>
                     {
-                        calcMask.AddRange(CalculationMask.Split(';').Select(
-                            i =>
-                            {
-                                var coords = i.Trim().Split(',').Select(j => int.Parse(j.Trim())).ToArray();
-                                return new GridIndex(coords[0], coords[1]);
-                            }));
+                        SelectedConstraintCreator = creator;
+                    });
+
+                this
+                    .WhenAnyValue(x => x.SelectedConstraintCreator)
+                    .Where(creator => creator != null)
+                    .Select(creator => creator.ArgumentDisplayName)
+                    .ToPropertyEx(this, x => x.ConstraintArgumentName);
+
+                var working = this
+                    .WhenAnyValue(x => x.State)
+                    .Select(s => s == CalculationState.Working);
+
+                Start = ReactiveCommand.Create(() =>
+                {
+                    CalculationConstraint constraint;
+                    try
+                    {
+                        constraint = SelectedConstraintCreator.Create(ConstraintArgument);
                     }
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show($"Некоректно задані вузли для розрахунку.\nДетали:\n{e.Message}");
-                    return;
-                }
-
-                if (CalculationMethod == CalculationMethod.Propability)
-                {
-                    m_Calculation = new PrCalculation(constraint, EdgeData.AsEdgeData(), calcMask);
-                }
-                else if (CalculationMethod == CalculationMethod.Statistical)
-                {
-                    m_Calculation = new StCalculation(constraint, EdgeData.AsEdgeData(), calcMask);
-                }
-                else
-                {
-                    throw new InvalidOperationException($"Invalid calculation method selected: {CalculationMethod}.");
-                }
-
-                m_Calculation.Result
-                    .Subscribe(result =>
+                    catch (Exception e)
                     {
-                        Result = result;
-                        State = CalculationState.NotStarted;
-                    });
-
-                m_Calculation.Progress
-                    .Subscribe(progress =>
+                        MessageBox.Show($"Некоректно задані обмеження симуляції.\nДеталі:\n{e.Message}");
+                        return;
+                    }
+                    if (EdgeData == null)
                     {
-                        Progress = progress;
-                    });
+                        MessageBox.Show($"Не заданні значення на межі сітки.");
+                        return;
+                    }
 
-                State = CalculationState.Working;
-                m_Calculation.Start();
-            }, working.Select(x => !x));
+                    List<GridIndex> calcMask = new List<GridIndex>();
 
-            CalculationMethod = CalculationMethod.Propability;
+                    try
+                    {
+                        if (!string.IsNullOrWhiteSpace(CalculationMask))
+                        {
+                            calcMask.AddRange(CalculationMask.Split(';').Select(
+                                i =>
+                                {
+                                    var coords = i.Trim().Split(',').Select(j => int.Parse(j.Trim())).ToArray();
+                                    return new GridIndex(coords[0], coords[1]);
+                                }));
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show($"Некоректно задані вузли для розрахунку.\nДетали:\n{e.Message}");
+                        return;
+                    }
 
-            State = CalculationState.NotStarted;
+                    if (CalculationMethod == CalculationMethod.Propability)
+                    {
+                        m_Calculation = new PrCalculation(constraint, EdgeData.AsEdgeData(), calcMask);
+                    }
+                    else if (CalculationMethod == CalculationMethod.Statistical)
+                    {
+                        m_Calculation = new StCalculation(constraint, EdgeData.AsEdgeData(), calcMask);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException($"Invalid calculation method selected: {CalculationMethod}.");
+                    }
 
-            Progress = 0;
+                    m_Calculation.Result
+                        .Subscribe(result =>
+                        {
+                            Result = result;
+                            State = CalculationState.NotStarted;
+                        });
 
-            Cancel = ReactiveCommand.Create(() =>
-            {
-                m_Calculation.Cancel();
+                    m_Calculation.Progress
+                        .Subscribe(progress =>
+                        {
+                            Progress = progress;
+                        });
+
+                    State = CalculationState.Working;
+                    m_Calculation.Start();
+                }, working.Select(x => !x));
+
+                CalculationMethod = CalculationMethod.Propability;
+
                 State = CalculationState.NotStarted;
-            }, working);
+
+                Progress = 0;
+
+                Cancel = ReactiveCommand.Create(() =>
+                {
+                    m_Calculation.Cancel();
+                    State = CalculationState.NotStarted;
+                }, working);
+            }
         }
     }
 }
