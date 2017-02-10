@@ -1,31 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Monte_Carlo_Method_3D.Simulation;
 
 namespace Monte_Carlo_Method_3D.Calculation
 {
     public sealed class CalculationMethod
     {
-        private CalculationMethod(string displayName, IEnumerable<CalculationConstraint> alailableConstraints)
+        private CalculationMethod(string displayName, IEnumerable<CalculationConstraintCreator> availableConstraints)
         {
             DisplayName = displayName;
-            AlailableConstraints = alailableConstraints;
+            AvailableConstraints = availableConstraints;
         }
 
         public string DisplayName { get; }
 
-        // TODO: Switch to constraint creator or do somethiing with constraint
-        public IEnumerable<CalculationConstraint> AlailableConstraints { get; }
+        public IEnumerable<CalculationConstraintCreator> AvailableConstraints { get; }
 
-        public static CalculationMethod Propability => new CalculationMethod("ІПРАЙ", new CalculationConstraint[] {});
-
-        public static CalculationMethod Statistical => new CalculationMethod("МСВ", new CalculationConstraint[] { });
-
-        public static IEnumerable<CalculationMethod> AvailbleMethods => new[] {Propability, Statistical};
-
-        protected bool Equals(CalculationMethod other)
+        private bool Equals(CalculationMethod other)
         {
             return string.Equals(DisplayName, other.DisplayName);
         }
@@ -34,13 +24,53 @@ namespace Monte_Carlo_Method_3D.Calculation
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((CalculationMethod) obj);
+            return obj is CalculationMethod && Equals((CalculationMethod) obj);
         }
 
         public override int GetHashCode()
         {
-            return (DisplayName != null ? DisplayName.GetHashCode() : 0);
+            return DisplayName?.GetHashCode() ?? 0;
         }
+
+        public static bool operator ==(CalculationMethod left, CalculationMethod right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(CalculationMethod left, CalculationMethod right)
+        {
+            return !Equals(left, right);
+        }
+
+        public static CalculationMethod Propability => new CalculationMethod("ІПРАЙ", new[]
+        {
+            new CalculationConstraintCreator("За часом симуляції", "Час виконяння (мс):",
+                arg => new CalculationConstraint(
+                    info => ((PrSimulationInfo) info).TotalSimTime < double.Parse(arg),
+                    $"Виконувати {double.Parse(arg)} мс.")),
+            new CalculationConstraintCreator("За сумою в середені сітки",
+                "Виконувати доки сума в середені сітки більша за:",
+                arg => new CalculationConstraint(
+                    info => ((PrSimulationInfo) info).CenterSum > double.Parse(arg),
+                    $"Виконувати доки сума в середені сітки більша за {double.Parse(arg)}"))
+        });
+
+        public static CalculationMethod Statistical => new CalculationMethod("МСВ", new[]
+        {
+            new CalculationConstraintCreator("За часом симуляції", "Час виконяння (мс):",
+                arg => new CalculationConstraint(
+                    info => ((StSimulationInfo) info).TotalSimTime < double.Parse(arg),
+                    $"Виконувати {double.Parse(arg)} мс.")),
+            new CalculationConstraintCreator("За ітераціями", "Кількість ітерацій:",
+                arg => new CalculationConstraint(
+                    info => ((StSimulationInfo) info).TotalSimulations < long.Parse(arg),
+                    $"Виконати {long.Parse(arg)} ітерацій."))
+        });
+
+        public static IEnumerable<CalculationMethod> AvailableMethods => new[]
+        {
+            Propability,
+            Statistical
+        };
     }
 }

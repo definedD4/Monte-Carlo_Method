@@ -4,22 +4,26 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reactive.Subjects;
 using System.Text;
+using JetBrains.Annotations;
 using Monte_Carlo_Method_3D.DataModel;
+using Monte_Carlo_Method_3D.Util.AssertHelper;
 
 namespace Monte_Carlo_Method_3D.Calculation
 {
-    public abstract class Calculation : INotifyPropertyChanged
+    public abstract class Calculation
     {
-        private readonly ICalculationConstraint m_Constraint;
+        private readonly CalculationConstraint m_Constraint;
         private readonly BackgroundWorker m_Worker;
-        private readonly IEnumerable<GridIndex> m_CalculationMask; 
+        private readonly IEnumerable<GridIndex> m_CalculationMask;
+        private readonly Subject<double> m_Progress = new Subject<double>();
+        private readonly Subject<GridData> m_Result = new Subject<GridData>();
 
-        private int m_Progress;
-        private GridData m_Result;
-
-        public Calculation(ICalculationConstraint constraint, IEnumerable<GridIndex> calculationMask)
+        public Calculation([NotNull] CalculationConstraint constraint, IEnumerable<GridIndex> calculationMask)
         {
+            constraint.AssertNotNull(nameof(constraint));
+            
             m_Constraint = constraint;
             m_CalculationMask = calculationMask;
 
@@ -39,13 +43,16 @@ namespace Monte_Carlo_Method_3D.Calculation
             };
             m_Worker.ProgressChanged += (sender, args) =>
             {
-                Progress = args.ProgressPercentage;
+                m_Progress.OnNext(args.ProgressPercentage);
             };
             m_Worker.RunWorkerCompleted += (sender, args) =>
             {
-                Result = (GridData)args.Result;
-
-                DoneCalculation?.Invoke(this, EventArgs.Empty);
+                if (!args.Cancelled)
+                {
+                    m_Result.OnNext((GridData) args.Result);
+                    m_Result.OnCompleted();
+                    m_Progress.OnCompleted();
+                }
             };
         }
 
@@ -68,38 +75,20 @@ namespace Monte_Carlo_Method_3D.Calculation
 
         public void Start()
         {
-            Progress = 0;
+            m_Progress.OnNext(0d);
             m_Worker.RunWorkerAsync();
         }
 
         public void Cancel()
         {
             m_Worker.CancelAsync();
-            Progress = 0;
+            m_Progress.OnNext(0d);
+            m_Progress.OnCompleted();
+            m_Result.OnCompleted();
         }
 
-        public int Progress
-        {
-            get { return m_Progress; }
-            set { m_Progress = value;  OnPropertyChanged(nameof(Progress));}
-        }
+        public IObservable<double> Progress => m_Progress;
 
-        public GridData Result
-        {
-            get { return m_Result; }
-            set { m_Result = value; OnPropertyChanged(nameof(Result)); }
-        }
-
-        public event EventHandler DoneCalculation;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            if (string.IsNullOrWhiteSpace(propertyName))
-                throw new ArgumentException("Invalid property name.");
-
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        public IObservable<GridData> Result => m_Result;
     }
 }

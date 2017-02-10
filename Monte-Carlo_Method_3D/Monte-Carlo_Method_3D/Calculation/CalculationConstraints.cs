@@ -1,82 +1,30 @@
 ﻿using Monte_Carlo_Method_3D.Simulation;
 using System;
+using Monte_Carlo_Method_3D.Util.AssertHelper;
 
 namespace Monte_Carlo_Method_3D.Calculation
 {
-    public abstract class CalculationConstraint
+    public class CalculationConstraint
     {
-        public abstract bool CanContinue(object simulationInfo);
-    }
+        private readonly Func<object, bool> m_Predicate;
 
-    public class PrCenterSumCalcConstraint : CalculationConstraint
-    {
-        private readonly double m_Limit;
+        public string Description { get; }
 
-        public PrCenterSumCalcConstraint(double limit)
+        public CalculationConstraint(Func<object, bool> predicate, string description)
         {
-            m_Limit = limit;
+            description.AssertNotNullOrWhitespace(nameof(description));
+
+            m_Predicate = predicate;
+            Description = description;
         }
 
-        public override bool CanContinue(object simulationInfo)
+        public bool CanContinue(object simulationInfo)
         {
-            if (!(simulationInfo is PrSimulationInfo)) throw new ArgumentException();
-            return (simulationInfo as PrSimulationInfo).CenterSum > m_Limit;
+            simulationInfo.AssertNotNull(nameof(simulationInfo));
+
+            return m_Predicate(simulationInfo);
         }
 
-        public override string ToString() => $"Simulate while center sum is greater than: {m_Limit}.";
-    }
-
-    public class PrSimTimeCalcConstraint : CalculationConstraint
-    {
-        private readonly double m_Limit;
-
-        public PrSimTimeCalcConstraint(double limit)
-        {
-            m_Limit = limit;
-        }
-
-        public override bool CanContinue(object simulationInfo)
-        {
-            if (!(simulationInfo is PrSimulationInfo)) throw new ArgumentException();
-            return (simulationInfo as PrSimulationInfo).TotalSimTime < m_Limit;
-        }
-
-        public override string ToString() => $"Simulate for: {m_Limit} ms.";
-    }
-
-    public class StSimTimeCalcConstraint : CalculationConstraint
-    {
-        private readonly double m_Limit;
-
-        public StSimTimeCalcConstraint(double limit)
-        {
-            m_Limit = limit;
-        }
-
-        public override bool CanContinue(object simulationInfo)
-        {
-            if (!(simulationInfo is StSimulationInfo)) throw new ArgumentException();
-            return (simulationInfo as StSimulationInfo).TotalSimTime < m_Limit;
-        }
-
-        public override string ToString() => $"Simulate for: {m_Limit} ms.";
-    }
-
-    public class StStepsCalcConstraint : CalculationConstraint
-    {
-        private readonly long m_Limit;
-
-        public StStepsCalcConstraint(long limit)
-        {
-            m_Limit = limit;
-        }
-
-        public override bool CanContinue(object simulationInfo)
-        {
-            if (!(simulationInfo is StSimulationInfo)) throw new ArgumentException();
-            return (simulationInfo as StSimulationInfo).TotalSimulations < m_Limit;
-        }
-
-        public override string ToString() => $"Simulate for: {m_Limit} steps.";
+        public override string ToString() => Description;
     }
 }

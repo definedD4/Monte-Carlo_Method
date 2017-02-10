@@ -5,44 +5,40 @@ using System.Text;
 using Monte_Carlo_Method_3D.Dialogs;
 using Monte_Carlo_Method_3D.Simulation;
 using System.Threading;
+using JetBrains.Annotations;
 using Monte_Carlo_Method_3D.DataModel;
 using Monte_Carlo_Method_3D.Util;
+using Monte_Carlo_Method_3D.Util.AssertHelper;
 
 namespace Monte_Carlo_Method_3D.Calculation
 {
     public class StCalculation : Calculation
     {
-        private readonly int m_Width;
-        private readonly int m_Height;
-        private readonly GridData m_EdgeData;
+        private readonly EdgeData m_EdgeData;
 
-        public StCalculation(ICalculationConstraint constraint, int width, int height, GridData edgeData, IEnumerable<GridIndex> calculationMask) : base(constraint, calculationMask)
+        public StCalculation([NotNull] CalculationConstraint constraint, [NotNull] EdgeData edgeData, IEnumerable<GridIndex> calculationMask)
+            : base(constraint, calculationMask)
         {
-            m_Width = width;
-            m_Height = height;
+            constraint.AssertNotNull(nameof(constraint));
+            edgeData.AssertNotNull(nameof(edgeData));
+
             m_EdgeData = edgeData;
         }
 
-        protected override GridData Simulate(IEnumerable<GridIndex> _mask)
+        protected override GridData Simulate(IEnumerable<GridIndex> mask)
         {
-            var mask = _mask.ToList();
-            if (mask.Count == 0)
+            var maskList = mask.ToList();
+            if (maskList.Count == 0)
             {
-                for (int x = 1; x < m_Width - 1; x++)
-                {
-                    for (int y = 1; y < m_Height - 1; y++)
-                    {
-                        mask.Add(new GridIndex(x, y));
-                    }
-                }
+                maskList.AddRange(m_EdgeData.Inaccessable.EnumerateRegion());
             }
 
-            double[,] res = new double[m_Width, m_Height];
+            GridData res = GridData.AllocateNew(m_EdgeData.Size);
 
-            int totalCells = mask.Count;
+            int totalCells = maskList.Count;
             int doneCells = 0;
 
-            mask.ForEach(
+            maskList.ForEach(
                 p =>
                 {
                     res[p.I, p.J] = CalcCell(p);
@@ -52,12 +48,12 @@ namespace Monte_Carlo_Method_3D.Calculation
                 });
 
 
-            return GridData.FromArray(res);
+            return res;
         }
 
         private double CalcCell(GridIndex coords)
         {
-            var sim = new StSimulator(new SimulationOptions(new GridSize(m_Width, m_Height), coords));
+            var sim = new StSimulator(new SimulationOptions(m_EdgeData.Size, coords));
             while (CanContinue(sim.SimulationInfo))
             {
                 if (CancelRequested())
@@ -69,15 +65,9 @@ namespace Monte_Carlo_Method_3D.Calculation
 
             var data = sim.GetData();
             double sum = 0;
-            for (int x_ = 0; x_ < m_Width; x_++)
+            foreach (var idx in m_EdgeData.Bounds.EnumerateEdge())
             {
-                sum += data[x_, 0] * m_EdgeData[x_, 0];
-                sum += data[x_, m_Height - 1] * m_EdgeData[x_, m_Height - 1];
-            }
-            for (int y_ = 1; y_ < m_Height - 1; y_++)
-            {
-                sum += data[0, y_] * m_EdgeData[0, y_];
-                sum += data[m_Width - 1, y_] * m_EdgeData[m_Width - 1, y_];
+                sum += data[idx] * m_EdgeData[idx];
             }
             return sum;
         }

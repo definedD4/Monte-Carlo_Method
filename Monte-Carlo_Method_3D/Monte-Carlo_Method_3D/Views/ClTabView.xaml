@@ -6,7 +6,6 @@
                     xmlns:cl="clr-namespace:Monte_Carlo_Method_3D.Calculation"
                     xmlns:c="clr-namespace:Monte_Carlo_Method_3D.Controls">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="ConstraintChooserView.xaml"/>
         <ResourceDictionary Source="../Styles/Resources.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     <DataTemplate DataType="{x:Type vm:СlTabViewModel}">
@@ -32,30 +31,30 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Margin="2" Grid.Column="0" Text="Спосіб симуляції:"/>
-                                <ComboBox Margin="2" Grid.Column="1" ItemsSource="{x:Static cl:CalculationMethod.AvailbleMethods}"
+                                <ComboBox Margin="2" Grid.Column="1" ItemsSource="{x:Static cl:CalculationMethod.AvailableMethods}"
                                           SelectedValue="{Binding CalculationMethod}" DisplayMemberPath="DisplayName"/>
                             </Grid>
-                            <ContentPresenter Content="{Binding ConstraintChooser}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Зупинити симуляцію:" Margin="2" Grid.Column="0"/>
+                                <ComboBox ItemsSource="{Binding ConstraintCreators}" SelectedValue="{Binding SelectedConstraintCreator}"
+                                          DisplayMemberPath="DisplayName" Margin="2" Grid.Column="1"/>
+                            </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding ConstraintArgumentName}" Margin="2" Grid.Column="0" HorizontalAlignment="Stretch"/>
+                                <TextBox Text="{Binding ConstraintArgument}" Margin="2" Grid.Column="1" HorizontalAlignment="Stretch"/>
+                            </Grid>
                             <TextBlock Text="Вузли для розразунку:" Margin="2"/>
                             <TextBox Text="{Binding CalculationMask}" Margin="2"/>
                         </StackPanel>
                         <StackPanel Grid.Column="2">
-                            <GroupBox Header="Розмір сітки:" Style="{x:Null}" Margin="4">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Margin="2" Grid.Row="0" Grid.Column="0" Text="Ширина:"/>
-                                    <TextBox Margin="2" Grid.Row="0" Grid.Column="1" Text="{Binding GridWidth}"/>
-                                    <TextBlock Margin="2" Grid.Row="1" Grid.Column="0" Text="Висота:"/>
-                                    <TextBox Margin="2" Grid.Row="1" Grid.Column="1" Text="{Binding GridHeight}"/>
-                                </Grid>
-                            </GroupBox>
                             <TextBlock Margin="2" Text="Значення на межі сітки:"/>
                             <c:GridDataLoadSlot Margin="2" Data="{Binding EdgeData, Mode=TwoWay}"/>
                         </StackPanel>
@@ -74,8 +73,8 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Button Margin="4"  Grid.Column="0" Content="Запустити" Command="{Binding StartCommand}" VerticalAlignment="Center"/>
-                        <Button Margin="4"  Grid.Column="1" Content="Скасувати" Command="{Binding CancelCommand}" VerticalAlignment="Center"/>
+                        <Button Margin="4"  Grid.Column="0" Content="Запустити" Command="{Binding Start}" VerticalAlignment="Center"/>
+                        <Button Margin="4"  Grid.Column="1" Content="Скасувати" Command="{Binding Cancel}" VerticalAlignment="Center"/>
                         <TextBlock Text="Результат:" Margin="4" Grid.Column="3"/>
                         <c:GridDataSaveSlot Data="{Binding Result}" Margin="4" Grid.Column="4"/>
                     </Grid>

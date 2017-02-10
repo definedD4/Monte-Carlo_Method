@@ -64,5 +64,7 @@ namespace Monte_Carlo_Method_3D.DataModel
         {
             return m_Data;
         }
+
+        public EdgeData AsEdgeData() => EdgeData.FromArray(m_Data);
     }
 }
