@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Monte_Carlo_Method_3D.Views"
         xmlns:controls="clr-namespace:Monte_Carlo_Method_3D.Controls"
+        xmlns:viewModels="clr-namespace:Monte_Carlo_Method_3D.ViewModels"
         mc:Ignorable="d"
         Title="Візуалізація розрахунку перехідних ймовірностей при розв'язанні задачі Діріхле методом Монте-Карло для рівнянння Лапласса" Height="640" Width="920"
         WindowState="Maximized">
@@ -24,7 +25,7 @@
         <controls:AdvancedTabControl ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab}"
                     IsSynchronizedWithCurrentItem="False">
             <controls:AdvancedTabControl.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate DataType="{x:Type viewModels:TabViewModel}">
                     <TextBlock Text="{Binding Header}" Margin="2"/>
                 </DataTemplate>
             </controls:AdvancedTabControl.ItemTemplate>

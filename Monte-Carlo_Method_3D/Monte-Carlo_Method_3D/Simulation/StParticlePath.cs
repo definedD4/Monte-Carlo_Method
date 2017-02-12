@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Monte_Carlo_Method_3D.DataModel;
-using Monte_Carlo_Method_3D.Util;
 
 namespace Monte_Carlo_Method_3D.Simulation
 {

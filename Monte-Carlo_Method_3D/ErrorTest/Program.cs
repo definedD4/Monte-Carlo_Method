@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Monte_Carlo_Method_3D.DataModel;
 
 namespace OutputComparasionGraph
 {
@@ -12,8 +13,9 @@ namespace OutputComparasionGraph
     {
         static void Main(string[] args)
         {
-            PrSimulator pr = new PrSimulator(new SimulationOptions(11, 11, new GridIndex(5, 5)));
-            StSimulator st = new StSimulator(new SimulationOptions(11, 11, new GridIndex(5, 5)));
+            var options = new SimulationOptions(new GridSize(11, 11), new GridIndex(5, 5));
+            PrSimulator pr = new PrSimulator(options);
+            StSimulator st = new StSimulator(options);
 
             Func<double, double, double> u = (x, y) => Math.Log(Math.Sqrt((x / 10 + 3)* (x / 10 + 3) + (y / 10 + 3)* (y / 10 + 3)));
 
@@ -39,16 +41,16 @@ namespace OutputComparasionGraph
 
                 double res = 0;
 
-                for(int x = 0; x < sim.Width; x++)
+                for(int x = 0; x < sim.Size.Width; x++)
                 {
                     res += u(x, 0) * sim[x, 0];
-                    res += u(x, sim.Height - 1) * sim[x, sim.Height - 1];
+                    res += u(x, sim.Size.Height - 1) * sim[x, sim.Size.Height - 1];
                 }
 
-                for(int y = 1; y < sim.Height - 1; y++)
+                for(int y = 1; y < sim.Size.Height - 1; y++)
                 {
                     res += u(0, y) * sim[0, y];
-                    res += u(sim.Width - 1, y) * sim[sim.Width - 1, y];
+                    res += u(sim.Size.Width - 1, y) * sim[sim.Size.Width - 1, y];
                 }
 
                 ress.Add(Tuple.Create(maxSimTime, res));

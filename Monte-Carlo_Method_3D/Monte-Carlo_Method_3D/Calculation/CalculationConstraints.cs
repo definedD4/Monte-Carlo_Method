@@ -1,5 +1,4 @@
-﻿using Monte_Carlo_Method_3D.Simulation;
-using System;
+﻿using System;
 using Monte_Carlo_Method_3D.Util.AssertHelper;
 
 namespace Monte_Carlo_Method_3D.Calculation

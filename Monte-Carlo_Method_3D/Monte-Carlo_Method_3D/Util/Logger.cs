@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Subjects;
-using System.Text;
-using System.Threading.Tasks;
 using Monte_Carlo_Method_3D.Util.AssertHelper;
 
 namespace Monte_Carlo_Method_3D.Util

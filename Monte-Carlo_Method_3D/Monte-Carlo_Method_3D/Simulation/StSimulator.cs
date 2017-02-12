@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Security.Policy;
-using Monte_Carlo_Method_3D.Util;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;

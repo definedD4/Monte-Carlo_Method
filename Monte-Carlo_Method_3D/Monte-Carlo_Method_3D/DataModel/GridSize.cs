@@ -2,6 +2,8 @@ namespace Monte_Carlo_Method_3D.DataModel
 {
     public struct GridSize
     {
+        public static GridSize Zero => new GridSize(0, 0);
+
         public int Width { get; }
         public int Height { get; }
 

@@ -144,12 +144,11 @@ namespace Monte_Carlo_Method_3D.ViewModels
                     SimulationOptionsDialog dialog = new SimulationOptionsDialog(m_SimulationOptions);
                     dialog.ShowDialog();
 
-                    if (dialog.DialogResult.GetValueOrDefault(false))
-                    {
-                        m_SimulationOptions = dialog.SimulationOptions;
-                        m_Simulator = new PrSimulator(m_SimulationOptions);
-                        m_VisualizationProvider = GridDataVisualizationProvider.Table();
-                    }
+                    if (!dialog.DialogResult.GetValueOrDefault(false)) return;
+
+                    m_SimulationOptions = dialog.SimulationOptions;
+                    m_Simulator = new PrSimulator(m_SimulationOptions);
+                    m_VisualizationProvider = m_VisualizationProvider.Copy(m_SimulationOptions.Size);
                 }, notRunningOrPlaying);
 
                 OpenSimulationOptions

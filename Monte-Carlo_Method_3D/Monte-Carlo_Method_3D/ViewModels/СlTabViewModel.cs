@@ -2,15 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows;
-using System.Windows.Input;
 using Monte_Carlo_Method_3D.Calculation;
 using Monte_Carlo_Method_3D.DataModel;
 using Monte_Carlo_Method_3D.Util;
-using Monte_Carlo_Method_3D.Simulation;
-using Monte_Carlo_Method_3D.Util.Commands;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 

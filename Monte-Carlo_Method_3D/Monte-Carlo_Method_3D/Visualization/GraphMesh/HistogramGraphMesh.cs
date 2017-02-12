@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Documents;
 using System.Windows.Media.Media3D;
 using Monte_Carlo_Method_3D.DataModel;
 

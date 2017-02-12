@@ -1,8 +1,6 @@
 ﻿using JetBrains.Annotations;
 using Monte_Carlo_Method_3D.DataModel;
 using Monte_Carlo_Method_3D.Visualization;
-using Monte_Carlo_Method_3D.Visualization.GraphMesh;
-using Monte_Carlo_Method_3D.Visualization.GraphMesh.Factory;
 using Monte_Carlo_Method_3D.VisualizationModel;
 
 namespace Monte_Carlo_Method_3D.VisualizationProvider
@@ -10,6 +8,8 @@ namespace Monte_Carlo_Method_3D.VisualizationProvider
     public abstract class GridDataVisualizationProvider
     {
         public abstract IVisualization ProvideVisualization([NotNull] GridData data);
+
+        public abstract GridDataVisualizationProvider Copy(GridSize size);
 
         public static GridDataVisualizationProvider Table() => new TableVisualizationProvider();
 
@@ -25,6 +25,11 @@ namespace Monte_Carlo_Method_3D.VisualizationProvider
             {
                 return m_Visualizer.GenerateTableVisualization(data);
             }
+
+            public override GridDataVisualizationProvider Copy(GridSize size)
+            {
+                return new TableVisualizationProvider();
+            }
         }
 
         private class ColorVisualizationProvider : GridDataVisualizationProvider
@@ -34,6 +39,11 @@ namespace Monte_Carlo_Method_3D.VisualizationProvider
             public override IVisualization ProvideVisualization(GridData data)
             {
                 return m_Visualizer.GenerateColorVisualization(data);
+            }
+
+            public override GridDataVisualizationProvider Copy(GridSize size)
+            {
+                return new ColorVisualizationProvider();
             }
         }
 
@@ -49,6 +59,11 @@ namespace Monte_Carlo_Method_3D.VisualizationProvider
             public override IVisualization ProvideVisualization(GridData data)
             {
                 return m_Visualizer.GenerateModel3DVisualization(data);
+            }
+
+            public override GridDataVisualizationProvider Copy(GridSize size)
+            {
+                return new Model3DVisualizationProvider(size);
             }
         }
     }

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Monte_Carlo_Method_3D.Simulation;
 
 namespace Monte_Carlo_Method_3D.DataModel
 {

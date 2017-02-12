@@ -1,11 +1,7 @@
-﻿using Monte_Carlo_Method_3D.Simulation;
-using Monte_Carlo_Method_3D.Util;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Reactive.Subjects;
-using System.Text;
 using JetBrains.Annotations;
 using Monte_Carlo_Method_3D.DataModel;
 using Monte_Carlo_Method_3D.Util.AssertHelper;

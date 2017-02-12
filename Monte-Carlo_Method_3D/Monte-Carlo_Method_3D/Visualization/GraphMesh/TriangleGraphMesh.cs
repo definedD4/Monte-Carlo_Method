@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows.Media.Media3D;
 using JetBrains.Annotations;
 using Monte_Carlo_Method_3D.DataModel;

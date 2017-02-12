@@ -1,9 +1,6 @@
-﻿using System;
-using System.Reactive;
+﻿using System.Reactive;
 using System.Windows.Media;
 using Monte_Carlo_Method_3D.AppSettings;
-using Monte_Carlo_Method_3D.Visualization;
-using Monte_Carlo_Method_3D.Visualization.GraphMesh.Factory;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reactive.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Monte_Carlo_Method_3D.ViewModels;

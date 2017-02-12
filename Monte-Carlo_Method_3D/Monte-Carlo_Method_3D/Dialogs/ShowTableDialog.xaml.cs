@@ -1,20 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
 using Monte_Carlo_Method_3D.DataModel;
-using Monte_Carlo_Method_3D.Simulation;
-using Monte_Carlo_Method_3D.Util;
 using Monte_Carlo_Method_3D.Util.Commands;
-using Monte_Carlo_Method_3D.Visualization;
-using Monte_Carlo_Method_3D.VisualizationModel;
 using Monte_Carlo_Method_3D.VisualizationProvider;
 using static System.Math;
 

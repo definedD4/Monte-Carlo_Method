@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
 using Monte_Carlo_Method_3D.Visualization.GraphMesh.Factory;
 using Newtonsoft.Json;

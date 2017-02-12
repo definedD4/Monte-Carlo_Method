@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Monte_Carlo_Method_3D.Dialogs;
 using Monte_Carlo_Method_3D.Simulation;
-using System.Threading;
 using JetBrains.Annotations;
 using Monte_Carlo_Method_3D.DataModel;
-using Monte_Carlo_Method_3D.Util;
 using Monte_Carlo_Method_3D.Util.AssertHelper;
 
 namespace Monte_Carlo_Method_3D.Calculation

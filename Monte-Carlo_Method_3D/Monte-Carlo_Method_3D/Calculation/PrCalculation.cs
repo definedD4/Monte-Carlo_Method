@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Monte_Carlo_Method_3D.Dialogs;
+using System.Threading.Tasks;
 using Monte_Carlo_Method_3D.Simulation;
-using System.Threading;
 using JetBrains.Annotations;
 using Monte_Carlo_Method_3D.DataModel;
-using Monte_Carlo_Method_3D.Util;
 using Monte_Carlo_Method_3D.Util.AssertHelper;
 
 namespace Monte_Carlo_Method_3D.Calculation
@@ -38,15 +34,13 @@ namespace Monte_Carlo_Method_3D.Calculation
             int totalCells = maskList.Count;
             int doneCells = 0;
 
-            maskList.ForEach(
-                p =>
-                {
-                    res[p.I, p.J] = CalcCell(p);
+            Parallel.ForEach(maskList, index =>
+            {
+                res[index] = CalcCell(index);
 
-                    doneCells++;
-                    ReportProgress((int) ((double) doneCells/totalCells*100));
-                });
-
+                doneCells++;
+                ReportProgress((int) ((double) doneCells / totalCells * 100));
+            });
 
             return res;
         }

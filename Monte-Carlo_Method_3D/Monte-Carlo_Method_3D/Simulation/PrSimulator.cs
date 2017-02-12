@@ -1,7 +1,4 @@
-﻿using Monte_Carlo_Method_3D.Util;
-using System;
-using System.ComponentModel;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Monte_Carlo_Method_3D.DataModel;
 
 namespace Monte_Carlo_Method_3D.Simulation

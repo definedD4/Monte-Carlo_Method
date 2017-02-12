@@ -1,5 +1,4 @@
 ﻿using JetBrains.Annotations;
-using Monte_Carlo_Method_3D.DataModel;
 using Monte_Carlo_Method_3D.Simulation;
 using Monte_Carlo_Method_3D.Visualization;
 using Monte_Carlo_Method_3D.VisualizationModel;
