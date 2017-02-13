@@ -103,7 +103,7 @@ namespace Monte_Carlo_Method_3D.Util
 
         private void LogPerfResults(TimeSpan results, string message)
         {
-            Log($"{message}: {results} ({results.Milliseconds} ms)", LogLevel.Perf);
+            Log($"{message}: {results} ({results.TotalMilliseconds} ms)", LogLevel.Perf);
         }
 
         public void LogWarn(string message)
